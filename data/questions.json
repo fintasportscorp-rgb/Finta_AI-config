@@ -1,0 +1,491 @@
+{
+  "levels": [
+    {
+      "v": "fast",
+      "i": "🎯",
+      "n": "Fast — No Code",
+      "d": "I use AI to generate content, analysis and scripts — without writing code myself."
+    },
+    {
+      "v": "advanced",
+      "i": "⚡",
+      "n": "Advanced",
+      "d": "I code daily (Python, JS, Go…). I want the assistant to respect my conventions and tests."
+    },
+    {
+      "v": "deep",
+      "i": "🏗️",
+      "n": "Deep",
+      "d": "I design systems, configure assistants for a team, optimise multi-model costs."
+    }
+  ],
+
+  "questions": [
+
+    {
+      "id": "ai_tools",
+      "phase": "fast",
+      "type": "single",
+      "req": true,
+      "label": "Which AI assistant do you use for coding?",
+      "targets": ["CLAUDE.md"],
+      "hint": {
+        "fast": "Determines the config folder name and the generated main file.",
+        "advanced": "Determines the config folder (.claude, .cursor, etc.) and the main file.",
+        "deep": "Determines the config folder (.claude, .cursor, etc.) and the main file."
+      },
+      "opts": [
+        {"v": "claude_code", "l": "Claude Code",       "i": "🤖", "d": "Anthropic"},
+        {"v": "copilot",     "l": "GitHub Copilot",    "i": "🐙", "d": "GitHub · Microsoft"},
+        {"v": "cursor",      "l": "Cursor",            "i": "✦",  "d": "Cursor AI"},
+        {"v": "windsurf",    "l": "Windsurf",          "i": "🌊", "d": "Codeium"},
+        {"v": "codex",       "l": "Codex CLI",         "i": "⚡", "d": "OpenAI"},
+        {"v": "goose",       "l": "Goose",             "i": "🦆", "d": "Block · Open source"},
+        {"v": "gemini",      "l": "Gemini Code Assist","i": "💎", "d": "Google"},
+        {"v": "aider",       "l": "Aider",             "i": "🤝", "d": "Open source CLI"},
+        {"v": "continue_ai", "l": "Continue",          "i": "🔄", "d": "Open source · IDE"},
+        {"v": "cline",       "l": "Cline",             "i": "🔌", "d": "Open source · VSCode"},
+        {"v": "amazon_q",    "l": "Amazon Q",          "i": "☁️", "d": "AWS"},
+        {"v": "devin",       "l": "Devin",             "i": "🦾", "d": "Cognition AI"}
+      ]
+    },
+
+    {
+      "id": "project_name",
+      "phase": "fast",
+      "type": "text",
+      "req": true,
+      "label": "What is your project name?",
+      "ph": "e.g. my-app, platform-v2, content-engine…",
+      "targets": ["CLAUDE.md", "docs/architecture.md"],
+      "hint": {
+        "fast": "Just the name — you can rename it later.",
+        "advanced": "Repository name or main system name."
+      }
+    },
+
+    {
+      "id": "domain",
+      "phase": "fast",
+      "type": "multi",
+      "label": "Project domain(s)",
+      "targets": ["CLAUDE.md", "docs/architecture.md", "docs/glossary.md"],
+      "hint": {
+        "fast": "Select all domains that apply — one subdomain step will follow per domain.",
+        "advanced": "Each domain unlocks its own subdomain step and shapes security rules, agents, and ADRs."
+      },
+      "opts": [
+        { "v": "apps",        "l": "Software Apps & User Interfaces",          "i": "💻" },
+        { "v": "data",        "l": "Data Systems & Process Automation",         "i": "📊" },
+        { "v": "ai",          "l": "AI-Powered Products & Knowledge Systems",   "i": "🤖" },
+        { "v": "content",     "l": "Content Creation & Communication",          "i": "✍️" },
+        { "v": "business",    "l": "Business Strategy & Organizational Tools",  "i": "📈" },
+        { "v": "security",    "l": "Security, Quality & Reliability",           "i": "🛡️" },
+        { "v": "mleng",       "l": "ML Engineering & Infrastructure",           "i": "🧠" },
+        { "v": "blockchain",  "l": "Decentralized & Blockchain Systems",        "i": "⛓️" },
+        { "v": "science",     "l": "Scientific Computing & Modeling",           "i": "🔬" },
+        { "v": "immersive",   "l": "Immersive & Spatial Experiences",           "i": "🌐" },
+        { "v": "integration", "l": "Integration & Connectivity Systems",        "i": "🔌" },
+        { "v": "embedded",    "l": "Embedded & Edge Computing",                 "i": "⚙️" },
+        { "v": "media",       "l": "Media & Streaming Systems",                 "i": "🎬" },
+        { "v": "devtools",    "l": "Developer Tools & Infrastructure",          "i": "🛠️" },
+        { "v": "fintech",     "l": "Financial & Regulated Transaction Systems", "i": "💳" }
+      ]
+    },
+
+    {
+      "id": "subdomain",
+      "phase": "fast",
+      "type": "subdomain",
+      "label": "Priority subdomains",
+      "targets": [".claude/agents/", "CLAUDE.md"],
+      "hint": {
+        "fast": "Select the key aspects of your project — refines agent selection.",
+        "advanced": "Specify business specifics for better agent and rule matching.",
+        "deep": "Each subdomain activates additional specialized agents."
+      }
+    },
+
+    {
+      "id": "team_context",
+      "phase": "fast",
+      "type": "single",
+      "label": "Team context",
+      "targets": ["CLAUDE.md", ".claude/settings.json"],
+      "hint": {
+        "fast": "Solo = simplified configuration. Team = shared rules in git.",
+        "advanced": "Determines what goes in settings.json vs settings.local.json."
+      },
+      "opts": [
+        { "v": "solo",       "l": "Solo",                     "i": "🧑" },
+        { "v": "small_team", "l": "Small team (2–5)",         "i": "👥" },
+        { "v": "team",       "l": "Team (5–20)",              "i": "🏢" },
+        { "v": "org",        "l": "Multi-team organization",  "i": "🏭" },
+        { "v": "opensource", "l": "Open source",              "i": "🌍" }
+      ]
+    },
+
+    {
+      "id": "stack",
+      "phase": "fast",
+      "type": "multi",
+      "label": "Main tech stack",
+      "targets": [".claude/rules/", "CLAUDE.md"],
+      "hint": {
+        "fast": "Select everything you use, even a little.",
+        "advanced": "Generates a dedicated rules file with frontmatter paths: for each language."
+      },
+      "opts": [
+        { "v": "react",      "l": "React / Next.js",    "i": "⚛️" },
+        { "v": "vue",        "l": "Vue / Nuxt",         "i": "💚" },
+        { "v": "node",       "l": "Node.js",            "i": "🟢" },
+        { "v": "python",     "l": "Python",             "i": "🐍" },
+        { "v": "typescript", "l": "TypeScript",         "i": "🔷" },
+        { "v": "go",         "l": "Go",                 "i": "🐹" },
+        { "v": "rust",       "l": "Rust",               "i": "🦀" },
+        { "v": "mobile",     "l": "Swift / Kotlin",     "i": "📲" },
+        { "v": "devops",     "l": "Docker / K8s / CI",  "i": "🐳" },
+        { "v": "none",       "l": "No code",            "i": "💬" }
+      ]
+    },
+
+    {
+      "id": "autonomy",
+      "phase": "fast",
+      "type": "single",
+      "label": "Desired assistant autonomy level",
+      "targets": [".claude/settings.json", "CLAUDE.md"],
+      "hint": {
+        "fast": "Conservative = The assistant asks for confirmation before every action.",
+        "advanced": "Standard is the right balance for most dev projects."
+      },
+      "opts": [
+        { "v": "conservative", "l": "Conservative — confirmation for every action",   "i": "🔒" },
+        { "v": "standard",     "l": "Standard — confirmation for risky actions",      "i": "⚡" },
+        { "v": "autonomous",   "l": "Autonomous — auto mode for routine tasks",       "i": "🚀" }
+      ]
+    },
+
+    {
+      "id": "frustrations",
+      "phase": "fast",
+      "type": "multi",
+      "label": "Main frustrations with the assistant",
+      "targets": [".claude/rules/quality-gates.md", ".claude/rules/behavior.md"],
+      "hint": {
+        "fast": "What annoys you most — turned into a strict rule.",
+        "advanced": "Encoded as hard rules in behavior.md and quality-gates.md."
+      },
+      "opts": [
+        { "v": "context_loss", "l": "Loses context",                    "i": "🧠" },
+        { "v": "verbose",      "l": "Too verbose",                      "i": "💬" },
+        { "v": "inconsistent", "l": "Inconsistent between sessions",    "i": "🎲" },
+        { "v": "overrides",    "l": "Modifies without being asked",     "i": "✏️" },
+        { "v": "no_pushback",  "l": "Never pushes back",                "i": "🤐" },
+        { "v": "security",     "l": "Ignores security rules",           "i": "🔒" },
+        { "v": "no_tests",     "l": "Skips tests",                      "i": "🧪" }
+      ]
+    },
+
+    {
+      "id": "specs",
+      "phase": "fast",
+      "type": "specs",
+      "label": "Project specs & examples",
+      "targets": ["docs/specs/"],
+      "hint": {
+        "fast": "Describe key features, user journeys, business rules. The assistant will use this as a permanent reference.",
+        "advanced": "Each spec can have attached examples: partial or complete code, images, diagrams, screenshots."
+      }
+    },
+
+    {
+      "id": "package_manager",
+      "phase": "deep",
+      "type": "single",
+      "label": "Main package manager",
+      "targets": ["CLAUDE.md", ".claude/rules/"],
+      "hint": {
+        "fast": "Impacts commands in CLAUDE.md.",
+        "advanced": "uv is the Python 2025/2026 standard (replaces pip+venv+poetry)."
+      },
+      "opts": [
+        { "v": "npm",    "l": "npm",         "i": "📦" },
+        { "v": "pnpm",   "l": "pnpm",        "i": "⚡" },
+        { "v": "yarn",   "l": "Yarn",        "i": "🧶" },
+        { "v": "uv",     "l": "uv (Python)", "i": "🐍" },
+        { "v": "poetry", "l": "Poetry",      "i": "🐍" },
+        { "v": "go_mod", "l": "go mod",      "i": "🐹" },
+        { "v": "cargo",  "l": "Cargo",       "i": "🦀" }
+      ]
+    },
+
+    {
+      "id": "database",
+      "phase": "deep",
+      "type": "multi",
+      "label": "Database(s)",
+      "targets": ["docs/architecture.md", ".claude/rules/backend/api.md"],
+      "hint": {
+        "fast": "Adds recommended patterns in backend rules.",
+        "advanced": "Vector DB → activates RAG rules in content-seo.md."
+      },
+      "opts": [
+        { "v": "postgres",  "l": "PostgreSQL",                      "i": "🐘" },
+        { "v": "mysql",     "l": "MySQL / MariaDB",                 "i": "🐬" },
+        { "v": "sqlite",    "l": "SQLite",                          "i": "💾" },
+        { "v": "mongodb",   "l": "MongoDB",                         "i": "🍃" },
+        { "v": "redis",     "l": "Redis / Cache",                   "i": "⚡" },
+        { "v": "vector_db", "l": "Vector DB (pgvector, Pinecone…)", "i": "🔢" },
+        { "v": "none",      "l": "None",                            "i": "🚫" }
+      ]
+    },
+
+    {
+      "id": "ci_cd",
+      "phase": "deep",
+      "type": "single",
+      "label": "CI/CD",
+      "targets": ["CLAUDE.md", ".claude/settings.json"],
+      "hint": {
+        "fast": "Generates appropriate hooks in settings.json.",
+        "advanced": "GitHub Actions = auto lint/test hooks before push."
+      },
+      "opts": [
+        { "v": "github", "l": "GitHub Actions",  "i": "🐙" },
+        { "v": "gitlab", "l": "GitLab CI",       "i": "🦊" },
+        { "v": "circle", "l": "CircleCI",        "i": "⭕" },
+        { "v": "argocd", "l": "ArgoCD (GitOps)", "i": "🐙" },
+        { "v": "none",   "l": "No CI yet",       "i": "🚫" }
+      ]
+    },
+
+    {
+      "id": "commit_style",
+      "phase": "deep",
+      "type": "single",
+      "label": "Commit convention",
+      "targets": ["CLAUDE.md"],
+      "hint": {
+        "fast": "Conventional Commits = feat/fix/chore + auto changelog.",
+        "advanced": "Impacts instructions in the workflow section of CLAUDE.md."
+      },
+      "opts": [
+        { "v": "conventional", "l": "Conventional Commits (feat/fix/chore…)", "i": "📝" },
+        { "v": "semantic",     "l": "Simple semantic (verb + description)",    "i": "💬" },
+        { "v": "gitmoji",      "l": "Gitmoji",                                 "i": "😎" },
+        { "v": "none",         "l": "No convention",                           "i": "🚫" }
+      ]
+    },
+
+    {
+      "id": "tdd_level",
+      "phase": "deep",
+      "type": "single",
+      "label": "Testing approach",
+      "targets": [".claude/rules/tdd-workflow.md", ".claude/rules/quality-gates.md"],
+      "hint": {
+        "fast": "Strict TDD = tests before code, ALWAYS. Generates tdd-workflow.md.",
+        "advanced": "Activates the TDD workflow in generated rules."
+      },
+      "opts": [
+        { "v": "tdd_strict", "l": "Strict TDD — tests before code, always",     "i": "🔴" },
+        { "v": "tdd_soft",   "l": "Tests after implementation, before commit",   "i": "🟡" },
+        { "v": "critical",   "l": "Tests only for critical code",                "i": "🟠" },
+        { "v": "none",       "l": "No tests (for now)",                          "i": "🚫" }
+      ]
+    },
+
+    {
+      "id": "test_coverage",
+      "phase": "deep",
+      "type": "single",
+      "label": "Minimum test coverage",
+      "targets": [".claude/rules/quality-gates.md"],
+      "hint": {
+        "fast": "Integrated in quality-gates.md as a blocking metric.",
+        "advanced": "80% is the industry standard. 60% acceptable for prototypes."
+      },
+      "opts": [
+        { "v": "95", "l": "95% — critical standard (fintech, healthcare)", "i": "🏆" },
+        { "v": "80", "l": "80% — industry standard",                       "i": "✅" },
+        { "v": "60", "l": "60% — acceptable (prototype/startup)",          "i": "🟡" },
+        { "v": "0",  "l": "No minimum",                                    "i": "🚫" }
+      ]
+    },
+
+    {
+      "id": "hooks_wanted",
+      "phase": "deep",
+      "type": "multi",
+      "label": "Automatic checks (hooks)",
+      "targets": [".claude/settings.json"],
+      "hint": {
+        "fast": "PostToolUse hooks — run automatically after every edit.",
+        "advanced": "Don't activate everything: choose what truly adds value."
+      },
+      "opts": [
+        { "v": "lint",      "l": "Lint after edit",           "i": "🔍" },
+        { "v": "typecheck", "l": "Type check after edit",     "i": "🔷" },
+        { "v": "test",      "l": "Unit tests before commit",  "i": "🧪" },
+        { "v": "format",    "l": "Auto-format after edit",    "i": "✨" },
+        { "v": "security",  "l": "Security scan before commit","i": "🔒" }
+      ]
+    },
+
+    {
+      "id": "agents_wanted",
+      "phase": "fast",
+      "type": "agent_picker",
+      "label": "Specialized agents to activate",
+      "targets": [".claude/agents/"],
+      "hint": {
+        "fast": "Agents automatically selected based on your stack.",
+        "advanced": "Recommended agents are pre-selected based on your answers. Adjust freely.",
+        "deep": "Full catalog — search and filter by category available."
+      }
+    },
+
+    {
+      "id": "skills_wanted",
+      "phase": "fast",
+      "type": "skill_picker",
+      "label": "Skills to install in your project",
+      "targets": [".claude/skills/{source}/"],
+      "hint": {
+        "fast": "Skills extend what your assistant can do — search across 1600+ community skills.",
+        "advanced": "Skills are reusable instruction sets dropped into .claude/skills/. Search by name, category or author.",
+        "deep": "Full catalog of skills from anthropics, antigravity, alirezarezvani, composio and more."
+      }
+    },
+
+    {
+      "id": "commands_wanted",
+      "phase": "fast",
+      "type": "command_picker",
+      "label": "Slash commands to add to your project",
+      "targets": [".claude/commands/"],
+      "hint": {
+        "fast": "Commands are reusable /slash-commands for Claude Code — pick the ones matching your workflow.",
+        "advanced": "128+ slash commands from the community — git, testing, debug, docs and more. Dropped into .claude/commands/.",
+        "deep": "Full catalog of community commands. Filter by category or source author."
+      }
+    },
+
+    {
+      "id": "never_do",
+      "phase": "deep",
+      "type": "textarea",
+      "label": "What the assistant should NEVER do on this project",
+      "ph": "e.g.: Never rewrite tests to make them pass. Never use any in TS. Don't touch src/legacy/…",
+      "targets": [".claude/rules/quality-gates.md"],
+      "hint": {
+        "fast": "Think about what has caused you problems before.",
+        "advanced": "Turned into explicit hard stops in quality-gates.md."
+      }
+    },
+
+    {
+      "id": "frozen_files",
+      "phase": "deep",
+      "type": "textarea",
+      "label": "Files / modules to never touch",
+      "ph": "e.g.: src/legacy/payments.ts (migration in progress). infra/k8s/ (other team). src/auth/ (freeze Q3)…",
+      "targets": ["CLAUDE.local.md"],
+      "hint": {
+        "fast": "Fragile areas or managed by someone else?",
+        "advanced": "Injected into CLAUDE.local.md as a session freeze."
+      }
+    },
+
+    {
+      "id": "decisions_made",
+      "phase": "deep",
+      "type": "textarea",
+      "label": "Important technical decisions already made",
+      "ph": "e.g.: PostgreSQL (not MongoDB). Auth via Auth0. Frontend SPA, no SSR. REST API (not GraphQL)…",
+      "targets": ["docs/decisions/ADR-001.md"],
+      "hint": {
+        "fast": "The big things you don't want to revisit.",
+        "advanced": "Generates a pre-filled ADR-001 with each structured decision."
+      }
+    },
+
+    {
+      "id": "compliance",
+      "phase": "deep",
+      "type": "multi",
+      "label": "Compliance or security constraints",
+      "targets": [".claude/rules/security.md"],
+      "hint": {
+        "fast": "If you process user data, GDPR likely applies.",
+        "advanced": "Activates the corresponding rules in security.md."
+      },
+      "opts": [
+        { "v": "none",         "l": "No specific constraints",   "i": "🟢" },
+        { "v": "gdpr",         "l": "GDPR / personal data",      "i": "🇪🇺" },
+        { "v": "soc2",         "l": "SOC 2",                     "i": "🔐" },
+        { "v": "hipaa",        "l": "HIPAA / healthcare",        "i": "🏥" },
+        { "v": "pci",          "l": "PCI DSS / payments",        "i": "💳" },
+        { "v": "internal_sec", "l": "Internal security policy",  "i": "🏢" }
+      ]
+    },
+
+    {
+      "id": "response_style",
+      "phase": "deep",
+      "type": "multi",
+      "label": "Expected response style",
+      "targets": [".claude/rules/behavior.md"],
+      "hint": {
+        "fast": "What helps you most to understand and move forward.",
+        "advanced": "Encoded in behavior.md as a behavior contract."
+      },
+      "opts": [
+        { "v": "concise",    "l": "Concise — straight to the point",      "i": "🎯" },
+        { "v": "explain",    "l": "Explains its choices",                  "i": "📖" },
+        { "v": "challenge",  "l": "Challenges before executing",           "i": "⚔️" },
+        { "v": "one_sol",    "l": "One solution only (no alternatives)",   "i": "✦"  },
+        { "v": "french",     "l": "Always in French",                      "i": "🇫🇷" },
+        { "v": "diff_first", "l": "Diffs before full files",               "i": "📝" }
+      ]
+    },
+
+    {
+      "id": "model_routing",
+      "phase": "expert",
+      "type": "multi",
+      "label": "Multi-model routing",
+      "targets": ["CLAUDE.md", ".claude/settings.json"],
+      "hint": {
+        "fast": "Haiku = 3× cheaper for repetitive tasks.",
+        "advanced": "Writer(Sonnet)/Reviewer(Haiku) pattern reduces costs by 60%."
+      },
+      "opts": [
+        { "v": "haiku_workers", "l": "Haiku — worker agents / bulk review", "i": "🪶" },
+        { "v": "sonnet_main",   "l": "Sonnet — main development",           "i": "⚡" },
+        { "v": "opus_arch",     "l": "Opus — architectural decisions",      "i": "🏗️" }
+      ]
+    },
+
+    {
+      "id": "mcp_integrations",
+      "phase": "expert",
+      "type": "multi",
+      "label": "MCP integrations to configure",
+      "targets": [".claude/settings.json"],
+      "hint": {
+        "fast": "MCP extends the assistant with external tools (DB, browser, APIs).",
+        "advanced": "Each integration requires an MCP server configured in settings.json."
+      },
+      "opts": [
+        { "v": "github",     "l": "GitHub CLI (gh)",             "i": "🐙" },
+        { "v": "browser",    "l": "Browser (Playwright)",        "i": "🌐" },
+        { "v": "notion",     "l": "Notion",                      "i": "📝" },
+        { "v": "linear",     "l": "Linear / Jira",               "i": "📋" },
+        { "v": "db_mcp",     "l": "Database (MCP)",              "i": "🗄️" },
+        { "v": "monitoring", "l": "Monitoring (Datadog/Sentry)",  "i": "📊" }
+      ]
+    }
+  ]
+}

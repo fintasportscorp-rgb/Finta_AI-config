@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finta — AI Configuration for Developers</title>
+<meta name="description" content="Configure your AI development environment in under 5 minutes. Choose from 647 agents, 1,611 skills &amp; 128 commands tailored to your stack.">
+<meta property="og:title" content="Finta — AI Configuration for Developers">
+<meta property="og:description" content="Configure your AI development environment in under 5 minutes. Choose from 647 agents, 1,611 skills &amp; 128 commands tailored to your stack.">
+<meta property="og:image" content="https://config.fintalab.com/logo/setup.png">
+<meta property="og:url" content="https://config.fintalab.com">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://config.fintalab.com/logo/setup.png">
+<link rel="alternate" hreflang="en" href="https://config.fintalab.com/?lang=en">
+<link rel="alternate" hreflang="fr" href="https://config.fintalab.com/?lang=fr">
+<link rel="alternate" hreflang="es" href="https://config.fintalab.com/?lang=es">
+<link rel="alternate" hreflang="de" href="https://config.fintalab.com/?lang=de">
+<link rel="alternate" hreflang="pt" href="https://config.fintalab.com/?lang=pt">
+<link rel="alternate" hreflang="ja" href="https://config.fintalab.com/?lang=ja">
+<link rel="alternate" hreflang="zh" href="https://config.fintalab.com/?lang=zh">
+<link rel="alternate" hreflang="ko" href="https://config.fintalab.com/?lang=ko">
+<link rel="alternate" hreflang="x-default" href="https://config.fintalab.com/">
+<link rel="icon" type="image/png" sizes="32x32" href="logo/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="logo/favicon-16x16.png">
+<link rel="apple-touch-icon" href="logo/setup.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <div class="nav-logo"><span>~/</span>config.finta</div>
+  <div class="nav-right">
+    <a href="./wizard.html" class="nav-cta">[ launch wizard ]</a>
+    <div id="lang-float">
+      <button id="lang-trigger" onclick="toggleLangMenu()" aria-haspopup="true" aria-expanded="false">
+        <img id="lang-flag" src="https://flagcdn.com/w40/gb.png" alt="EN">
+        <span id="lang-code">EN</span>
+      </button>
+      <div id="lang-menu" hidden>
+        <button class="lang-opt act" data-lang="en" onclick="pickLang('en')"><img class="lf" src="https://flagcdn.com/w40/gb.png" alt="EN"><span class="lc">EN</span></button>
+        <button class="lang-opt" data-lang="fr" onclick="pickLang('fr')"><img class="lf" src="https://flagcdn.com/w40/fr.png" alt="FR"><span class="lc">FR</span></button>
+        <button class="lang-opt" data-lang="es" onclick="pickLang('es')"><img class="lf" src="https://flagcdn.com/w40/es.png" alt="ES"><span class="lc">ES</span></button>
+        <button class="lang-opt" data-lang="de" onclick="pickLang('de')"><img class="lf" src="https://flagcdn.com/w40/de.png" alt="DE"><span class="lc">DE</span></button>
+        <button class="lang-opt" data-lang="pt" onclick="pickLang('pt')"><img class="lf" src="https://flagcdn.com/w40/pt.png" alt="PT"><span class="lc">PT</span></button>
+        <button class="lang-opt" data-lang="ja" onclick="pickLang('ja')"><img class="lf" src="https://flagcdn.com/w40/jp.png" alt="JA"><span class="lc">JA</span></button>
+        <button class="lang-opt" data-lang="zh" onclick="pickLang('zh')"><img class="lf" src="https://flagcdn.com/w40/cn.png" alt="ZH"><span class="lc">ZH</span></button>
+        <button class="lang-opt" data-lang="ko" onclick="pickLang('ko')"><img class="lf" src="https://flagcdn.com/w40/kr.png" alt="KO"><span class="lc">KO</span></button>
+      </div>
+    </div>
+    <div class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<div class="nav-mobile-menu" id="nav-mobile-menu">
+  <a href="#how" onclick="closeMobileMenu()">// how it works</a>
+  <a href="#get" onclick="closeMobileMenu()">// what you get</a>
+  <a href="#agents" onclick="closeMobileMenu()">// agents</a>
+  <a href="#features" onclick="closeMobileMenu()">// features</a>
+  <a href="./wizard.html" class="nav-mobile-cta">[ launch wizard ]</a>
+</div>
+
+<!-- ─── CINEMATIC SCENE ─── -->
+<div id="scene">
+  <div class="scene-sticky" id="scene-sticky">
+    <canvas id="particle-canvas"></canvas>
+    <div class="scene-grid-bg"></div>
+    <div class="scene-vignette"></div>
+
+    <!-- Slide 1: The Provocation -->
+    <div class="slide-panel active" id="slide-0">
+      <div class="slide-eyebrow">// for the ones who build at 3am</div>
+      <h1 class="slide-h1">
+        <span class="slide-line">You have ideas that</span>
+        <span class="slide-line accent-line">should already be running.</span>
+      </h1>
+      <p class="slide-sub">The gap between what you imagine and what ships isn't talent.<br>It's missing infrastructure. Let's fix that.</p>
+      <div class="slide-scroll-hint">
+        <span>scroll</span>
+        <div class="scroll-arrow-line"></div>
+      </div>
+    </div>
+
+    <!-- Slide 2: The Vision -->
+    <div class="slide-panel" id="slide-1">
+      <div class="slide-eyebrow">// 647 agents · 1,611 skills · 128 commands</div>
+      <h1 class="slide-h1">
+        <span class="slide-line">What if your AI knew your stack,</span>
+        <span class="slide-line accent-line">your rules, before you typed a word?</span>
+      </h1>
+      <p class="slide-sub">Specialist agents hand-picked for your project. Pre-loaded with your standards, your architecture, your way of thinking — before session one even begins.</p>
+    </div>
+
+    <!-- Slide 3: The CTA -->
+    <div class="slide-panel" id="slide-2">
+      <div class="slide-eyebrow">// from zero to contributor in &lt; 5 min</div>
+      <h1 class="slide-h1">
+        <span class="slide-line">Five minutes from now,</span>
+        <span class="slide-line accent-line">your AI becomes a co-founder.</span>
+      </h1>
+      <p class="slide-sub">Drop the config. Watch your assistant go from generic tool to domain expert — reading every rule, every agent spec, shipping from day zero.</p>
+      <a href="./wizard.html" class="cta-btn slide-cta">
+        <span class="caret">&gt;</span> launch wizard
+      </a>
+    </div>
+
+    <!-- Slide indicators -->
+    <div class="slide-dots">
+      <div class="slide-dot active" data-slide="0" onclick="jumpToSlide(0)"></div>
+      <div class="slide-dot" data-slide="1" onclick="jumpToSlide(1)"></div>
+      <div class="slide-dot" data-slide="2" onclick="jumpToSlide(2)"></div>
+    </div>
+
+    <!-- Progress counter -->
+    <div class="scene-counter"><span id="slide-num">01</span> / 03</div>
+  </div>
+</div>
+
+<!-- ─── STATS BAR ─── -->
+<div class="stats-bar" id="stats-bar">
+  <div class="stat-item">
+    <div class="stat-num" data-target="647">0</div>
+    <div class="stat-label">Agents</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" data-target="1611">0</div>
+    <div class="stat-label">Skills</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" data-target="128">0</div>
+    <div class="stat-label">Commands</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" data-target="30" data-suffix="+">0</div>
+    <div class="stat-label">Files Generated</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" data-target="3">0</div>
+    <div class="stat-label">Expertise Levels</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" data-prefix="&lt; " data-target="5" data-suffix=" min">0</div>
+    <div class="stat-label">Setup Time</div>
+  </div>
+</div>
+
+<!-- ─── HOW IT WORKS ─── -->
+<section class="how-section" id="how">
+  <div class="section-label"><span>//</span> process</div>
+  <h2 class="section-title reveal">How it works</h2>
+  <p class="section-sub reveal reveal-delay-1">Three steps from zero to a fully-configured AI development environment. No boilerplate, no guesswork.</p>
+
+  <div class="steps-container">
+    <div class="step-card reveal reveal-delay-1">
+      <div class="step-num">[01]</div>
+      <div class="step-title">Answer questions about your project</div>
+      <p class="step-desc">Choose Fast (6 questions), Advanced (14), or Deep (24) mode. The wizard learns your stack, team size, domain, and workflows to build an accurate profile.</p>
+    </div>
+    <div class="step-card reveal reveal-delay-2">
+      <div class="step-num">[02]</div>
+      <div class="step-title">Browse 647 agents, 1,611 skills & 128 commands</div>
+      <p class="step-desc">Our scoring engine ranks agents by relevance to your stack. Explore 1,611 curated skills and 128 slash commands too. Toggle what you need, confirm your selection.</p>
+    </div>
+    <div class="step-card reveal reveal-delay-3">
+      <div class="step-num">[03]</div>
+      <div class="step-title">Download your complete AI config as ZIP</div>
+      <p class="step-desc">Get your main AI config file, rules, agent specs, architecture docs, and an ADR — ready to drop at your project root and boot immediately.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── WHAT YOU GET ─── -->
+<section class="get-section" id="get">
+  <div class="section-label"><span>//</span> output</div>
+  <h2 class="section-title reveal">What you get</h2>
+  <p class="section-sub reveal reveal-delay-1">A complete, structured AI configuration that your assistant reads, understands, and acts on from the first message.</p>
+
+  <div class="get-grid">
+    <!-- File Tree -->
+    <div class="reveal reveal-delay-1">
+      <div class="file-tree-window">
+        <div class="terminal-bar">
+          <div class="terminal-dot dot-red"></div>
+          <div class="terminal-dot dot-yellow"></div>
+          <div class="terminal-dot dot-green"></div>
+          <span class="terminal-title">neural map — project structure</span>
+        </div>
+        <canvas id="neural-net" class="neural-net-canvas"></canvas>
+      </div>
+    </div>
+
+    <!-- Feature cards -->
+    <div class="feature-cards">
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="fc-icon">📄</div>
+        <div class="fc-title">AI config — The master brief</div>
+        <p class="fc-desc">Project context, architecture overview, team conventions, and coding standards — all in one file your AI reads first.</p>
+        <span class="fc-tag">root-level</span>
+      </div>
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="fc-icon">🤖</div>
+        <div class="fc-title">.ai/agents/ — Specialist roster</div>
+        <p class="fc-desc">Curated agents pre-selected for your stack. Each one ships with a persona, scope, capabilities, and example invocations.</p>
+        <span class="fc-tag">.ai/agents/</span>
+      </div>
+      <div class="feature-card reveal reveal-delay-4">
+        <div class="fc-icon">⚖️</div>
+        <div class="fc-title">.ai/rules/ — Quality gates</div>
+        <p class="fc-desc">Security, TDD, behavior, and stack-specific rules that enforce your standards on every AI-generated change.</p>
+        <span class="fc-tag">.ai/rules/</span>
+      </div>
+      <div class="feature-card reveal reveal-delay-5">
+        <div class="fc-icon">📐</div>
+        <div class="fc-title">docs/ — Architecture + decisions</div>
+        <p class="fc-desc">Architecture overview, glossary, and ADR-001 scaffolded for your project — so the AI understands the why, not just the what.</p>
+        <span class="fc-tag">docs/</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── AGENT SHOWCASE ─── -->
+<section class="agents-section" id="agents">
+  <div class="section-label reveal"><span>//</span> agents</div>
+  <h2 class="section-title reveal">647 agents · 1,611 skills · 128 commands</h2>
+  <p class="section-sub reveal reveal-delay-1">Hand-picked from 12+ GitHub repositories. Agents, reusable skills, and slash commands — every domain covered.</p>
+
+  <div class="marquee-wrapper reveal">
+    <div class="marquee-track" id="marquee-1"></div>
+    <div class="marquee-track reverse" id="marquee-2"></div>
+  </div>
+</section>
+
+<!-- ─── FEATURE DEEP DIVE ─── -->
+<section class="features-section" id="features">
+  <div class="section-label"><span>//</span> features</div>
+  <h2 class="section-title reveal">Built for serious developers</h2>
+  <p class="section-sub reveal reveal-delay-1">Every design decision optimized for the developer who cares about quality, security, and moving fast without breaking things.</p>
+
+  <div class="features-grid">
+    <div class="big-feature-card reveal reveal-delay-1">
+      <span class="bfc-icon">⚙</span>
+      <div class="bfc-title">Intelligent Recommendations</div>
+      <p class="bfc-desc">Our scoring engine analyzes your stack, team, and workflow to surface the exact agents you need. No noise, just the right tools. Every recommendation is ranked with a relevance score above 80.</p>
+      <div class="bfc-meta">
+        <div class="bfc-meta-dot"></div>
+        Scoring engine active
+      </div>
+    </div>
+    <div class="big-feature-card reveal reveal-delay-2">
+      <span class="bfc-icon">⬡</span>
+      <div class="bfc-title">2,386 Curated Resources</div>
+      <p class="bfc-desc">647 agents, 1,611 skills, and 128 commands — hand-picked from 12+ GitHub repositories. Backend, frontend, security, AI/ML, DevOps — every specialty covered. Sources include avivl, wshobson, hesreallyhim, and more.</p>
+      <div class="bfc-meta">
+        <div class="bfc-meta-dot"></div>
+        2,386 resources indexed
+      </div>
+    </div>
+    <div class="big-feature-card reveal reveal-delay-3">
+      <span class="bfc-icon">⚡</span>
+      <div class="bfc-title">Instant Bootstrap</div>
+      <p class="bfc-desc">Drop the ZIP at your project root, paste one prompt. Your AI assistant reads every rule, every agent spec, and starts contributing immediately. From download to first commit in under 5 minutes.</p>
+      <div class="bfc-meta">
+        <div class="bfc-meta-dot"></div>
+        Zero config required
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── TERMINAL DEMO ─── -->
+<section class="demo-section" id="demo">
+  <div style="text-align:center; margin-bottom: 48px;">
+    <div class="section-label"><span>//</span> demo</div>
+    <h2 class="section-title reveal" style="text-align:center">See it in action</h2>
+    <p class="section-sub reveal reveal-delay-1" style="text-align:center; margin:0 auto">A real wizard session — Advanced mode, TypeScript + React stack.</p>
+  </div>
+
+  <div class="demo-container">
+    <div class="demo-terminal reveal reveal-delay-2">
+      <div class="terminal-bar">
+        <div class="terminal-dot dot-red"></div>
+        <div class="terminal-dot dot-yellow"></div>
+        <div class="terminal-dot dot-green"></div>
+        <span class="terminal-title">terminal — wizard --level advanced</span>
+      </div>
+      <div class="demo-body">
+<span class="demo-line demo-prompt"><span class="dl-dollar">$</span> wizard --level advanced</span>
+<span class="demo-blank"></span>
+<span class="demo-line demo-loading">[&gt;&gt;] Loading configuration...</span>
+<span class="demo-line demo-ok">[OK] 647 agents indexed</span>
+<span class="demo-line demo-ok">[OK] 1,611 skills indexed</span>
+<span class="demo-line demo-ok">[OK] 128 commands indexed</span>
+<span class="demo-line demo-ok">[OK] Scoring engine ready</span>
+<span class="demo-blank"></span>
+<span class="demo-line demo-prompt"><span class="dl-dollar">$</span> What is your primary domain?</span>
+<span class="demo-line demo-input">&gt; [3] Web Application</span>
+<span class="demo-blank"></span>
+<span class="demo-line demo-prompt"><span class="dl-dollar">$</span> Select your tech stack (multiple):</span>
+<span class="demo-line demo-input">&gt; [✓] TypeScript&nbsp;&nbsp;[✓] React&nbsp;&nbsp;[✓] Node.js</span>
+<span class="demo-blank"></span>
+<span class="demo-line demo-prompt"><span class="dl-dollar">$</span> Select your expertise level:</span>
+<span class="demo-line demo-input">&gt; [2] Advanced — 14 questions</span>
+<span class="demo-blank"></span>
+<span class="demo-line demo-loading">[&gt;&gt;] Computing agent recommendations...</span>
+<span class="demo-line demo-ok">[OK] 12 agents matched (score &gt; 80)</span>
+<span class="demo-line demo-ok">[OK] Generating 27 configuration files...</span>
+<span class="demo-line demo-ok">[OK] Building AI.md with project context...</span>
+<span class="demo-line demo-ok">[OK] Writing .ai/rules/typescript.md...</span>
+<span class="demo-line demo-ok">[OK] Packaging docs/architecture.md...</span>
+<span class="demo-blank"></span>
+<span class="demo-line demo-success">$ Generated: my-project-ai-setup.zip <span class="cursor" style="width:7px;height:12px;"></span></span>
+      </div>
+    </div>
+    <p class="scroll-hint">// static preview — launch the wizard for the real experience</p>
+  </div>
+</section>
+
+<!-- ─── CTA SECTION ─── -->
+<section class="cta-section" id="cta">
+  <div class="cta-label reveal"><span>$</span> ready to ship</div>
+  <h2 class="cta-h2 reveal reveal-delay-1">Stop configuring.<br><span>Start building.</span></h2>
+  <p class="cta-sub reveal reveal-delay-2">Your AI assistant is waiting for proper instructions. Give it the context it needs — in under 5 minutes.</p>
+  <div class="cta-group reveal reveal-delay-3">
+    <a href="./wizard.html" class="cta-btn">
+      <span class="caret">&gt;</span> launch wizard
+    </a>
+    <span class="cta-note">free, no account required</span>
+  </div>
+</section>
+
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-logo">~/config.finta</div>
+  <div class="footer-links">
+    <a href="./wizard.html">Wizard</a>
+    <a href="#how">How it works</a>
+    <a href="#agents">Agents</a>
+    <a href="#features">Features</a>
+  </div>
+  <div class="footer-copy">// built for developers</div>
+</footer>
+
+<script src="js/index.js"></script>
+</body>
+</html>

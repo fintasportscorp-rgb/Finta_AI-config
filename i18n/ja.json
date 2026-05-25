@@ -1,0 +1,452 @@
+{
+  "ui": {
+    "loading": "読み込み中…",
+    "select_profile": "プロファイルを選択",
+    "how_work_ai": "AIツールとどのように作業しますか？",
+    "level_hint": "質問数と生成ファイルの詳細レベルを調整します。[1] [2] [3] を押して選択。",
+    "questions_word": "問",
+    "continue": "続ける",
+    "back": "戻る",
+    "skip": "スキップ",
+    "next": "次へ",
+    "generate_config": "設定を生成",
+    "other": "その他…",
+    "specify": "指定…",
+    "multiple_selection": "複数選択可能",
+    "multiple_refines": "複数選択 — エージェント推薦を絞り込む",
+    "select_domain_first": "サブドメインを表示するには、まず主ドメインを選択してください。",
+    "affects": "影響:",
+    "question_n": "質問 {step}/{total}",
+    "generating": "設定ファイルを生成中…",
+    "fetching_agents": "エージェントコンテンツを取得中…",
+    "more_files": "… さらに{n}ファイル",
+    "n_files_generated": "{n}ファイルを生成しました（対象:",
+    "project_files": "プロジェクトファイル",
+    "copy": "コピー",
+    "copied": "✓ コピー済み",
+    "copy_full": "コピー",
+    "next_step_title": "次のステップ — ZIPを解凍してこのプロンプトを貼り付ける",
+    "next_step_body": "プロジェクトのルートにZIPを解凍したら、このコマンドをAIアシスタントに渡してください。すべて自動で処理します。",
+    "download_zip": "ZIPをダウンロード（{n}ファイル）",
+    "edit_answers": "回答を編集",
+    "restart": "やり直す",
+    "no_spec": "スペックなし — ボタンをクリックして開始。",
+    "add_spec": "[+] スペックを追加",
+    "spec_title_ph": "スペックタイトル…",
+    "spec_desc_ph": "説明、ビジネスルール、期待される動作、制約…",
+    "spec_delete": "削除",
+    "spec_remove_att": "削除",
+    "spec_add_example": "📎 例を追加",
+    "agents_hint": "★ = 推奨 · クリックで有効/無効",
+    "agents_selected": "{n}件選択中",
+    "agents_all": "すべて ({n})",
+    "agents_all_tab": "すべて",
+    "agents_browse": "+ {n}件の利用可能なエージェントを閲覧",
+    "agents_collapse": "− カタログを閉じる",
+    "agents_search_ph": "{n}件のエージェントを検索…",
+    "skills_hint": "回答に基づいて事前選択済み — 自由に調整可能",
+    "skills_selected": "{n}件選択中",
+    "skills_all": "すべて ({n})",
+    "skills_all_tab": "すべて",
+    "skills_browse": "{n}件のスキルをすべて見る",
+    "skills_collapse": "− カタログを閉じる",
+    "skills_search_ph": "{n}件のスキルを検索…",
+    "skills_count": "{n}件のスキル",
+    "commands_hint": "回答に基づいて事前選択済み — 自由に調整可能",
+    "commands_selected": "{n}件選択中",
+    "commands_all": "すべて ({n})",
+    "commands_all_tab": "すべて",
+    "commands_browse": "+ {n}件の利用可能なコマンドを閲覧",
+    "commands_collapse": "− カタログを閉じる",
+    "commands_search_ph": "{n}件のコマンドを検索…",
+    "commands_count": "{n}件のコマンド",
+    "binary_file": "[バイナリファイル — プレビュー不可]",
+    "jszip_error": "JSZipが読み込まれていません。接続を確認してください。",
+    "welcome_q_loaded": "問 読み込み済み",
+    "welcome_ag_indexed": "エージェント インデックス済み",
+    "welcome_templates": "テンプレート & スコアリングエンジン 準備完了",
+    "welcome_subtitle": "AI Project Setup Wizard — 数分で設定完了",
+    "welcome_generates": "このウィザードが生成するもの:",
+    "welcome_config": "メイン設定 · ローカル設定 · .gitignore",
+    "welcome_rules": "quality-gates · セキュリティ · 動作 · TDD · スタック",
+    "welcome_agents_line": "エージェント — 回答に基づくインテリジェントな選択",
+    "welcome_docs": "アーキテクチャ · 用語集 · ADRs",
+    "welcome_prompt_line": "bootstrap-init.md — AIによるポストインストール強化",
+    "welcome_run": "設定を開始",
+    "run_setup_btn": "run-setup.sh",
+    "boot_prompt_tpl": "`{name}-ai-setup.zip`をこのプロジェクトのルートに解凍し（既存ファイルの上書きを要求された場合は許可）、`prompts/bootstrap-init.md`を読み込んで確認なしに各指示を実行してください。"
+  },
+  "levels": {
+    "fast": {
+      "n": "ファスト — コードなし",
+      "d": "コードを自分で書かずに、コンテンツ生成、分析、スクリプトにAIを使用しています。"
+    },
+    "advanced": {
+      "n": "アドバンスド",
+      "d": "毎日コーディングしています（Python、JS、Goなど）。アシスタントが私の規約とテストを尊重してほしい。"
+    },
+    "deep": {
+      "n": "エキスパート",
+      "d": "システムを設計し、チーム向けにアシスタントを設定し、マルチモデルのコストを最適化しています。"
+    }
+  },
+  "questions": {
+    "ai_tools": {
+      "label": "コーディングにどのAIアシスタントを使用していますか？",
+      "hint": {
+        "fast": "設定フォルダ名と生成されるメインファイル名を決定します。",
+        "advanced": "設定フォルダ（.claude、.cursorなど）とメインファイルを決定します。",
+        "deep": "設定フォルダ（.claude、.cursorなど）とメインファイルを決定します。"
+      }
+    },
+    "project_name": {
+      "label": "プロジェクト名は何ですか？",
+      "ph": "例: my-app、platform-v2、content-engine…",
+      "hint": {
+        "fast": "名前だけ — 後で変更できます。",
+        "advanced": "リポジトリまたはメインシステムの名前。"
+      }
+    },
+    "domain": {
+      "label": "プロジェクトの主ドメイン",
+      "hint": {
+        "fast": "プロジェクトに最も近いものを選択してください。",
+        "advanced": "セキュリティルール、スキル、生成されるADRに影響します。"
+      },
+      "opts": {
+        "saas": "SaaS / Webアプリ",
+        "content": "コンテンツ / SEO / RAG",
+        "fintech": "フィンテック / 決済",
+        "ecommerce": "Eコマース",
+        "internal": "社内ツール / B2B",
+        "mobile": "モバイルアプリ",
+        "data": "データ / ML / AI",
+        "infra": "インフラ / DevOps"
+      }
+    },
+    "subdomain": {
+      "label": "優先サブドメイン",
+      "hint": {
+        "fast": "プロジェクトの重要な側面を選択 — エージェント選択を絞り込みます。",
+        "advanced": "より良いエージェントとルールのマッチングのためにビジネス特性を指定します。",
+        "deep": "各サブドメインが追加の専門エージェントを有効化します。"
+      }
+    },
+    "team_context": {
+      "label": "チームコンテキスト",
+      "hint": {
+        "fast": "ソロ = 簡略化された設定。チーム = gitで共有されるルール。",
+        "advanced": "settings.json vs settings.local.jsonに何が入るかを決定します。"
+      },
+      "opts": {
+        "solo": "ソロ",
+        "small_team": "小チーム（2〜5名）",
+        "team": "チーム（5〜20名）",
+        "org": "マルチチーム組織",
+        "opensource": "オープンソース"
+      }
+    },
+    "stack": {
+      "label": "主要な技術スタック",
+      "hint": {
+        "fast": "使っているものをすべて選択してください（少し使っているものも）。",
+        "advanced": "各言語に対してfrontmatter paths:を持つ専用ルールファイルを生成します。"
+      },
+      "opts": {
+        "none": "コードなし"
+      }
+    },
+    "autonomy": {
+      "label": "アシスタントに求める自律性レベル",
+      "hint": {
+        "fast": "保守的 = アシスタントが各アクションの前に確認を求めます。",
+        "advanced": "スタンダードがほとんどのDevプロジェクトに適したバランスです。"
+      },
+      "opts": {
+        "conservative": "保守的 — 各アクションの確認",
+        "standard": "スタンダード — リスクのあるアクションの確認",
+        "autonomous": "自律的 — ルーティンタスクはオートモード"
+      }
+    },
+    "frustrations": {
+      "label": "アシスタントに対する主な不満",
+      "hint": {
+        "fast": "最も困ること — 厳格なルールに変換されます。",
+        "advanced": "behavior.mdとquality-gates.mdでハードルールとしてコード化されます。"
+      },
+      "opts": {
+        "context_loss": "コンテキストを失う",
+        "verbose": "冗長すぎる",
+        "inconsistent": "セッション間で一貫性がない",
+        "overrides": "求めていないのに変更する",
+        "no_pushback": "決して疑問を呈しない",
+        "security": "セキュリティルールを無視する",
+        "no_tests": "テストをスキップする"
+      }
+    },
+    "specs": {
+      "label": "プロジェクトのスペックと例",
+      "hint": {
+        "fast": "主要機能、ユーザージャーニー、ビジネスルールを説明してください。アシスタントが永続的な参照として使用します。",
+        "advanced": "各スペックには例を添付できます：部分的または完全なコード、画像、図、スクリーンショット。"
+      }
+    },
+    "package_manager": {
+      "label": "主要パッケージマネージャー",
+      "hint": {
+        "fast": "CLAUDE.mdのコマンドに影響します。",
+        "advanced": "uvはPython 2025/2026の標準です（pip+venv+poetryを置き換え）。"
+      }
+    },
+    "database": {
+      "label": "データベース",
+      "hint": {
+        "fast": "バックエンドルールに推奨パターンを追加します。",
+        "advanced": "Vector DB → content-seo.mdのRAGルールを有効化します。"
+      },
+      "opts": {
+        "none": "なし"
+      }
+    },
+    "ci_cd": {
+      "label": "CI/CD",
+      "hint": {
+        "fast": "settings.jsonに適切なフックを生成します。",
+        "advanced": "GitHub Actions = プッシュ前の自動lint/testフック。"
+      },
+      "opts": {
+        "none": "まだCIなし"
+      }
+    },
+    "commit_style": {
+      "label": "コミット規約",
+      "hint": {
+        "fast": "Conventional Commits = feat/fix/chore + 自動changelog。",
+        "advanced": "CLAUDE.mdのワークフローセクションの指示に影響します。"
+      },
+      "opts": {
+        "semantic": "シンプルなセマンティック（動詞 + 説明）",
+        "none": "規約なし"
+      }
+    },
+    "tdd_level": {
+      "label": "テストアプローチ",
+      "hint": {
+        "fast": "厳格なTDD = コードの前にテスト、常に。tdd-workflow.mdを生成します。",
+        "advanced": "生成されたルールでTDDワークフローを有効化します。"
+      },
+      "opts": {
+        "tdd_strict": "厳格なTDD — 常にコードの前にテスト",
+        "tdd_soft": "実装後、コミット前にテスト",
+        "critical": "クリティカルなコードのみテスト",
+        "none": "テストなし（今のところ）"
+      }
+    },
+    "test_coverage": {
+      "label": "最小テストカバレッジ",
+      "hint": {
+        "fast": "quality-gates.mdにブロッキングメトリクスとして組み込まれます。",
+        "advanced": "80%は業界標準。60%はプロトタイプに許容範囲。"
+      },
+      "opts": {
+        "95": "95% — クリティカル標準（フィンテック、医療）",
+        "80": "80% — 業界標準",
+        "60": "60% — 許容範囲（プロト/スタートアップ）",
+        "0": "最小値なし"
+      }
+    },
+    "hooks_wanted": {
+      "label": "自動チェック（フック）",
+      "hint": {
+        "fast": "PostToolUseフック — 各編集後に自動実行されます。",
+        "advanced": "すべてを有効にしないこと：真に価値をもたらすものだけを選択。"
+      },
+      "opts": {
+        "lint": "編集後にLint",
+        "typecheck": "編集後にType check",
+        "test": "コミット前にユニットテスト",
+        "format": "編集後に自動フォーマット",
+        "security": "コミット前にセキュリティスキャン"
+      }
+    },
+    "agents_wanted": {
+      "label": "有効にする専門エージェント",
+      "hint": {
+        "fast": "スタックに応じてエージェントが自動選択されます。",
+        "advanced": "推奨エージェントは回答に基づいて事前選択されています。自由に調整してください。",
+        "deep": "完全なカタログ — カテゴリによる検索とフィルタリングが利用可能。"
+      }
+    },
+    "skills_wanted": {
+      "label": "プロジェクトにインストールするスキル",
+      "hint": {
+        "fast": "スキルはアシスタントの機能を拡張します — 1600以上のコミュニティスキルを検索可能。",
+        "advanced": "スキルは.claude/skills/に配置される再利用可能な指示セットです。名前、カテゴリ、作者で検索できます。",
+        "deep": "anthropics、antigravity、alirezarezvani、composioなどの完全なスキルカタログ。"
+      }
+    },
+    "commands_wanted": {
+      "label": "プロジェクトに追加するスラッシュコマンド",
+      "hint": {
+        "fast": "コマンドはClaude Code用の再利用可能な/スラッシュコマンドです — ワークフローに合うものを選んでください。",
+        "advanced": "コミュニティから128+のスラッシュコマンド — Git、テスト、デバッグ、ドキュメントなど。.claude/commands/に配置されます。",
+        "deep": "コミュニティコマンドの完全なカタログ。カテゴリや作者でフィルタリングできます。"
+      }
+    },
+    "never_do": {
+      "label": "このプロジェクトでアシスタントが絶対にしてはいけないこと",
+      "ph": "例: テストを通過させるために書き直さない。TSでanyを使わない。src/legacy/…に触れない…",
+      "hint": {
+        "fast": "これまでに問題を引き起こしたことを考えてください。",
+        "advanced": "quality-gates.mdで明示的なハードストップに変換されます。"
+      }
+    },
+    "frozen_files": {
+      "label": "絶対に触れてはいけないファイル / モジュール",
+      "ph": "例: src/legacy/payments.ts（移行中）。infra/k8s/（別チーム）。src/auth/（Q3フリーズ）…",
+      "hint": {
+        "fast": "壊れやすい部分や他の人が管理している部分はありますか？",
+        "advanced": "CLAUDE.local.mdにセッションフリーズとして挿入されます。"
+      }
+    },
+    "decisions_made": {
+      "label": "すでに下した重要な技術的決定",
+      "ph": "例: PostgreSQL（MongoDBではない）。Auth0経由のAuth。フロントエンドSPA、SSRなし。REST API（GraphQLではない）…",
+      "hint": {
+        "fast": "戻りたくない大きな決定。",
+        "advanced": "各決定を構造化したADR-001を事前入力して生成します。"
+      }
+    },
+    "compliance": {
+      "label": "コンプライアンスまたはセキュリティ上の制約",
+      "hint": {
+        "fast": "ユーザーデータを扱う場合、GDPRが適用される可能性があります。",
+        "advanced": "security.mdで対応するルールを有効化します。"
+      },
+      "opts": {
+        "none": "特定の制約なし",
+        "gdpr": "GDPR / 個人データ",
+        "hipaa": "HIPAA / 医療",
+        "pci": "PCI DSS / 決済",
+        "internal_sec": "内部セキュリティポリシー"
+      }
+    },
+    "response_style": {
+      "label": "期待するレスポンススタイル",
+      "hint": {
+        "fast": "理解と前進に最も役立つもの。",
+        "advanced": "behavior.mdで動作コントラクトとしてコード化されます。"
+      },
+      "opts": {
+        "concise": "簡潔 — 要点のみ",
+        "explain": "選択を説明する",
+        "challenge": "実行前に疑問を呈する",
+        "one_sol": "一つの解決策のみ（代替案なし）",
+        "french": "常に日本語で",
+        "diff_first": "完全なファイルの前にDiff"
+      }
+    },
+    "model_routing": {
+      "label": "マルチモデルルーティング",
+      "hint": {
+        "fast": "Haiku = 繰り返しタスクに3倍安く。",
+        "advanced": "Writer(Sonnet)/Reviewer(Haiku)パターンでコスト60%削減。"
+      },
+      "opts": {
+        "haiku_workers": "Haiku — ワーカーエージェント / バルクレビュー",
+        "sonnet_main": "Sonnet — メイン開発",
+        "opus_arch": "Opus — アーキテクチャ上の決定"
+      }
+    },
+    "mcp_integrations": {
+      "label": "設定するMCPインテグレーション",
+      "hint": {
+        "fast": "MCPはアシスタントを外部ツール（DB、ブラウザ、API）で拡張します。",
+        "advanced": "各インテグレーションにはsettings.jsonで設定されたMCPサーバーが必要です。"
+      },
+      "opts": {
+        "browser": "ブラウザ（Playwright）",
+        "db_mcp": "データベース（MCP）"
+      }
+    }
+  },
+  "landing": {
+    "meta_description": "5分以内にAI開発環境を設定。647のエージェント、1,611のスキル、128のコマンドからあなたのスタックに最適なものを選択。",
+    "nav_how": "// 使い方",
+    "nav_get": "// 得られるもの",
+    "nav_agents": "// エージェント",
+    "nav_features": "// 機能",
+    "nav_cta": "[ ウィザードを起動 ]",
+    "nav_mob_cta": "[ ウィザードを起動 ]",
+    "hero_h1": "AIアシスタントを、<br><span>完璧に設定。</span>",
+    "hero_sub": "質問に答えるだけ。エージェント、ルール、ドキュメントを含む完全なAI設定を1つのZIPで取得できます。",
+    "hero_cta": "<span class=\"caret\">&gt;</span> ウィザードを起動",
+    "slide0_eyebrow": "// 深夜3時に構築している人へ",
+    "slide0_line1": "あなたにはアイデアがある、",
+    "slide0_line2": "すでに動いているべきアイデアが。",
+    "slide0_sub": "想像することと実際にリリースするものの差は、才能の問題ではない。不足しているインフラの問題だ。それを解決しよう。",
+    "slide1_eyebrow": "// 647エージェント · 1,611スキル · 128コマンド",
+    "slide1_line1": "AIがあなたのスタックを知っていたら、",
+    "slide1_line2": "一言も入力する前に？",
+    "slide1_sub": "あなたのプロジェクトのために厳選されたスペシャリストエージェント。あなたの標準、アーキテクチャ、思考スタイルを最初のセッション前から把握済み。",
+    "slide2_eyebrow": "// ゼロからコントリビューターへ &lt; 5分",
+    "slide2_line1": "5分後には、",
+    "slide2_line2": "AIが共同創業者になる。",
+    "slide2_sub": "設定ファイルを置くだけ。あなたのアシスタントが汎用ツールからドメインエキスパートへ — 全ルール、全エージェントスペックを読み込み、初日から貢献開始。",
+    "slide2_cta": "<span class=\"caret\">&gt;</span> ウィザードを起動",
+    "stat_agents": "エージェント",
+    "stat_skills": "スキル",
+    "stat_commands": "コマンド",
+    "stat_files": "生成ファイル数",
+    "stat_levels": "専門レベル数",
+    "stat_time": "設定時間",
+    "how_label": "<span>//</span> プロセス",
+    "how_title": "使い方",
+    "how_sub": "ゼロから完全に設定されたAI開発環境まで3ステップ。ボイラープレートも推測も不要。",
+    "step1_title": "プロジェクトについての質問に答える",
+    "step1_desc": "ファスト（6問）、アドバンスド（14問）、ディープ（24問）のいずれかを選択。ウィザードがスタック、チームサイズ、ドメイン、ワークフローを学習して正確なプロファイルを構築します。",
+    "step2_title": "647エージェント・1,611スキル・128コマンドを探索",
+    "step2_desc": "スコアリングエンジンがスタックへの適合度でエージェントをランク付け。1,611のスキルと128のスラッシュコマンドも探索できます。必要なものを選択して確定します。",
+    "step3_title": "完全なAI設定をZIPでダウンロード",
+    "step3_desc": "メイン設定ファイル、ルール、エージェント仕様書、アーキテクチャドキュメント、ADRを取得 — プロジェクトのルートに置くだけですぐに起動できます。",
+    "get_label": "<span>//</span> 出力内容",
+    "get_title": "得られるもの",
+    "get_sub": "アシスタントが最初のメッセージから読み込み、理解し、実行する完全な構造化AI設定。",
+    "fc1_title": "AI設定 — マスターブリーフ",
+    "fc1_desc": "プロジェクトコンテキスト、アーキテクチャ概要、チーム規約、コーディング標準 — AIが最初に読む1つのファイルに全て収録。",
+    "fc2_title": ".ai/agents/ — スペシャリストチーム",
+    "fc2_desc": "スタック向けに事前選択されたエージェント。それぞれにペルソナ、スコープ、機能、呼び出し例が含まれています。",
+    "fc3_title": ".ai/rules/ — 品質ゲート",
+    "fc3_desc": "セキュリティ、TDD、動作、スタック固有のルールが、AI生成のすべての変更にあなたの基準を適用します。",
+    "fc4_title": "docs/ — アーキテクチャ + 決定事項",
+    "fc4_desc": "アーキテクチャ概要、用語集、プロジェクト用ADR-001のスキャフォールド — AIが「何を」だけでなく「なぜ」を理解できます。",
+    "agents_title": "647エージェント · 1,611スキル · 128コマンド",
+    "agents_sub": "12以上のGitHubリポジトリから厳選。エージェント、再利用可能なスキル、スラッシュコマンド — 全ドメインをカバー。",
+    "feat_label": "<span>//</span> 機能",
+    "feat_title": "本格的な開発者向けに構築",
+    "feat_sub": "品質、セキュリティ、速度を重視する開発者のために最適化されたすべての設計上の決定。",
+    "bfc1_title": "インテリジェントな推薦",
+    "bfc1_desc": "スコアリングエンジンがスタック、チーム、ワークフローを分析して正確に必要なエージェントを提示。ノイズなし、適切なツールのみ。すべての推薦は関連性スコア80以上でランク付けされます。",
+    "bfc1_meta": "<div class=\"bfc-meta-dot\"></div> スコアリングエンジン稼働中",
+    "bfc2_title": "2,386の厳選リソース",
+    "bfc2_desc": "647エージェント、1,611スキル、128コマンド — 12以上のGitHubリポジトリから厳選。バックエンド、フロントエンド、セキュリティ、AI/ML、DevOps — 全専門分野をカバー。ソース: avivl、wshobson、hesreallyhim、他。",
+    "bfc2_meta": "<div class=\"bfc-meta-dot\"></div> 2,386リソースをインデックス済み",
+    "bfc3_title": "インスタントブートストラップ",
+    "bfc3_desc": "ZIPをプロジェクトのルートに置いて、プロンプトを貼るだけ。AIアシスタントがすべてのルールとエージェント仕様書を読み込み、即座に貢献を開始。ダウンロードから最初のコミットまで5分以内。",
+    "bfc3_meta": "<div class=\"bfc-meta-dot\"></div> 設定ゼロで動作",
+    "demo_label": "<span>//</span> デモ",
+    "demo_title": "実際の動作を見る",
+    "demo_sub": "実際のセッション — アドバンスドモード、TypeScript + Reactスタック。",
+    "demo_hint": "// 静的プレビュー — 実際の体験にはウィザードを起動してください",
+    "cta_label": "<span>$</span> 今すぐ始めよう",
+    "cta_h2": "設定はやめて、<br><span>構築を始めましょう。</span>",
+    "cta_sub": "AIアシスタントは適切な指示を待っています。必要なコンテキストを5分以内に提供してください。",
+    "cta_btn": "<span class=\"caret\">&gt;</span> ウィザードを起動",
+    "cta_note": "無料、アカウント不要",
+    "foot_wizard": "ウィザード",
+    "foot_how": "使い方",
+    "foot_agents": "エージェント",
+    "foot_feat": "機能",
+    "foot_copy": "// 開発者のために構築"
+  }
+}

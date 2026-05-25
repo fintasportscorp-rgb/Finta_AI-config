@@ -1,0 +1,515 @@
+{
+  "mappings": {
+    "domain": {
+      "apps":        "Software Apps & UI",
+      "data":        "Data Systems & Automation",
+      "ai":          "AI Products & Knowledge Systems",
+      "content":     "Content Creation & Communication",
+      "business":    "Business Strategy & Org Tools",
+      "security":    "Security, Quality & Reliability",
+      "mleng":       "ML Engineering & Infrastructure",
+      "blockchain":  "Decentralized & Blockchain",
+      "science":     "Scientific Computing & Modeling",
+      "immersive":   "Immersive & Spatial Experiences",
+      "integration": "Integration & Connectivity",
+      "embedded":    "Embedded & Edge Computing",
+      "media":       "Media & Streaming Systems",
+      "devtools":    "Developer Tools & Infrastructure",
+      "fintech":     "Financial & Regulated Transactions",
+      "other":       "Other"
+    },
+    "teamContext": {
+      "solo":       "Solo project",
+      "small_team": "Small team (2–5)",
+      "team":       "Team (5–20)",
+      "org":        "Multi-team organization",
+      "opensource": "Open source"
+    },
+    "autonomy": {
+      "conservative": "Conservative",
+      "standard":     "Standard",
+      "autonomous":   "Autonomous"
+    },
+    "commitStyle": {
+      "conventional": "Conventional Commits (feat/fix/chore…)",
+      "semantic":     "Semantic (verb + description)",
+      "gitmoji":      "Gitmoji",
+      "none":         "No convention"
+    },
+    "tddLevel": {
+      "tdd_strict": "Strict TDD (tests before code)",
+      "tdd_soft":   "Tests before commit",
+      "critical":   "Critical code only",
+      "none":       "Optional"
+    },
+    "aiMainFile": {
+      "claude_code":  "CLAUDE.md",
+      "cursor":       "cursor_rules.md",
+      "windsurf":     "windsurf_rules.md",
+      "codex":        "AGENTS.md",
+      "goose":        "GOOSE.md",
+      "gemini":       "GEMINI.md",
+      "aider":        "CONVENTIONS.md",
+      "continue_ai":  "CONTINUE.md",
+      "cline":        "CLINE.md",
+      "amazon_q":     "AMAZONQ.md",
+      "copilot":      "COPILOT.md",
+      "devin":        "DEVIN.md"
+    },
+    "aiLocalFile": {
+      "claude_code":  "CLAUDE.local.md",
+      "cursor":       "cursor_rules.local.md",
+      "windsurf":     "windsurf_rules.local.md",
+      "codex":        "AGENTS.local.md",
+      "goose":        "GOOSE.local.md",
+      "gemini":       "GEMINI.local.md",
+      "aider":        "CONVENTIONS.local.md",
+      "continue_ai":  "CONTINUE.local.md",
+      "cline":        "CLINE.local.md",
+      "amazon_q":     "AMAZONQ.local.md",
+      "copilot":      "COPILOT.local.md",
+      "devin":        "DEVIN.local.md"
+    },
+    "aiToolFolder": {
+      "claude_code": ".claude",
+      "cursor":      ".cursor",
+      "windsurf":    ".windsurf",
+      "codex":       ".codex",
+      "goose":       ".goose",
+      "gemini":      ".gemini",
+      "aider":       ".aider",
+      "continue_ai": ".continue",
+      "cline":       ".cline",
+      "amazon_q":    ".amazonq",
+      "copilot":     ".github",
+      "devin":       ".devin"
+    },
+    "aiTools": {
+      "claude_code": "Claude Code",
+      "copilot":     "GitHub Copilot",
+      "cursor":      "Cursor",
+      "windsurf":    "Windsurf",
+      "codex":       "Codex CLI",
+      "goose":       "Goose",
+      "gemini":      "Gemini Code Assist",
+      "aider":       "Aider",
+      "continue_ai": "Continue",
+      "cline":       "Cline",
+      "amazon_q":    "Amazon Q",
+      "devin":       "Devin"
+    },
+    "stackLabels": {
+      "react":      "React / Next.js",
+      "vue":        "Vue / Nuxt",
+      "node":       "Node.js",
+      "python":     "Python",
+      "typescript": "TypeScript",
+      "go":         "Go",
+      "rust":       "Rust",
+      "mobile":     "Swift / Kotlin",
+      "devops":     "Docker / K8s / CI"
+    }
+  },
+
+  "frustrationRules": {
+    "context_loss": "- **Lost context** → Re-read CLAUDE.md + CLAUDE.local.md at session start. Summarize state in 3 lines before acting.",
+    "verbose":      "- **Verbosity** → Short responses. No summaries. Code first, text only if asked.",
+    "inconsistent": "- **Consistency** → Same conventions across all sessions. Follow existing rules, do not invent new ones.",
+    "overrides":    "- **No unrequested rewrites** → Only modify what is explicitly requested. Report before any adjacent change.",
+    "no_pushback":  "- **Push back** → Explicitly flag problematic approaches before executing.",
+    "security":     "- **Non-negotiable security** → Rules in security.md cannot be bypassed, even on request.",
+    "no_tests":     "- **Tests required** → Never implement without writing or updating the corresponding tests."
+  },
+
+  "responseStyleRules": {
+    "concise":    "- Concise responses — no intro, no recap.",
+    "explain":    "- Explain important choices (one line is enough).",
+    "challenge":  "- Challenge ambiguous or risky requests before executing.",
+    "one_sol":    "- One solution only, the best one. No alternatives unless asked.",
+    "french":     "- Always reply in French, even if the question is in English.",
+    "diff_first": "- Show diffs before full files for significant changes."
+  },
+
+  "complianceRules": {
+    "gdpr":         "\n### GDPR\n- Never log PII without pseudonymization\n- Include retention clauses in data models\n- Report any new collection of personal data",
+    "soc2":         "\n### SOC 2\n- All access changes must be logged\n- Principle of least privilege\n- Encryption at rest and in transit required",
+    "hipaa":        "\n### HIPAA\n- PHI only in certified modules\n- Audit trail required for all health data access",
+    "pci":          "\n### PCI DSS\n- Never store card data in plain text in logs or code\n- Tokenization required",
+    "internal_sec": "\n### Internal Security Policy\n- Follow the organization's security policy\n- Escalate any deviation to the security lead"
+  },
+
+  "dbPatterns": {
+    "postgres":  "- PostgreSQL: parameterized queries required, never concatenate SQL\n- Recommended ORM: Prisma (TS), SQLAlchemy 2.0 (Python), pgx (Go)",
+    "mongodb":   "- MongoDB: validate with Schema (Mongoose/MongoEngine)\n- Never query without an index on large collections",
+    "redis":     "- Redis: TTL required on all cache keys\n- No sensitive data without encryption",
+    "vector_db": "- Vector DB: chunking 512 tokens with overlap 50\n- Hybrid search (semantic + BM25)\n- Version embeddings together with the model used"
+  },
+
+  "packageCommands": {
+    "npm":    { "dev": "npm run dev",                             "test": "npm run test",          "lint": "npm run lint",                             "build": "npm run build" },
+    "pnpm":   { "dev": "pnpm dev",                               "test": "pnpm test",             "lint": "pnpm lint",                                "build": "pnpm build" },
+    "yarn":   { "dev": "yarn dev",                               "test": "yarn test",             "lint": "yarn lint",                                "build": "yarn build" },
+    "uv":     { "dev": "uv run uvicorn main:app --reload",       "test": "uv run pytest -v",      "lint": "uv run ruff check . && uv run mypy .",      "build": "uv run python -m build" },
+    "poetry": { "dev": "poetry run uvicorn main:app --reload",   "test": "poetry run pytest -v",  "lint": "poetry run ruff check . && poetry run mypy .", "build": "poetry build" },
+    "go_mod": { "dev": "air",                                    "test": "go test ./... -v",      "lint": "golangci-lint run",                        "build": "go build ./..." },
+    "cargo":  { "dev": "cargo run",                              "test": "cargo test",            "lint": "cargo clippy",                             "build": "cargo build --release" }
+  },
+
+  "stackRules": {
+    "python": "---\ndescription: Python conventions and best practices\npaths: [\"**/*.py\", \"pyproject.toml\", \"requirements*.txt\", \"uv.lock\"]\n---\n\n## Python (2026)\n- Type hints on ALL signatures (`mypy --strict`)\n- Pydantic v2 for validation, serialization, settings\n- `async def` for ALL I/O (FastAPI, httpx, aiohttp)\n- `def` (sync) only for CPU-bound tasks\n- `ruff` for linting + formatting (replaces black/flake8/isort)\n- `uv` for package management (replaces pip/venv/poetry)\n- `pytest` + `pytest-asyncio` for async tests\n- `pathlib` over `os.path`\n- Dataclasses or Pydantic models over raw dicts\n\n## Scraping / Async HTTP\n- `httpx` + `playwright` for async scraping\n- Rate limiting with `tenacity` for retries\n- Realistic user-agent required\n- Respect robots.txt unless explicitly told otherwise\n\n## Complete via bootstrap-init.md\n- Specific packages from pyproject.toml\n- Async patterns detected in the codebase",
+
+    "typescript": "---\ndescription: TypeScript conventions (strict mode)\npaths: [\"**/*.ts\", \"**/*.tsx\", \"tsconfig*.json\"]\n---\n\n## TypeScript (strict mode)\n- `strict: true` required in tsconfig.json\n- Interfaces for public object shapes\n- Never `any` — use `unknown` with type narrowing\n- Discriminated unions over type assertions\n- `const` > `let`, never `var`\n- Zod for runtime validation at boundaries\n- Named exports only (never default exports)\n\n## Complete via bootstrap-init.md\n- Version detected in package.json\n- Validation libraries in use",
+
+    "react": "---\ndescription: React / Next.js 15 conventions\npaths: [\"**/*.tsx\", \"**/*.jsx\", \"next.config.*\", \"tailwind.config.*\"]\n---\n\n## React / Next.js 15 (2026)\n- Server Components by default, \"use client\" only when necessary\n- App Router REQUIRED (never pages router for new projects)\n- TanStack Query for server state\n- Named exports only (never default exports)\n- kebab-case for component file names\n- Co-locate tests with the component (`Component.test.tsx`)\n- Tailwind classes only (never inline styles)\n- Zod for runtime validation\n\n## Complete via bootstrap-init.md\n- Detected Next.js version\n- Design system in use (shadcn, MUI, etc.)",
+
+    "vue": "---\ndescription: Vue 3 / Nuxt conventions\npaths: [\"**/*.vue\", \"nuxt.config.*\"]\n---\n\n## Vue 3 / Nuxt (2026)\n- Composition API only (`<script setup>`)\n- Strict types with TypeScript\n- Pinia for state management\n- Nuxt auto-imports (no manual imports for Nuxt composables)\n\n## Complete via bootstrap-init.md\n- Detected Nuxt version\n- Active Nuxt modules",
+
+    "go": "---\ndescription: Go conventions\npaths: [\"**/*.go\", \"go.mod\", \"go.sum\"]\n---\n\n## Go (2026)\n- Explicit error handling — never ignore with `_`\n- Small interfaces (1–3 methods), consumer-side\n- `context.Context` as first param for all I/O\n- Table-driven tests with `t.Run()`\n- Errors wrapped with `fmt.Errorf(\"context: %w\", err)`\n- `golangci-lint` required\n- Never `init()` unless absolutely unavoidable\n- Prefer stdlib over external dependencies\n\n## Complete via bootstrap-init.md\n- Detected Go version\n- Critical packages in go.mod",
+
+    "rust": "---\ndescription: Rust conventions\npaths: [\"**/*.rs\", \"Cargo.toml\", \"Cargo.lock\"]\n---\n\n## Rust\n- `Result` and `Option` — never `unwrap()` in production\n- Traits for abstraction, not inheritance\n- `clippy` + `rustfmt` required\n- `tokio` for async runtime\n- Document all `unsafe` blocks with explicit justification\n\n## Complete via bootstrap-init.md\n- Rust edition in Cargo.toml\n- Critical crates",
+
+    "devops": "---\ndescription: DevOps / Infrastructure conventions\npaths: [\"**/*.yaml\", \"**/*.yml\", \"Dockerfile*\", \"terraform/**\", \"k8s/**\", \"helm/**\"]\n---\n\n## DevOps / K8s (2026)\n- NetworkPolicy default-deny + explicit allow\n- CPU/memory resource limits on all pods\n- Liveness + readiness probes required\n- PodDisruptionBudget for critical services\n- Secrets never in YAML manifests (use Secrets Manager)\n- Multi-stage images (reduce attack surface)\n\n## Hard Boundaries\n- FORBIDDEN: `terraform apply` / `kubectl delete` in prod without explicit confirmation\n- FORBIDDEN: modify cluster-admin RBAC\n- FORBIDDEN: touch kube-system, kube-public\n\n## Complete via bootstrap-init.md\n- Detected cloud provider (AWS/GCP/Azure)\n- Configured namespaces and clusters",
+
+    "content_seo": "---\ndescription: Content / SEO / RAG conventions\npaths: [\"**/*.md\", \"**/*.mdx\", \"**/content/**\", \"**/articles/**\", \"**/blog/**\"]\n---\n\n## Content Engineering (2026)\n\n### Semantic cluster\n- Pillar page: exhaustive coverage of a topic (3000+ words)\n- Cluster pages: specific angle linked to the pillar\n- Internal linking: ALWAYS point back to the pillar page\n- Check for cannibalization before creating new content\n\n### E-E-A-T Standards\n- Cite sources (studies, statistics with date)\n- Include a unique expertise angle\n- Update articles older than 18 months with recent data\n\n### Technical SEO\n- JSON-LD schema required (Article, FAQ, BreadcrumbList)\n- Title < 60 chars, meta description 120–155 chars\n- URL slug in kebab-case, no stop words\n- Descriptive and keyword-rich image alt text\n\n### GEO / AEO (AI Optimization 2026)\n- Structure responses for AI citations\n- H2/H3 phrased as questions\n- Clear definitions of domain terms\n\n### RAG Pipeline\n- Chunking: 512 tokens with overlap 50\n- Hybrid search (semantic + BM25 keyword)\n- Always cite sources in generated responses\n- Version embeddings together with the model used\n\n## Complete via bootstrap-init.md\n- CMS in use (Contentful, WordPress, Sanity)\n- Main pillar topics\n- Target SEO KPIs"
+  },
+
+  "domainComponents": {
+    "apps":        ["UI component library / design system", "Application shell & routing", "State management layer", "Backend API / BFF", "Auth & session management"],
+    "data":        ["Ingestion & connector layer", "Transformation & ETL pipeline", "Orchestration (DAG scheduler)", "Data warehouse / lake storage", "Data quality & observability"],
+    "ai":          ["LLM integration & prompt layer", "Vector store & retrieval (RAG)", "Agent orchestration runtime", "Evaluation harness", "Prompt versioning & caching"],
+    "content":     ["Content ingestion & normalization", "Semantic search / RAG engine", "CMS / headless CMS", "Publishing & scheduling pipeline", "SEO analytics & monitoring"],
+    "business":    ["Domain model & data schema", "Workflow & approval engine", "Reporting & BI layer", "User management & permissions", "Audit trail"],
+    "security":    ["Threat model & risk registry", "SAST/DAST scanning pipeline", "Access control & authz layer", "Observability, alerting & SLOs", "Incident response runbooks"],
+    "mleng":       ["Feature store & data pipeline", "Training infrastructure (GPU)", "Model registry & versioning", "Serving & inference layer", "Experiment tracking dashboard"],
+    "blockchain":  ["Smart contract suite", "On-chain data indexer (subgraph)", "Wallet integration layer", "Off-chain backend & oracle", "Security audit harness"],
+    "science":     ["Numerical solver / simulation core", "Data ingestion & preprocessing", "HPC job scheduler", "Results analysis & visualization", "Reproducibility layer (Snakemake/Nextflow/DVC)"],
+    "immersive":   ["Scene graph / world engine", "Asset pipeline & streaming", "Physics & collision system", "Networking / multiplayer layer", "XR input & interaction manager"],
+    "integration": ["API gateway & schema registry", "Event broker (Kafka/RabbitMQ)", "Adapter & connector library", "Workflow orchestrator", "Contract testing suite"],
+    "embedded":    ["Firmware / HAL layer", "RTOS task scheduler", "Sensor driver suite", "Edge inference engine", "OTA update mechanism"],
+    "media":       ["Ingest & transcoding pipeline", "Storage & CDN layer", "Streaming server (HLS/DASH)", "Media processing workers", "Player & delivery SDK"],
+    "devtools":    ["CLI entry point & arg parser", "Core library / SDK", "Build system configuration", "Plugin / extension API", "Integration & end-to-end test harness"],
+    "fintech":     ["Payment processing engine", "Double-entry ledger", "KYC / AML compliance module", "Fraud detection layer", "Audit trail & regulatory reporting"],
+    "other":       ["Frontend", "Backend", "Database", "Infrastructure"]
+  },
+
+  "domainArchStyle": {
+    "apps":        "Component-driven · state separation · typed API abstraction layer",
+    "data":        "Medallion (Bronze/Silver/Gold) · idempotent transforms · schema-first contracts",
+    "ai":          "LLM service layer · prompt versioning · eval-gated releases · cost budgeting",
+    "content":     "Pillar + cluster · semantic chunking · publish pipeline · SEO-first",
+    "business":    "Domain model first · workflow engine · role-based access · immutable audit trail",
+    "security":    "Defense-in-depth · security-as-code · SLO-driven reliability · threat model",
+    "mleng":       "Feature store · model registry · serving stateless · experiment tracking",
+    "blockchain":  "Checks-Effects-Interactions · minimal on-chain logic · events for indexers",
+    "science":     "Reproducibility first · workflow DAG (Snakemake/Nextflow) · raw data immutable",
+    "immersive":   "Frame budget first (90Hz) · scene hierarchy + LOD · device-agnostic input layer",
+    "integration": "Idempotency keys · event-driven · contract testing · circuit breakers",
+    "embedded":    "HAL abstraction · RTOS task isolation · signed OTA · watchdog always on",
+    "media":       "Ingest → transcode → package → CDN · adaptive bitrate · GPU + CPU fallback",
+    "devtools":    "Plugin architecture · semver strict · cross-platform CI matrix",
+    "fintech":     "Double-entry ledger · PCI-isolated scope · immutable audit · idempotency keys"
+  },
+
+  "domainTerms": {
+    "apps":        [["Component", "Self-contained, reusable UI unit with its own state and props"], ["BFF", "Backend for Frontend — API layer tailored to one specific client's needs"], ["SPA", "Single Page App — loads once, updates dynamically without full page reloads"], ["SSR", "Server-Side Rendering — HTML generated on the server per request for SEO and TTFB"], ["Design System", "Shared library of UI components, tokens, and patterns across products"]],
+    "data":        [["Pipeline", "Ordered sequence of data processing steps"], ["DAG", "Directed Acyclic Graph — dependency graph of tasks with no cycles"], ["Feature", "Input variable computed from raw data and used by an ML model"], ["Lineage", "Traceable chain showing where data came from and how it was transformed"], ["Data Contract", "Schema agreement between producer and consumer of a dataset"]],
+    "ai":          [["RAG", "Retrieval-Augmented Generation — LLM generation grounded by retrieved knowledge"], ["Embedding", "Dense vector representation of text used for semantic search"], ["Chunk", "Text fragment for RAG — typically 512 tokens with 50-token overlap"], ["Agent", "LLM that uses tools and iterates in a loop to complete a goal"], ["Eval", "Benchmark test measuring LLM or pipeline quality on a fixed dataset"]],
+    "content":     [["Pillar page", "Exhaustive article covering a main topic (3000+ words) — the SEO hub"], ["Cluster page", "Article targeting a specific angle of a pillar topic, linking back to it"], ["E-E-A-T", "Google quality signal: Experience, Expertise, Authoritativeness, Trustworthiness"], ["Embedding", "Vector representation used for semantic content retrieval"], ["Chunk", "Text fragment for RAG — 512 tokens recommended"]],
+    "business":    [["Workflow", "Ordered set of steps and approvals to complete a business process"], ["Role", "Set of permissions granted to a user in the system"], ["Audit log", "Immutable, append-only log of all actions for compliance"], ["OKR", "Objective + Key Results — structured goal-setting framework"], ["SLA", "Service Level Agreement — contractual commitment on availability or throughput"]],
+    "security":    [["Threat model", "Document identifying assets, threats, and mitigations for a system"], ["SAST", "Static Application Security Testing — source code analysis without execution"], ["DAST", "Dynamic Application Security Testing — testing a live running application"], ["SLO", "Service Level Objective — target reliability metric (e.g., 99.9% uptime)"], ["Error budget", "Allowed failure allowance before reliability improvements become mandatory"]],
+    "mleng":       [["Feature store", "Centralized repository of computed features shared across models"], ["Training-serving skew", "Divergence between data at training time vs. inference time"], ["Experiment", "Tracked ML run with fixed hyperparameters, data version, and metrics"], ["Model registry", "Versioned catalog of trained models with metadata and deployment status"], ["Quantization", "Reducing model precision (FP32→INT8) to shrink size and speed up inference"]],
+    "blockchain":  [["Smart contract", "Self-executing code deployed on-chain — immutable once deployed"], ["Gas", "Unit measuring computational cost of an Ethereum transaction"], ["ABI", "Application Binary Interface — schema for calling a smart contract"], ["DeFi", "Decentralized Finance — financial protocols running on-chain without intermediaries"], ["ZK Proof", "Zero-Knowledge Proof — proves a statement is true without revealing the input"]],
+    "science":     [["FEM", "Finite Element Method — numerical technique for solving PDEs on a mesh"], ["HPC", "High-Performance Computing — large-scale parallel computation on clusters"], ["Reproducibility", "Ability to re-run a computation and get the exact same result"], ["Snakemake / Nextflow", "Workflow managers for reproducible scientific data pipelines"], ["Lineage", "Full traceability of how a dataset or computed result was produced"]],
+    "immersive":   [["XR", "Extended Reality — umbrella term covering VR, AR, and MR"], ["Scene graph", "Hierarchical data structure representing all objects in a 3D world"], ["Spatial audio", "Audio system positioning sounds in 3D space relative to the listener"], ["Digital twin", "Virtual replica of a physical object updated with real-time sensor data"], ["WebXR", "Browser API enabling VR/AR experiences without a native app install"]],
+    "integration": [["API gateway", "Entry point routing, rate-limiting, and authenticating all API requests"], ["Event sourcing", "Storing state as an immutable sequence of events rather than current values"], ["CQRS", "Command Query Responsibility Segregation — separate read and write models"], ["Dead letter queue", "Queue holding messages that failed processing after N retries"], ["Contract test", "Test verifying consumer and provider agree on an API contract (Pact)"]],
+    "embedded":    [["RTOS", "Real-Time OS — guarantees task execution within strict deterministic time bounds"], ["HAL", "Hardware Abstraction Layer — portable interface over device-specific hardware"], ["Interrupt", "Signal pausing the CPU to handle a high-priority hardware event immediately"], ["OTA", "Over-The-Air update — delivering signed firmware updates wirelessly"], ["Watchdog", "Hardware/software timer that resets the system if it stops responding"]],
+    "media":       [["Transcoding", "Converting media from one codec/format to another (e.g., H.264 → AV1)"], ["HLS", "HTTP Live Streaming — adaptive bitrate streaming protocol by Apple"], ["CDN", "Content Delivery Network — geographically distributed servers for low-latency delivery"], ["Codec", "Algorithm for encoding/decoding audio or video (H.264, VP9, AV1, AAC)"], ["Bitrate ladder", "Set of quality levels (resolution + bitrate) for adaptive streaming"]],
+    "devtools":    [["LSP", "Language Server Protocol — standard for IDE features like autocomplete and go-to-def"], ["AST", "Abstract Syntax Tree — parsed representation of source code for transformations"], ["Codemod", "Automated script transforming source code according to a defined pattern"], ["Semver", "Semantic Versioning — MAJOR.MINOR.PATCH convention for release compatibility"], ["Tree-sitter", "Incremental parsing library for syntax highlighting and code analysis"]],
+    "fintech":     [["Ledger", "Immutable accounting journal recording all financial transactions"], ["Double-entry", "Accounting method where every debit has a matching credit"], ["KYC", "Know Your Customer — identity verification required by financial regulation"], ["AML", "Anti-Money Laundering — detecting and reporting suspicious financial activity"], ["PCI-DSS", "Payment Card Industry Data Security Standard — mandatory for card data handling"]],
+    "other":       []
+  },
+
+  "contextBudget": {
+    "base": "<!-- Always loaded — context economy and session hygiene -->\n\n## Context Budget & Dreaming\n\n### Rule 1 — One Chat Per Task\n- ✅ One Claude session = one atomic, bounded task\n- ✅ Before a long session: re-read `CLAUDE.local.md` for current state\n- ❌ Do not chain multiple features without summarizing in between\n- If > 15 exchanges in a session: summarize before continuing\n\n### Rule 5 — CLAUDE.md Half-Life Reset\n- Re-read `CLAUDE.md` every 10 active sessions\n- Archive obsolete sections in `docs/decisions/`\n- Goal: keep `CLAUDE.md` < 200 lines at all times\n- Signal: if `CLAUDE.md` exceeds 250 lines → trigger a reset\n\n### Rule 6 — Smart Ignoring\n- Read `.claude/.claudeignore` before exploring the project\n- Report hidden dependencies BEFORE touching a file\n- Never recursively read `node_modules/`, `dist/`, `.venv/` without explicit reason\n\n### Dreaming Protocol — End of session\nBefore closing a long session (> 30 min or > 15 exchanges):\n1. Summarize decisions made in 3 lines → `CLAUDE.local.md`\n2. Propose an ADR if an architectural decision was made\n3. Check if `CLAUDE.md` needs updating\n4. List pending tasks for the next session",
+
+    "expert_addon": "\n\n### Rule 2 — Dynamic Dependency Graph\n- Read only files directly needed for the task\n- Mentally build the dependency graph before acting\n- Report context cost before exploring an entire module\n- Prefer targeted analysis over global exploration\n\n### Rule 7 — Memory Files Time-Decay\n- `CLAUDE.local.md` files older than 7 days may be stale\n- Verify freshness before applying session context\n- Archive session contexts older than 30 days in `docs/sessions/`\n\n### Rule 8 — Sub-agents Context Isolation\n- Independent tasks → separate sub-agents (isolated context)\n- Do not analyze an entire module in the main session\n- Analysis results → output file, not inline in context\n- Parallelize analyses that do not depend on each other\n\n### Rule 9 — Metadata-First Indexing\n- Start by reading `index.*`, `README.*`, `CLAUDE.md`, `.claude/rules/index.md`\n- Build the project map before exploring source files\n- Prefer reading the plan over discovering as you go\n\n### Rule 3 — Prompt Caching (Managed Agents)\n- Stable content (CLAUDE.md, rules) → at the top of the prompt to benefit from cache\n- Dynamic instructions → at the bottom of the prompt\n- Target ratio: 70% stable / 30% dynamic"
+  },
+
+  "pruningRules": "---\ndescription: Refactoring and dead code removal — invoke explicitly with @.claude/rules/pruning.md\n---\n\n## Pruning / Refactoring Rules\n\n### Before any deletion\n1. Exhaustive `grep` to check direct AND dynamic usages\n2. Check re-exports and barrel files (`index.ts`, `__init__.py`)\n3. Check dynamic imports (`require()`, `importlib`, `reflect`)\n4. Confirm with the user if there is any doubt\n\n### Absolute constraints\n- ❌ Never mix refactor and new feature in the same commit\n- ❌ Never delete a file without exhaustive grep first\n- ✅ Tests must pass BEFORE and AFTER each step\n- ✅ Atomic commits: one refactor = one commit with message `refactor:`\n- ✅ Immediate revert if tests break after deletion\n\n### Protocol\n1. Identify candidate code for removal\n2. Check all references (direct + dynamic usage)\n3. Remove in small, verifiable increments\n4. Run tests after each deletion\n5. Atomic commit with description of the change\n\n### Before/after metrics\n- Number of lines removed\n- Number of files reduced\n- Coverage maintained or improved",
+
+  "agentTemplates": {
+    "code_reviewer": "---\nname: code-reviewer\ndescription: Expert code review. Reviews code for quality, security, and maintainability after writing.\ntools: [Read, Grep, Glob, Bash]\nmodel: {{model}}\n---\n\nYou are a code review specialist for **{{project_name}}**.\n\nWhen reviewing:\n1. Check against `.claude/rules/quality-gates.md` metrics\n2. Verify security rules from `.claude/rules/security.md`\n3. Check language-specific rules in `.claude/rules/`\n4. Verify test coverage if tests exist\n\nRate issues: CRITICAL (block) / HIGH (should fix) / MEDIUM (nice) / LOW (style).\nBe specific: quote the code, explain the problem, show the fix.",
+
+    "security": "---\nname: security-reviewer\ndescription: Security vulnerability detection before commits. Flags secrets, injection, unsafe crypto.\ntools: [Read, Grep, Glob, Bash]\nmodel: {{model}}\n---\n\nYou are a security specialist for **{{project_name}}**.\n\nCheck for:\n- Secrets / API keys in code or diffs\n- SQL injection (string concatenation in queries)\n- XSS (unsanitized user input in HTML)\n- SSRF (user-controlled URLs in server requests)\n- Insecure crypto (MD5, SHA1, weak keys)\n- Missing authentication / authorization checks\n- Sensitive data in logs or error messages",
+
+    "tdd_guide": "---\nname: tdd-guide\ndescription: Enforces TDD workflow. Use for new features and bug fixes.\ntools: [Read, Write, Edit, Bash, Grep]\nmodel: {{model}}\n---\n\nYou enforce TDD for **{{project_name}}**.\n\nWorkflow:\n1. RED : Write the test. Run it. It MUST fail. If it passes, the test is wrong.\n2. GREEN : Write minimum code to pass. Run again. Must pass.\n3. VALIDATE : `{{lint_cmd}}` + full suite + coverage ≥ {{coverage}}%.\n\nNEVER skip step 1. NEVER modify tests to make them pass.",
+
+    "refactor": "---\nname: refactor-cleaner\ndescription: Safe dead code cleanup. Identifies and removes unused code carefully.\ntools: [Read, Write, Edit, Bash, Grep, Glob]\nmodel: {{model}}\n---\n\nYou are a refactoring specialist for **{{project_name}}**.\n\n1. Identify dead code (no references, unused imports)\n2. Before removing: confirm no dynamic usage\n3. Remove in small, verifiable increments\n4. Tests must pass before AND after each step\n5. Never mix refactoring with new features in the same commit",
+
+    "build_resolver": "---\nname: build-error-resolver\ndescription: Build and type error resolution with minimal diffs.\ntools: [Read, Write, Edit, Bash, Grep, Glob]\nmodel: {{model}}\n---\n\nYou fix build errors for **{{project_name}}** with minimal changes.\n\n1. Read the full error message\n2. Find the root cause (don't patch symptoms)\n3. Make the smallest possible fix\n4. Verify the build passes after\n5. If architectural change needed, flag it — don't do it unilaterally"
+  },
+
+  "subdomains": {
+    "apps": [
+      {"v":"web_app",       "l":"Web-Based Interactive Applications", "i":"🌐","h":"SPA, SSR, PWA, React/Vue/Angular, Next.js"},
+      {"v":"server_api",    "l":"Server-Side Systems & APIs",         "i":"⚙️","h":"REST, GraphQL, microservices, BFF pattern"},
+      {"v":"mobile",        "l":"Mobile Applications",                "i":"📱","h":"iOS, Android, Flutter, React Native, Expo"},
+      {"v":"desktop",       "l":"Desktop Applications",               "i":"🖥️","h":"Electron, Tauri, native desktop apps"},
+      {"v":"pwa",           "l":"Progressive Web Apps & Offline Tools","i":"📲","h":"Service workers, IndexedDB, installable web"},
+      {"v":"extension",     "l":"Browser Extensions & Add-ons",       "i":"🧩","h":"Chrome/Firefox extensions, webext manifest v3"},
+      {"v":"publishing",    "l":"Websites & Digital Publishing",       "i":"📰","h":"CMS, blogs, landing pages, JAMstack, static sites"},
+      {"v":"games",         "l":"Interactive Games & Simulations",     "i":"🎮","h":"Unity, Godot, Phaser, WebGL, game mechanics"},
+      {"v":"design_system", "l":"Design Systems & Component Libraries","i":"🎨","h":"Storybook, Chromatic, visual regression, shared UI"},
+      {"v":"admin_panel",   "l":"Admin Panels & Back-Office Dashboards","i":"📊","h":"RBAC, audit trails, data tables, complex forms"}
+    ],
+    "data": [
+      {"v":"scraping",      "l":"Web Data Collection & Extraction",   "i":"🕷️","h":"Scrapy, Playwright scraping, API harvesting"},
+      {"v":"etl",           "l":"Data Transformation & ETL Pipelines","i":"🔄","h":"dbt, Spark, batch ingestion, data modeling"},
+      {"v":"quality",       "l":"Data Quality & Observability",       "i":"✅","h":"Great Expectations, dbt tests, Soda, data contracts"},
+      {"v":"bigdata",       "l":"Batch Processing & Big Data Workflows","i":"⚡","h":"Spark, Flink, Beam, distributed compute"},
+      {"v":"database",      "l":"Database Design & Management",       "i":"🗄️","h":"Schema design, migrations, query optimization, indexing"},
+      {"v":"cloud_infra",   "l":"Cloud Infrastructure & Deployment",  "i":"☁️","h":"AWS, GCP, Azure, Terraform, Kubernetes, Helm"},
+      {"v":"orchestration", "l":"Workflow Scheduling & Orchestration","i":"🗓️","h":"Airflow, Prefect, Dagster, Temporal, DAG validation"},
+      {"v":"automation",    "l":"System & Infrastructure Automation", "i":"🤖","h":"Ansible, shell scripts, IaC, CI/CD automation"}
+    ],
+    "ai": [
+      {"v":"rag",           "l":"Knowledge Retrieval & RAG Systems",        "i":"🔍","h":"Embeddings, vector DBs, hybrid search, chunking"},
+      {"v":"agents",        "l":"Autonomous Agents & Workflows",             "i":"🤖","h":"LangChain, LangGraph, CrewAI, tool use, MCP"},
+      {"v":"multimodal",    "l":"Multimodal AI Applications",               "i":"🖼️","h":"Vision, audio, image-text models, GPT-4V, Gemini"},
+      {"v":"prompt_eng",    "l":"Prompt Engineering Libraries & Frameworks", "i":"✏️","h":"DSPy, guidance, instructor, LangChain, structured output"},
+      {"v":"ai_eval",       "l":"AI Evaluation & Benchmarking Harnesses",   "i":"📏","h":"LLM evals, prompt regression, A/B testing, non-deterministic"},
+      {"v":"gen_content",   "l":"Multi-Format Content Generation",          "i":"📄","h":"Text, code, image, audio, structured output pipelines"}
+    ],
+    "content": [
+      {"v":"marketing",     "l":"Marketing & Informational Content",   "i":"📢","h":"Blogs, landing pages, SEO, copywriting, brand voice"},
+      {"v":"narrative",     "l":"Storytelling & Narrative Design",     "i":"📖","h":"Scripts, interactive fiction, story engines, branching"},
+      {"v":"docs",          "l":"Technical & Instructional Documentation","i":"📝","h":"API docs, tutorials, Docusaurus, MkDocs, changelogs"},
+      {"v":"localization",  "l":"Translation & Localization Systems",  "i":"🌍","h":"i18n, l10n, machine translation, locale management"}
+    ],
+    "business": [
+      {"v":"planning",      "l":"Data Modeling & Structured Planning", "i":"📐","h":"ERDs, schemas, roadmaps, OKRs, capacity planning"},
+      {"v":"reports",       "l":"Analysis Reports & Strategic Documents","i":"📊","h":"Executive reports, BI outputs, market analysis"},
+      {"v":"product",       "l":"Product Planning & Requirements",     "i":"🗺️","h":"PRDs, user stories, specs, acceptance criteria, JIRA"},
+      {"v":"legal",         "l":"Legal, Policy & Compliance Materials","i":"⚖️","h":"ToS, privacy policy, GDPR docs, regulatory filings"},
+      {"v":"education",     "l":"Education & Training Materials",      "i":"🎓","h":"Courses, e-learning, curricula, assessments, LMS"},
+      {"v":"collab",        "l":"Collaborative Workflow & Team Coordination","i":"🤝","h":"Project management tools, approval flows, HITL systems"},
+      {"v":"crm_cdp",       "l":"CRM & Customer Data Platforms",       "i":"👥","h":"Contact management, PII handling, GDPR, consent flows"}
+    ],
+    "security": [
+      {"v":"pentest",       "l":"Security Assessment & Penetration Testing","i":"🔍","h":"OWASP, Burp Suite, vulnerability scanning, red team"},
+      {"v":"secure_code",   "l":"Application Security & Secure Coding",    "i":"🛡️","h":"SAST, DAST, threat modeling, secure code review"},
+      {"v":"qa_testing",    "l":"Testing Frameworks & QA Automation",       "i":"🧪","h":"pytest, Jest, Cypress, Playwright, coverage, mutation"},
+      {"v":"perf_load",     "l":"Performance Engineering & Load Testing",   "i":"⚡","h":"k6, Locust, JMeter, profiling, benchmarks, SLOs"},
+      {"v":"policy_code",   "l":"Compliance-as-Code & Policy Engines",      "i":"📋","h":"OPA/Rego, Sentinel, AWS Config, drift detection"},
+      {"v":"observability", "l":"Observability, Incident Response & SRE",   "i":"📡","h":"Prometheus, Grafana, alerting, runbooks, error budgets"},
+      {"v":"dr_backup",     "l":"Disaster Recovery & Backup Systems",       "i":"💾","h":"RTO/RPO validation, backup integrity, failover testing"}
+    ],
+    "mleng": [
+      {"v":"predictive",    "l":"Predictive Modeling & Pattern Recognition","i":"🔮","h":"Supervised/unsupervised, sklearn, XGBoost, tabular"},
+      {"v":"training",      "l":"Model Training & Data Preparation",        "i":"🏋️","h":"PyTorch, TensorFlow, fine-tuning, dataset pipelines"},
+      {"v":"deployment",    "l":"Model Optimization & Production Deployment","i":"🚀","h":"ONNX, quantization, TorchServe, BentoML, model serving"},
+      {"v":"experiments",   "l":"Experiment Tracking & Evaluation",         "i":"🧪","h":"MLflow, W&B, DVC, model versioning, comparison"},
+      {"v":"feature_store", "l":"Feature Stores & ML Data Infrastructure",  "i":"🏗️","h":"Feast, Tecton, Hopsworks, training-serving skew"},
+      {"v":"rl",            "l":"Reinforcement Learning Systems",            "i":"🎯","h":"Gym environments, stable-baselines, reward functions"}
+    ],
+    "blockchain": [
+      {"v":"smart_contracts","l":"Smart Contracts & Decentralized Apps",  "i":"📜","h":"Solidity, Foundry, Hardhat, EVM, Rust/Solana, Anchor"},
+      {"v":"storage_id",    "l":"Distributed Storage & Identity",          "i":"🗄️","h":"IPFS, Filecoin, DIDs, verifiable credentials, ENS"},
+      {"v":"token_finance", "l":"Token-Based Economies & Finance Tools",   "i":"💰","h":"DeFi, DEX, AMM, staking, tokenomics, liquidity"},
+      {"v":"bridges",       "l":"Cross-Chain Bridge Protocols",            "i":"🌉","h":"Relay networks, invariant testing, formal verification"},
+      {"v":"privacy_compute","l":"Privacy-Preserving Computation",         "i":"🔒","h":"ZK proofs, MPC, homomorphic encryption, Circom"}
+    ],
+    "science": [
+      {"v":"numerical",     "l":"Numerical Analysis & Mathematical Modeling","i":"🔢","h":"NumPy, SciPy, SymPy, differential equations, FEM"},
+      {"v":"simulation",    "l":"Physics, Engineering & Biological Simulations","i":"⚗️","h":"FEM, CFD, molecular dynamics, biomechanics"},
+      {"v":"hpc",           "l":"High-Performance Computing Workflows",     "i":"💻","h":"MPI, OpenMP, CUDA, HPC clusters, Slurm, job scheduling"},
+      {"v":"complex_sys",   "l":"Complex Systems & Agent-Based Modeling",   "i":"🌐","h":"NetLogo, Mesa, emergent behavior, ABM, network theory"},
+      {"v":"bioinformatics","l":"Bioinformatics & Genomics Pipelines",      "i":"🧬","h":"Nextflow, Snakemake, WDL, Bioconda, FASTA/VCF, HIPAA"},
+      {"v":"geospatial",    "l":"Geospatial & GIS Systems",                 "i":"🗺️","h":"GDAL, PostGIS, raster/vector processing, OGC standards"}
+    ],
+    "immersive": [
+      {"v":"xr",            "l":"Virtual, Augmented & Mixed Reality",  "i":"🥽","h":"Unity XR, Unreal, WebXR, ARKit, ARCore, OpenXR"},
+      {"v":"spatial_web",   "l":"Spatial Interfaces & 3D Web",          "i":"🌐","h":"Three.js, Babylon.js, WebGL, WebGPU, R3F"},
+      {"v":"digital_twins", "l":"Digital Twins & Simulated Environments","i":"🏭","h":"Digital twin platforms, real-time IoT sync, simulation"},
+      {"v":"multi_user_xr", "l":"Multi-User Immersive Platforms",       "i":"👥","h":"Networked XR, shared virtual spaces, spatial audio"}
+    ],
+    "integration": [
+      {"v":"api_gw",        "l":"API Design, Gateways & Schema Management",        "i":"🔌","h":"REST, GraphQL, gRPC, Protobuf, Avro, API gateway, OpenAPI"},
+      {"v":"third_party",   "l":"Third-Party & Enterprise Middleware Integrations","i":"🔗","h":"Adapters, retries, circuit breakers, contract testing"},
+      {"v":"event_driven",  "l":"Event-Driven Architectures",                      "i":"📨","h":"Kafka, RabbitMQ, SNS/SQS, event sourcing, CQRS"},
+      {"v":"workflow_orch", "l":"Workflow Orchestration Systems",                   "i":"🗂️","h":"Temporal, Camunda, Step Functions, Conductor, n8n"},
+      {"v":"realtime_sync", "l":"Real-Time Messaging & Synchronization",           "i":"⚡","h":"WebSockets, SSE, CRDT, operational transforms, SignalR"}
+    ],
+    "embedded": [
+      {"v":"iot",           "l":"IoT Device Systems",                      "i":"📡","h":"MQTT, embedded Linux, ESP32, Zephyr, constrained devices"},
+      {"v":"edge_ai",       "l":"Edge AI & Local Inference",               "i":"🧠","h":"TFLite, ONNX Runtime, Core ML, quantized models, NPU"},
+      {"v":"robotics",      "l":"Robotics & Control Systems",              "i":"🦾","h":"ROS2, PID controllers, kinematics, path planning, SLAM"},
+      {"v":"sensors",       "l":"Sensor & Telemetry Networks",             "i":"📊","h":"Time-series, aggregation, protocol bridges, Kalman filter"},
+      {"v":"firmware",      "l":"Industrial Automation & Embedded Firmware","i":"⚙️","h":"C/C++, RTOS, FreeRTOS, HAL, Zephyr, PLCs, Modbus"},
+      {"v":"autonomous",    "l":"Autonomous Physical Systems",             "i":"🚗","h":"Self-driving, drones, AUVs, sensor fusion, SLAM, ROS"},
+      {"v":"fpga",          "l":"FPGA & Hardware Description",             "i":"🔧","h":"VHDL, Verilog, SystemVerilog, synthesis, timing, Verilator"}
+    ],
+    "media": [
+      {"v":"video_image",   "l":"Video & Image Processing Pipelines",          "i":"🎬","h":"FFmpeg, OpenCV, encoding, transcoding, codecs, GStreamer"},
+      {"v":"audio_speech",  "l":"Audio Processing & Speech Systems",           "i":"🎙️","h":"ASR, TTS, speaker diarization, MFCC, WER metrics, VAD"},
+      {"v":"live_stream",   "l":"Live Streaming & Real-Time Media Infrastructure","i":"📺","h":"WebRTC, HLS, RTMP, DASH, low-latency streaming infra"},
+      {"v":"gpu_render",    "l":"GPU-Accelerated Rendering Workflows",         "i":"🖥️","h":"CUDA rendering, ray tracing, shader pipelines, Vulkan"},
+      {"v":"interactive_media","l":"Interactive Media Delivery Platforms",     "i":"🎮","h":"CDN, adaptive bitrate, interactive overlays, media APIs"}
+    ],
+    "devtools": [
+      {"v":"cli",           "l":"Command-Line Tools & Shells",         "i":"💻","h":"oclif, cobra, typer, arg parsing, shell completion, piping"},
+      {"v":"sdk_lib",       "l":"SDKs & Client Libraries",             "i":"📦","h":"API clients, typed wrappers, semver, npm/PyPI/crates publishing"},
+      {"v":"build_systems", "l":"Build Systems & Compilers",           "i":"⚙️","h":"Webpack, Vite, Cargo, Bazel, esbuild, compiler frontends"},
+      {"v":"lang_server",   "l":"Language Servers & IDE Extensions",   "i":"🔌","h":"LSP, DAP, VS Code extensions, tree-sitter, syntax highlighting"},
+      {"v":"codegen",       "l":"Code Generation & Scaffolding Tools", "i":"🏗️","h":"Yeoman, plop, AST transforms, codemods, template engines"},
+      {"v":"pkg_mgr",       "l":"Package Managers & Dependency Tools", "i":"📋","h":"npm, pnpm, pip, cargo, lock files, dependency resolution"}
+    ],
+    "fintech": [
+      {"v":"payments",      "l":"Payment Processing & Gateway Systems",         "i":"💸","h":"Stripe, Braintree, Adyen, 3DS, PCI-DSS, SCA, tokenization"},
+      {"v":"banking_core",  "l":"Banking Core & Ledger Systems",                "i":"🏦","h":"Double-entry ledger, PSD2, Plaid, IBAN, open banking APIs"},
+      {"v":"trading",       "l":"Trading & Market Infrastructure",              "i":"📈","h":"Order book, FIX protocol, portfolio mgmt, market data API"},
+      {"v":"insurance",     "l":"Insurance & Actuarial Platforms",              "i":"🛡️","h":"Underwriting, claims processing, actuarial models, policy mgmt"},
+      {"v":"reg_reporting", "l":"Regulatory Reporting & Compliance Automation", "i":"📋","h":"KYC, AML, SOX, Basel III, automated regulatory reporting"},
+      {"v":"fraud",         "l":"Fraud Detection & Risk Management",            "i":"🚨","h":"Real-time scoring, ML fraud models, velocity checks, chargeback"}
+    ],
+    "other": []
+  },
+
+  "domainRules": {
+    "apps":        "## Domain: Software Apps & UI\n\n### Architecture\n- Separate UI layer from business logic — no business logic in components\n- State: local state first, shared state only when multiple components need it\n- API layer abstracted behind a typed client — never raw fetch() in components\n\n### Constraints\n- Accessibility: WCAG AA minimum — ARIA, keyboard navigation, contrast\n- Performance: Core Web Vitals targets (LCP < 2.5s, CLS < 0.1)\n- Mobile-first responsive layout by default\n\n### FORBIDDEN\n- ❌ Business logic in UI components\n- ❌ Direct API calls from components (use hooks / service layer)\n- ❌ Interactive elements without keyboard accessibility\n\n### Testing\n- Unit: component-level with React Testing Library / Vue Test Utils\n- Integration: user flows with MSW (Mock Service Worker)\n- E2E: critical paths with Playwright",
+
+    "data":        "## Domain: Data Systems & Automation\n\n### Architecture\n- Medallion: Bronze (raw, immutable) → Silver (cleaned) → Gold (aggregated)\n- Idempotent transforms: re-running must produce identical output\n- Every dataset has a schema + data contract agreed with consumers\n\n### Constraints\n- Assert row counts before and after every transform\n- Data quality gates block pipeline promotion (Great Expectations / dbt tests)\n- Lineage tracked end-to-end — every column traces back to a source\n\n### FORBIDDEN\n- ❌ Mutate raw / Bronze tables\n- ❌ Drop columns without downstream validation\n- ❌ Silent row loss — missing records must trigger alerts\n\n### Testing\n- Unit: transform functions with fixed sample datasets\n- Integration: end-to-end pipeline with test fixtures and row assertions\n- Quality: dbt tests or Great Expectations on every model",
+
+    "ai":          "## Domain: AI Products & Knowledge Systems\n\n### Architecture\n- LLM calls wrapped in a typed service layer — no raw API calls in business logic\n- Prompts versioned in code alongside their evals — no hardcoded strings in functions\n- Eval harness must pass before any model or prompt change reaches production\n\n### Constraints\n- RAG: chunk 512 tokens, overlap 50 · hybrid search (BM25 + semantic) · cite sources\n- Embeddings versioned with the model — reindex everything when model changes\n- Token budget tracked and capped per call to control cost\n\n### FORBIDDEN\n- ❌ Deploy prompt changes without running the eval regression suite\n- ❌ Send PII in prompts without anonymization\n- ❌ Log raw LLM outputs containing user data\n\n### Testing\n- Unit: prompt templates, retrieval recall/precision on fixed queries\n- Eval: regression suite on golden Q&A pairs (non-deterministic — use thresholds)\n- Integration: end-to-end pipeline with known answers to validate full flow",
+
+    "content":     "## Domain: Content Creation & Communication\n\n### Architecture\n- Pillar + cluster: every cluster page links back to its pillar — no orphaned articles\n- Semantic chunking (512 tokens, 50 overlap) for RAG-backed content pipelines\n- Content pipeline: ingest → normalize → enrich → publish → monitor performance\n\n### Constraints\n- E-E-A-T: cite sources with dates · unique expertise angle · refresh cycle ≤ 18 months\n- SEO: title < 60 chars · meta 120–155 chars · JSON-LD schema required on every page\n- GEO/AEO: H2/H3 phrased as questions · clear definitions of domain terms\n\n### FORBIDDEN\n- ❌ Publish without metadata (title, meta, canonical, schema)\n- ❌ Duplicate content across URLs without a canonical tag\n- ❌ Images without descriptive, keyword-rich alt text\n\n### Testing\n- SEO audit: Lighthouse + Google Rich Results Test\n- RAG: retrieval precision on sample queries before pipeline goes live\n- Freshness: automated flag for articles older than 18 months",
+
+    "business":    "## Domain: Business Strategy & Org Tools\n\n### Architecture\n- Domain model first: entities and relationships defined before implementation\n- Workflow engine for multi-step approval processes — no ad hoc state in code\n- Audit log: immutable, append-only, queryable by user + date + action\n\n### Constraints\n- Role-based access control enforced at the service layer, not just the UI\n- All destructive actions require explicit confirmation + audit log entry\n- Report queries must not run on the primary transactional database\n\n### FORBIDDEN\n- ❌ Delete or mutate audit log entries — use correction entries\n- ❌ Bypass role checks even for admin users in tests\n- ❌ Run heavy analytics queries on the primary OLTP database\n\n### Testing\n- Unit: business rules and workflow state machine transitions\n- Integration: role-based access scenarios across all permission combinations\n- E2E: key approval flows with multiple actor roles",
+
+    "security":    "## Domain: Security, Quality & Reliability\n\n### Architecture\n- Security-as-code: threat models and policies in version control alongside source\n- Defense in depth: multiple overlapping controls — no single point of failure\n- SLO-driven reliability: define error budgets and alert thresholds before features\n\n### Constraints\n- OWASP Top 10 coverage required for every application component\n- SAST on every commit · DAST on every staging deployment\n- Incident response runbooks for every P1/P2 alert\n\n### FORBIDDEN\n- ❌ Merge without SAST passing\n- ❌ Escalate privileges without an audit trail\n- ❌ Skip threat modeling for new authentication or data access flows\n\n### Testing\n- SAST: Semgrep / Bandit / eslint-plugin-security\n- DAST: OWASP ZAP on the staging environment\n- Chaos: fault injection for resilience validation (k6, Gremlin, Chaos Monkey)\n- Load: k6 / Locust with defined SLO pass/fail thresholds",
+
+    "mleng":       "## Domain: ML Engineering & Infrastructure\n\n### Architecture\n- Feature store decouples feature computation from model training\n- Model registry is the single source of truth for all versioned models\n- Serving layer is stateless — model weights loaded at startup, not per-request\n\n### Constraints\n- Track every experiment: code commit + dataset version + hyperparameters + metrics\n- Same preprocessing code at training and inference — prevent training-serving skew\n- Latency SLO defined (P99) and load-tested before every production rollout\n\n### FORBIDDEN\n- ❌ Deploy a model without a regression test on the evaluation set\n- ❌ Use different preprocessing at training vs. serving time\n- ❌ Commit model weights to git — use DVC, MLflow artifacts, or object storage\n\n### Testing\n- Unit: preprocessing transforms and feature engineering functions\n- Eval: offline metrics on held-out test set compared to current production baseline\n- Load: P99 latency and throughput at production-level concurrency",
+
+    "blockchain":  "## Domain: Decentralized & Blockchain\n\n### Architecture\n- Checks-Effects-Interactions pattern for all state-changing functions (reentrancy)\n- Minimal on-chain logic: expensive computation belongs off-chain or Layer 2\n- Events emitted for every significant state change (subgraph / indexer compatibility)\n\n### Constraints\n- Invariant fuzz testing (Foundry) required for all financial contract logic\n- Gas optimization: measure before and after every change with snapshots\n- Multi-sig governance for admin functions controlling significant value\n\n### FORBIDDEN\n- ❌ Deploy to mainnet without an independent third-party security audit\n- ❌ Store private keys or seeds in code, config files, or environment variables\n- ❌ Upgrade proxy patterns without timelock + multi-sig approval process\n\n### Testing\n- Unit: every function, full branch coverage (Foundry / Hardhat)\n- Invariant: fuzz testing with Foundry stateful invariant tests\n- Integration: forked mainnet tests for DeFi protocol interactions\n- Formal: Certora or Halmos for critical financial math properties",
+
+    "science":     "## Domain: Scientific Computing & Modeling\n\n### Architecture\n- Reproducibility first: pin all software, data, and random seeds in workflow files\n- Workflow DAG (Snakemake or Nextflow) for dependency tracking and parallelism\n- Immutable raw data: never overwrite primary or reference datasets\n\n### Constraints\n- Numerical validation: compare against analytical solutions or known benchmarks\n- HPC jobs: estimate memory and walltime before submission\n- Reference datasets version-locked with hash verification\n\n### FORBIDDEN\n- ❌ Overwrite raw or primary data\n- ❌ Run experiments without reproducibility metadata (seed, version, date)\n- ❌ Skip numerical validation against a known reference implementation\n\n### Testing\n- Unit: numerical functions against reference or analytical implementations\n- Regression: compare output to previously validated gold-standard runs\n- Convergence: confirm solutions stabilize with finer grids or more iterations",
+
+    "immersive":   "## Domain: Immersive & Spatial Experiences\n\n### Architecture\n- Frame budget first: 90Hz VR requires < 11ms frame time — profile before adding features\n- Scene hierarchy: group static objects · frustum cull aggressively · LOD for distance\n- Input abstraction: device-agnostic layer that works on Quest, ARKit, and WebXR\n\n### Constraints\n- Comfort: no locomotion without user consent · minimum 72Hz for any VR experience\n- Assets: compressed textures (KTX2/Basis) · GLTF for web · draw calls budgeted per frame\n- Multiplayer: authoritative server for state · client-side prediction for responsiveness\n\n### FORBIDDEN\n- ❌ Frame drops below target Hz without a performance investigation and sign-off\n- ❌ Skip motion sickness guidelines for VR locomotion (no artificial movement default)\n- ❌ Release without testing on the actual weakest target device\n\n### Testing\n- Performance: GPU/CPU profiler on the weakest target device\n- Comfort: motion sickness audit with real users for every VR locomotion type\n- Network: multiplayer at 200ms simulated latency before release",
+
+    "integration": "## Domain: Integration & Connectivity\n\n### Architecture\n- Idempotency keys on all API calls that trigger side effects\n- Event-driven: producers publish facts, consumers react — eliminate temporal coupling\n- Contract tests (Pact) required before any API change reaches dependent consumers\n\n### Constraints\n- Retry with exponential backoff + jitter on all outbound network calls\n- Circuit breaker on every third-party dependency\n- Dead letter queue for all async message processing with alerting on DLQ growth\n\n### FORBIDDEN\n- ❌ Synchronous call chains longer than 3 hops (latency compounds badly)\n- ❌ Breaking API changes without a deprecation notice and migration period\n- ❌ Process messages without idempotency guard (duplicate delivery is guaranteed)\n\n### Testing\n- Contract: Pact tests between every producer/consumer pair before deploy\n- Integration: test against real message broker and real database, not mocks\n- Chaos: broker downtime, network partition, and consumer lag simulation",
+
+    "embedded":    "## Domain: Embedded & Edge Computing\n\n### Architecture\n- HAL (Hardware Abstraction Layer): no direct register access in application code\n- RTOS task priorities: hard real-time tasks isolated in dedicated high-priority tasks\n- OTA updates: signed firmware + automatic rollback on integrity check failure\n\n### Constraints\n- No dynamic memory allocation in interrupt handlers or hard-real-time tasks\n- Stack sizes profiled and validated under worst-case conditions before production\n- Watchdog timer always active in production — never disable for debugging\n\n### FORBIDDEN\n- ❌ Blocking calls inside ISRs — use notification flags or message queues\n- ❌ Deploy firmware without cryptographic signing and integrity verification\n- ❌ Remove the watchdog timer for any reason (use a longer timeout to debug)\n\n### Testing\n- Unit: business logic via HAL mock layer on the host (fast iteration)\n- Hardware-in-the-loop: all timing-critical paths on the real target hardware\n- Stress: 72h burn-in under maximum load for production embedded systems",
+
+    "media":       "## Domain: Media & Streaming Systems\n\n### Architecture\n- Pipeline stages scale independently: ingest · transcode · package · CDN deliver\n- Adaptive bitrate: minimum 3 quality levels · 2–6s segments · HLS + DASH outputs\n- CDN-first: origin server must never receive direct user traffic in production\n\n### Constraints\n- Startup SLO: < 3s first frame for live · < 1s for on-demand at median connection\n- Codec selection: H.264 (compatibility) + AV1/HEVC (bandwidth) where device supports\n- GPU transcoding: CPU fallback path must exist and be tested for all pipelines\n\n### FORBIDDEN\n- ❌ Re-encode unnecessarily — remux when only the container format changes\n- ❌ Single ingest point without failover (single point of failure for live)\n- ❌ Store master originals in a lossy codec format\n\n### Testing\n- Quality: VMAF/SSIM scores vs. original at every bitrate ladder level\n- Load: concurrent stream test at 2× expected peak concurrency\n- Failover: CDN origin failover and ingest redundancy tested in staging",
+
+    "devtools":    "## Domain: Developer Tools & Infrastructure\n\n### Architecture\n- Plugin architecture: stable core API · extensions are isolated and independently versioned\n- LSP / DAP protocol: implement spec correctly · test against multiple editor clients\n- CLI: POSIX conventions · exit codes (0 success, 1 error, 2 misuse) · --json for scripting\n\n### Constraints\n- Backward compatibility: semver strictly followed · breaking changes require MAJOR bump\n- Performance: CLI startup < 200ms · LSP response < 100ms at P95\n- Cross-platform: CI matrix covering Linux, macOS, and Windows for every release\n\n### FORBIDDEN\n- ❌ Break CLI flags or public API without a deprecation notice in a prior MINOR release\n- ❌ Publish to npm/PyPI/crates without a changelog entry and semver bump\n- ❌ Release without the full cross-platform CI matrix passing\n\n### Testing\n- Unit: parsing, AST transforms, command dispatch logic\n- Integration: test against real project fixtures, not minimal toy examples\n- Compatibility: verify against the minimum supported editor / runtime versions",
+
+    "fintech":     "## Domain: Financial & Regulated Transactions\n\n### Architecture\n- Double-entry ledger: every debit has a matching credit — balances computed, never stored\n- Immutable audit trail: correction entries only — no updates or deletes ever\n- Payment processing isolated from business logic in a dedicated PCI-scoped module\n\n### Constraints\n- PCI-DSS: card data handled only in certified scope — tokenize at the boundary immediately\n- KYC/AML: identity verification required before transactions above regulatory threshold\n- Idempotency keys required on every payment API call (duplicate requests must be safe)\n- Money amounts: always Decimal/integer cents — never IEEE 754 floats\n\n### FORBIDDEN\n- ❌ Log raw card numbers, CVV, or full PANs — even in debug or test mode\n- ❌ Mutate ledger entries — use reversal/correction entries\n- ❌ Store card data outside a PCI-DSS certified storage scope\n- ❌ Deploy payment flows without end-to-end transaction replay tests\n\n### Testing\n- Unit: ledger math with Decimal precision · rounding rules · currency edge cases\n- Integration: full payment lifecycle with Stripe test mode / provider sandbox\n- Security: PCI scope penetration test before go-live\n- Compliance: regulatory edge cases (refunds, chargebacks, disputes, FX)"
+  },
+
+  "subdomainContext": {
+    "rag":            {"libs": "LangChain, LlamaIndex, Chroma, Weaviate, Pinecone, pgvector", "pattern": "Chunk 512 tokens with 50-token overlap · hybrid search (BM25 + semantic) · always cite sources in output", "pitfall": "Version embeddings together with the model — changing the model requires a full reindex"},
+    "agents":         {"libs": "LangChain, LangGraph, CrewAI, AutoGen, smolagents, MCP", "pattern": "Explicit termination conditions on every agent loop · human-in-the-loop checkpoints for destructive actions", "pitfall": "Unbounded loops and runaway tool calls — always set max_iterations and a cost/token budget cap"},
+    "ai_eval":        {"libs": "MLflow, W&B, Promptfoo, LangSmith, RAGAS, DeepEval", "pattern": "Golden dataset of Q&A pairs version-locked in the repo · eval runs as a CI gate on every prompt change", "pitfall": "Non-determinism — use temperature=0 for regression evals and score thresholds rather than exact match"},
+    "payments":       {"libs": "Stripe SDK, Braintree, Adyen, Mollie", "pattern": "Idempotency keys on every payment call · webhook signature verification required · Decimal for all amounts", "pitfall": "FORBIDDEN: log raw card numbers or CVV even in debug mode — tokenize at point of entry"},
+    "banking_core":   {"libs": "Plaid, Open Banking APIs, IBAN validator, Moov", "pattern": "Double-entry ledger — every debit has a matching credit · PSD2 SCA for strong customer authentication", "pitfall": "FORBIDDEN: mutable ledger rows — use reversal entries; never UPDATE a posted transaction"},
+    "fraud":          {"libs": "Stripe Radar, Sift, custom ML scoring pipeline", "pattern": "Real-time scoring at transaction time (< 100ms) · velocity checks per card + IP + device fingerprint", "pitfall": "False positive rate matters as much as recall — tune thresholds with business stakeholders"},
+    "smart_contracts":{"libs": "Foundry, Hardhat, OpenZeppelin, Slither, Certora", "pattern": "Checks-Effects-Interactions for reentrancy · invariant fuzz testing · emit events for every state change", "pitfall": "FORBIDDEN: deploy to mainnet without an independent third-party security audit"},
+    "training":       {"libs": "PyTorch, HuggingFace Transformers, Accelerate, DeepSpeed", "pattern": "Track every run: code commit + dataset hash + seed + hyperparameters · reproducible with fixed seed", "pitfall": "Training-serving skew — apply identical preprocessing to validation and serving data"},
+    "deployment":     {"libs": "BentoML, TorchServe, ONNX Runtime, Triton Inference Server", "pattern": "Quantize before serving · shadow traffic before full rollout · A/B compare vs. production baseline", "pitfall": "FORBIDDEN: skip P99 latency SLO validation before routing production traffic to a new model"},
+    "experiments":    {"libs": "MLflow, Weights & Biases, DVC, ClearML", "pattern": "Every experiment logged automatically · compare runs in a UI before promoting · artifacts stored in object store", "pitfall": "Comparing experiments trained on different dataset splits — always lock the eval split"},
+    "pentest":        {"libs": "Burp Suite, Nmap, OWASP ZAP, Metasploit, SQLMap", "pattern": "OWASP Top 10 coverage · document findings with CVSS score · reproduce in staging before reporting", "pitfall": "FORBIDDEN: run any scan or exploit without explicit written authorization from the target owner"},
+    "observability":  {"libs": "Prometheus, Grafana, OpenTelemetry, Jaeger, PagerDuty, Loki", "pattern": "Three pillars: metrics (RED) + traces (distributed) + logs (structured JSON) · alert on SLO burn rate", "pitfall": "Alert fatigue — only page on SLO violations, not on symptoms; tune thresholds before going live"},
+    "etl":            {"libs": "dbt, Apache Spark, Flink, Beam, Airbyte", "pattern": "Idempotent transforms — re-running produces identical output · assert row counts at each stage boundary", "pitfall": "Silent data loss — always validate that source row count matches target after every transform"},
+    "api_gw":         {"libs": "Kong, AWS API Gateway, Nginx, Envoy, tRPC, FastAPI", "pattern": "OpenAPI spec first · rate limiting and auth at the gateway layer · semver for all breaking changes", "pitfall": "FORBIDDEN: break the existing response schema without a deprecation period and consumer migration"},
+    "event_driven":   {"libs": "Apache Kafka, RabbitMQ, AWS SQS/SNS, NATS, Temporal", "pattern": "Idempotency guard on every consumer · dead letter queue with alerting · at-least-once delivery assumed", "pitfall": "Ordering guarantees are partition-level only in Kafka — design consumers to handle out-of-order events"},
+    "iot":            {"libs": "MQTT (Mosquitto, AWS IoT Core), Zephyr RTOS, ESP-IDF, Eclipse Hono", "pattern": "Store-and-forward for intermittent connectivity · TLS mutual auth · firmware signing for OTA", "pitfall": "FORBIDDEN: clear-text MQTT on production devices — even on internal networks"},
+    "firmware":       {"libs": "FreeRTOS, Zephyr, STM32 HAL, ESP-IDF, libopencm3", "pattern": "No dynamic allocation in ISRs or hard-RT tasks · watchdog on all production builds · HAL for portability", "pitfall": "FORBIDDEN: blocking calls inside interrupt service routines — use notification flags or queues"},
+    "video_image":    {"libs": "FFmpeg, OpenCV, GStreamer, PyAV, Pillow, libvips", "pattern": "GPU-accelerated transcoding with CPU fallback · validate codec support before pipeline build · batch process", "pitfall": "Re-encoding unnecessarily — prefer remux (copy codec) over transcode when only the container changes"},
+    "live_stream":    {"libs": "WebRTC (mediasoup, Janus), HLS.js, Nginx-RTMP, AWS IVS, Wowza", "pattern": "Adaptive bitrate with 3+ quality levels · startup SLO < 3s · CDN origin failover tested in staging", "pitfall": "Single ingest point in production — always provision redundant ingest for live streams"},
+    "cli":            {"libs": "oclif, cobra, typer, click, clap (Rust), arg", "pattern": "POSIX exit codes (0/1/2) · --json flag for machine-readable output · consistent --help format", "pitfall": "Breaking CLI flag changes without a deprecation cycle — semver applies to CLI interfaces too"},
+    "secure_code":    {"libs": "Semgrep, Bandit, eslint-plugin-security, Snyk, Trivy", "pattern": "SAST in CI on every commit · threat model before implementing auth or data flows · OWASP Top 10 checklist", "pitfall": "Security as a last step — integrate scanning into CI from day one, not at the pre-release audit"},
+    "bioinformatics": {"libs": "Nextflow, Snakemake, BioPython, GATK, Bioconda, Biopandas", "pattern": "Containerize every tool version · version-lock reference genomes with hash · Nextflow/Snakemake DAGs", "pitfall": "Non-reproducibility — always pin tool versions and reference database versions explicitly in workflow files"}
+  },
+
+  "agentScoring": {
+    "sourcePriority": ["wshobson","avivl","supatest","iannuttall","lst97","contains","0xfurai","hesreallyhim","vijaythecoder","navin4078","rubenzantingh","voltagent"],
+    "fastAlways": ["security-auditor","code-reviewer"],
+    "rules": [
+      { "when": {"stack": "python"},     "names": ["python-expert","fastapi-expert","django-expert","celery-expert"], "w": 10 },
+      { "when": {"stack": "react"},      "names": ["react-expert","react-specialist","nextjs-expert","typescript-expert"], "w": 10 },
+      { "when": {"stack": "vue"},        "names": ["vue-expert","typescript-expert"], "w": 10 },
+      { "when": {"stack": "typescript"}, "names": ["typescript-expert"], "w": 9 },
+      { "when": {"stack": "node"},       "names": ["nodejs-expert","nestjs-expert"], "w": 9 },
+      { "when": {"stack": "go"},         "names": ["go-expert","gin-expert","fiber-expert"], "w": 10 },
+      { "when": {"stack": "rust"},       "names": ["rust-expert","actix-expert"], "w": 10 },
+      { "when": {"stack": "mobile"},     "names": ["android-expert","kotlin-expert","swift-expert","flutter-expert","react-native-expert"], "w": 9 },
+      { "when": {"stack": "devops"},     "names": ["docker-expert","kubernetes-expert","terraform-expert","ansible-expert"], "w": 9 },
+      { "when": {"domain": "apps"},        "names": ["react-expert","nextjs-expert","typescript-expert","nodejs-expert"], "w": 8 },
+      { "when": {"domain": "data"},        "names": ["machine-learning-engineer","data-analyst","mlops-engineer"], "w": 9 },
+      { "when": {"domain": "ai"},          "names": ["ai-engineer","langchain-expert","machine-learning-engineer"], "w": 9 },
+      { "when": {"domain": "content"},     "names": ["content-writer","seo-specialist"], "w": 6 },
+      { "when": {"domain": "business"},    "names": ["code-reviewer","architect-reviewer"], "w": 6 },
+      { "when": {"domain": "security"},    "names": ["security-auditor","compliance-auditor","pentest-expert"], "w": 10 },
+      { "when": {"domain": "mleng"},       "names": ["machine-learning-engineer","mlops-engineer","pytorch-expert"], "w": 9 },
+      { "when": {"domain": "blockchain"},  "names": ["security-auditor","compliance-auditor"], "w": 9 },
+      { "when": {"domain": "science"},     "names": ["python-expert","machine-learning-engineer"], "w": 7 },
+      { "when": {"domain": "immersive"},   "names": ["threejs-expert","unity-expert"], "w": 7 },
+      { "when": {"domain": "integration"}, "names": ["graphql-expert","nestjs-expert","kafka-expert"], "w": 8 },
+      { "when": {"domain": "embedded"},    "names": ["c-expert","rust-expert"], "w": 8 },
+      { "when": {"domain": "media"},       "names": ["python-expert","ffmpeg-expert"], "w": 7 },
+      { "when": {"domain": "devtools"},    "names": ["typescript-expert","go-expert","rust-expert"], "w": 8 },
+      { "when": {"domain": "fintech"},     "names": ["security-auditor","fintech-security-expert","compliance-auditor"], "w": 9 },
+      { "when": {"tdd_level": "tdd_strict"}, "names": ["tdd-guide","code-quality-guardian","test-coverage"], "w": 10 },
+      { "when": {"tdd_level": "tdd_soft"},   "names": ["tdd-guide","code-quality-guardian"], "w": 8 },
+      { "when": {"autonomy": "autonomous"},  "names": ["build-error-resolver","refactor-cleaner","refactoring-specialist","code-refactorer"], "w": 7 },
+      { "when": {"compliance": "gdpr"},  "names": ["security-auditor","compliance-auditor"], "w": 9 },
+      { "when": {"compliance": "pci"},   "names": ["security-auditor","fintech-security-expert","compliance-auditor"], "w": 9 },
+      { "when": {"compliance": "hipaa"}, "names": ["security-auditor","compliance-auditor"], "w": 9 },
+      { "when": {"compliance": "soc2"},  "names": ["security-auditor","compliance-auditor"], "w": 8 },
+      { "when": {"team_context": "team"},      "names": ["code-reviewer","architect-reviewer","pr-reviewer-specialist"], "w": 8 },
+      { "when": {"team_context": "org"},       "names": ["code-reviewer","architect-reviewer","security-auditor"], "w": 8 },
+      { "when": {"team_context": "opensource"},"names": ["code-reviewer","pr-reviewer-specialist"], "w": 7 },
+      { "when": {"database": "postgres"}, "names": ["postgresql-expert","prisma-expert"], "w": 7 },
+      { "when": {"database": "mongodb"},  "names": ["mongodb-expert"], "w": 7 },
+      { "when": {"database": "redis"},    "names": ["redis-expert"], "w": 7 },
+      { "when": {"database": "vector_db"},"names": ["ai-engineer","machine-learning-engineer"], "w": 8 },
+
+      { "when": {"subdomain": "auth"},         "names": ["auth0-expert","jwt-expert","security-auditor"], "w": 9 },
+      { "when": {"subdomain": "billing"},      "names": ["stripe-expert","braintree-expert"], "w": 9 },
+      { "when": {"subdomain": "api"},          "names": ["graphql-expert","nestjs-expert","fastapi-expert"], "w": 8 },
+      { "when": {"subdomain": "multi_tenant"}, "names": ["cloud-architect","code-reviewer"], "w": 7 },
+      { "when": {"subdomain": "notifications"},"names": ["bullmq-expert","celery-expert"], "w": 7 },
+      { "when": {"subdomain": "rag"},          "names": ["langchain-expert","machine-learning-engineer"], "w": 9 },
+      { "when": {"subdomain": "cms"},          "names": ["content-writer","graphql-expert"], "w": 7 },
+      { "when": {"subdomain": "payments"},     "names": ["stripe-expert","braintree-expert","fintech-security-expert"], "w": 9 },
+      { "when": {"subdomain": "compliance"},   "names": ["compliance-auditor","fintech-security-expert","security-auditor"], "w": 10 },
+      { "when": {"subdomain": "crypto"},       "names": ["security-auditor","compliance-auditor"], "w": 9 },
+      { "when": {"subdomain": "banking"},      "names": ["security-auditor","compliance-auditor"], "w": 8 },
+      { "when": {"subdomain": "search"},       "names": ["elasticsearch-expert"], "w": 8 },
+      { "when": {"subdomain": "magento"},      "names": ["magento-module-developer"], "w": 10 },
+      { "when": {"subdomain": "access"},       "names": ["auth0-expert","jwt-expert","security-auditor"], "w": 9 },
+      { "when": {"subdomain": "workflow"},     "names": ["bullmq-expert","celery-expert","rabbitmq-expert"], "w": 8 },
+      { "when": {"subdomain": "audit"},        "names": ["compliance-auditor","security-auditor"], "w": 9 },
+      { "when": {"subdomain": "reporting"},    "names": ["data-analyst","grafana-expert"], "w": 8 },
+      { "when": {"subdomain": "ios"},          "names": ["swift-expert","ios-expert"], "w": 10 },
+      { "when": {"subdomain": "android"},      "names": ["android-expert","kotlin-expert"], "w": 10 },
+      { "when": {"subdomain": "cross"},        "names": ["flutter-expert","react-native-expert","expo-expert"], "w": 10 },
+      { "when": {"subdomain": "pipeline"},     "names": ["kafka-expert","celery-expert","machine-learning-engineer"], "w": 9 },
+      { "when": {"subdomain": "ml"},           "names": ["machine-learning-engineer","mlops-engineer"], "w": 10 },
+      { "when": {"subdomain": "llm"},          "names": ["langchain-expert","machine-learning-engineer","mlops-engineer"], "w": 10 },
+      { "when": {"subdomain": "streaming"},    "names": ["kafka-expert"], "w": 9 },
+      { "when": {"subdomain": "mlops"},        "names": ["mlops-engineer","docker-expert","kubernetes-expert"], "w": 9 },
+      { "when": {"subdomain": "k8s"},          "names": ["kubernetes-expert","docker-expert","helm-expert"], "w": 10 },
+      { "when": {"subdomain": "iac"},          "names": ["terraform-expert","ansible-expert"], "w": 10 },
+      { "when": {"subdomain": "cicd"},         "names": ["github-actions-expert","circleci-expert"], "w": 10 },
+      { "when": {"subdomain": "monitoring"},   "names": ["prometheus-expert","grafana-expert"], "w": 10 },
+      { "when": {"subdomain": "security"},     "names": ["security-auditor","compliance-auditor"], "w": 9 },
+      { "when": {"subdomain": "cloud"},        "names": ["cloud-architect","docker-expert","kubernetes-expert"], "w": 9 },
+      { "when": {"subdomain": "catalog"},      "names": ["prisma-expert","elasticsearch-expert"], "w": 7 },
+      { "when": {"subdomain": "checkout"},     "names": ["stripe-expert","braintree-expert"], "w": 8 },
+      { "when": {"subdomain": "warehouse"},    "names": ["data-analyst","machine-learning-engineer"], "w": 8 },
+      { "when": {"subdomain": "viz"},          "names": ["data-analyst","grafana-expert"], "w": 8 }
+    ]
+  }
+}

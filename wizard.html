@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finta — AI Configuration Wizard</title>
+<meta name="description" content="Set up your AI development environment in under 5 minutes with the Finta wizard.">
+<meta property="og:title" content="Finta — AI Configuration Wizard">
+<meta property="og:description" content="Set up your AI development environment in under 5 minutes with the Finta wizard.">
+<meta property="og:image" content="https://setup.fintalab.com/logo/setup.png">
+<meta property="og:url" content="https://setup.fintalab.com/wizard.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://setup.fintalab.com/logo/setup.png">
+<link rel="icon" type="image/png" sizes="32x32" href="logo/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="logo/favicon-16x16.png">
+<link rel="apple-touch-icon" href="logo/setup.png">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<link rel="stylesheet" href="css/wizard.css">
+</head>
+<body>
+<div id="lang-float">
+  <button id="lang-trigger" onclick="toggleLangMenu()" aria-haspopup="true" aria-expanded="false">
+    <img id="lang-flag" src="https://flagcdn.com/w40/gb.png" alt="EN">
+    <span id="lang-code">EN</span>
+  </button>
+  <div id="lang-menu" hidden>
+    <button class="lang-opt act" data-lang="en" onclick="pickLang('en')"><img class="lf" src="https://flagcdn.com/w40/gb.png" alt="EN"><span class="lc">EN</span></button>
+    <button class="lang-opt" data-lang="fr" onclick="pickLang('fr')"><img class="lf" src="https://flagcdn.com/w40/fr.png" alt="FR"><span class="lc">FR</span></button>
+    <button class="lang-opt" data-lang="es" onclick="pickLang('es')"><img class="lf" src="https://flagcdn.com/w40/es.png" alt="ES"><span class="lc">ES</span></button>
+    <button class="lang-opt" data-lang="de" onclick="pickLang('de')"><img class="lf" src="https://flagcdn.com/w40/de.png" alt="DE"><span class="lc">DE</span></button>
+    <button class="lang-opt" data-lang="pt" onclick="pickLang('pt')"><img class="lf" src="https://flagcdn.com/w40/pt.png" alt="PT"><span class="lc">PT</span></button>
+    <button class="lang-opt" data-lang="ja" onclick="pickLang('ja')"><img class="lf" src="https://flagcdn.com/w40/jp.png" alt="JA"><span class="lc">JA</span></button>
+    <button class="lang-opt" data-lang="zh" onclick="pickLang('zh')"><img class="lf" src="https://flagcdn.com/w40/cn.png" alt="ZH"><span class="lc">ZH</span></button>
+    <button class="lang-opt" data-lang="ko" onclick="pickLang('ko')"><img class="lf" src="https://flagcdn.com/w40/kr.png" alt="KO"><span class="lc">KO</span></button>
+  </div>
+</div>
+<div class="app" id="app">
+  <div class="loading"><div class="spinner"></div><span>Loading…</span></div>
+</div>
+
+<script src="js/wizard.js?v=2"></script>
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
+</body>
+</html>

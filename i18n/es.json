@@ -1,0 +1,452 @@
+{
+  "ui": {
+    "loading": "Cargando…",
+    "select_profile": "seleccionar perfil",
+    "how_work_ai": "¿Cómo trabajas con las herramientas de IA?",
+    "level_hint": "Adapta el número de preguntas y el nivel de detalle de los archivos generados. Pulsa [1] [2] [3] para seleccionar.",
+    "questions_word": "preguntas",
+    "continue": "continuar",
+    "back": "volver",
+    "skip": "omitir",
+    "next": "siguiente",
+    "generate_config": "generar config",
+    "other": "Otro…",
+    "specify": "Especificar…",
+    "multiple_selection": "Selección múltiple posible",
+    "multiple_refines": "Selección múltiple — mejora las recomendaciones de agentes",
+    "select_domain_first": "Selecciona primero un dominio principal para ver los subdominios.",
+    "affects": "afecta:",
+    "question_n": "pregunta {step}/{total}",
+    "generating": "Generando archivos de configuración…",
+    "fetching_agents": "Obteniendo contenido de agentes…",
+    "more_files": "… +{n} archivos más",
+    "n_files_generated": "{n} archivos generados para",
+    "project_files": "ARCHIVOS DEL PROYECTO",
+    "copy": "copiar",
+    "copied": "✓ Copiado",
+    "copy_full": "copiar",
+    "next_step_title": "PRÓXIMO PASO — extrae el ZIP y luego pega este prompt",
+    "next_step_body": "Una vez extraído el ZIP en la raíz de tu proyecto, dale este comando a tu asistente IA. Lo gestiona todo automáticamente.",
+    "download_zip": "descargar ZIP ({n} archivos)",
+    "edit_answers": "editar respuestas",
+    "restart": "reiniciar",
+    "no_spec": "Sin spec — haz clic en el botón para empezar.",
+    "add_spec": "[+] Agregar una spec",
+    "spec_title_ph": "Título de la spec…",
+    "spec_desc_ph": "Descripción, reglas de negocio, comportamientos esperados, restricciones…",
+    "spec_delete": "Eliminar",
+    "spec_remove_att": "Quitar",
+    "spec_add_example": "📎 Agregar ejemplo",
+    "agents_hint": "★ = recomendado · clic para activar/desactivar",
+    "agents_selected": "{n} seleccionado(s)",
+    "agents_all": "Todos ({n})",
+    "agents_all_tab": "Todos",
+    "agents_browse": "+ Explorar los {n} agentes disponibles",
+    "agents_collapse": "− Colapsar catálogo",
+    "agents_search_ph": "Buscar entre {n} agentes…",
+    "skills_hint": "Preseleccionados según tus respuestas — ajusta libremente",
+    "skills_selected": "{n} seleccionado(s)",
+    "skills_all": "Todos ({n})",
+    "skills_all_tab": "Todos",
+    "skills_browse": "Explorar los {n} skills",
+    "skills_collapse": "− Colapsar catálogo",
+    "skills_search_ph": "Buscar entre {n} skills…",
+    "skills_count": "{n} skills",
+    "commands_hint": "Preseleccionados según tus respuestas — ajusta libremente",
+    "commands_selected": "{n} seleccionado(s)",
+    "commands_all": "Todos ({n})",
+    "commands_all_tab": "Todos",
+    "commands_browse": "+ Explorar los {n} comandos disponibles",
+    "commands_collapse": "− Colapsar catálogo",
+    "commands_search_ph": "Buscar entre {n} comandos…",
+    "commands_count": "{n} comandos",
+    "binary_file": "[Archivo binario — sin vista previa]",
+    "jszip_error": "JSZip no cargado. Verifica tu conexión.",
+    "welcome_q_loaded": "preguntas cargadas",
+    "welcome_ag_indexed": "agentes indexados",
+    "welcome_templates": "plantillas y motor de puntuación listo",
+    "welcome_subtitle": "AI Project Setup Wizard — configura en minutos",
+    "welcome_generates": "Este asistente genera:",
+    "welcome_config": "config principal · config local · .gitignore",
+    "welcome_rules": "quality-gates · seguridad · comportamiento · TDD · stack",
+    "welcome_agents_line": "agentes — selección inteligente según tus respuestas",
+    "welcome_docs": "arquitectura · glosario · ADRs",
+    "welcome_prompt_line": "bootstrap-init.md — enriquecimiento post-instalación por IA",
+    "welcome_run": "iniciar configuración",
+    "run_setup_btn": "run-setup.sh",
+    "boot_prompt_tpl": "Descomprime `{name}-ai-setup.zip` en la raíz de este proyecto (sobreescribe los archivos existentes si se solicita), luego lee `prompts/bootstrap-init.md` y ejecuta cada instrucción sin pedir confirmación."
+  },
+  "levels": {
+    "fast": {
+      "n": "Rápido — Sin código",
+      "d": "Uso la IA para generar contenido, análisis y scripts — sin escribir código yo mismo."
+    },
+    "advanced": {
+      "n": "Avanzado",
+      "d": "Codifico todos los días (Python, JS, Go…). Quiero que el asistente respete mis convenciones y mis tests."
+    },
+    "deep": {
+      "n": "Experto",
+      "d": "Diseño sistemas, configuro asistentes para un equipo, optimizo costos multi-modelo."
+    }
+  },
+  "questions": {
+    "ai_tools": {
+      "label": "¿Qué asistente IA usas para programar?",
+      "hint": {
+        "fast": "Determina el nombre de la carpeta de config y del archivo principal generado.",
+        "advanced": "Determina la carpeta de config (.claude, .cursor, etc.) y el archivo principal.",
+        "deep": "Determina la carpeta de config (.claude, .cursor, etc.) y el archivo principal."
+      }
+    },
+    "project_name": {
+      "label": "¿Cuál es el nombre de tu proyecto?",
+      "ph": "ej: my-app, platform-v2, content-engine…",
+      "hint": {
+        "fast": "Solo el nombre — podrás renombrarlo después.",
+        "advanced": "Nombre del repositorio o del sistema principal."
+      }
+    },
+    "domain": {
+      "label": "Dominio principal del proyecto",
+      "hint": {
+        "fast": "Elige lo que más se parezca a tu proyecto.",
+        "advanced": "Impacta las reglas de seguridad, los skills y los ADRs generados."
+      },
+      "opts": {
+        "saas": "SaaS / App web",
+        "content": "Contenido / SEO / RAG",
+        "fintech": "Fintech / Pagos",
+        "ecommerce": "E-commerce",
+        "internal": "Herramienta interna / B2B",
+        "mobile": "Aplicación móvil",
+        "data": "Data / ML / IA",
+        "infra": "Infra / DevOps"
+      }
+    },
+    "subdomain": {
+      "label": "Subdominios prioritarios",
+      "hint": {
+        "fast": "Selecciona los aspectos clave de tu proyecto — afina la selección de agentes.",
+        "advanced": "Precisa las especificidades del negocio para un mejor matching de agentes y reglas.",
+        "deep": "Cada subdominio activa agentes especializados adicionales."
+      }
+    },
+    "team_context": {
+      "label": "Contexto de equipo",
+      "hint": {
+        "fast": "Solo = configuración simplificada. Equipo = reglas compartidas en git.",
+        "advanced": "Determina qué va en settings.json vs settings.local.json."
+      },
+      "opts": {
+        "solo": "Solo",
+        "small_team": "Equipo pequeño (2–5)",
+        "team": "Equipo (5–20)",
+        "org": "Organización multi-equipo",
+        "opensource": "Open source"
+      }
+    },
+    "stack": {
+      "label": "Stack técnico principal",
+      "hint": {
+        "fast": "Selecciona todo lo que uses, aunque sea poco.",
+        "advanced": "Genera un archivo de reglas dedicado con frontmatter paths: para cada lenguaje."
+      },
+      "opts": {
+        "none": "Sin código"
+      }
+    },
+    "autonomy": {
+      "label": "Nivel de autonomía deseado para el asistente",
+      "hint": {
+        "fast": "Conservador = El asistente pide confirmación antes de cada acción.",
+        "advanced": "Estándar es el equilibrio adecuado para la mayoría de proyectos de dev."
+      },
+      "opts": {
+        "conservative": "Conservador — confirmación para cada acción",
+        "standard": "Estándar — confirmación para acciones arriesgadas",
+        "autonomous": "Autónomo — modo auto para tareas rutinarias"
+      }
+    },
+    "frustrations": {
+      "label": "Principales frustraciones con el asistente",
+      "hint": {
+        "fast": "Lo que más te molesta — convertido en regla estricta.",
+        "advanced": "Codificados como hard rules en behavior.md y quality-gates.md."
+      },
+      "opts": {
+        "context_loss": "Pierde el contexto",
+        "verbose": "Demasiado verboso",
+        "inconsistent": "Incoherente entre sesiones",
+        "overrides": "Modifica sin que se lo pidan",
+        "no_pushback": "Nunca cuestiona",
+        "security": "Ignora las reglas de seguridad",
+        "no_tests": "Salta los tests"
+      }
+    },
+    "specs": {
+      "label": "Specs y ejemplos del proyecto",
+      "hint": {
+        "fast": "Describe las funcionalidades clave, recorridos de usuario, reglas de negocio. El asistente los usará como referencia permanente.",
+        "advanced": "Cada spec puede tener ejemplos adjuntos: código parcial o completo, imágenes, esquemas, capturas de pantalla."
+      }
+    },
+    "package_manager": {
+      "label": "Gestor de paquetes principal",
+      "hint": {
+        "fast": "Impacta los comandos en CLAUDE.md.",
+        "advanced": "uv es el estándar Python 2025/2026 (reemplaza pip+venv+poetry)."
+      }
+    },
+    "database": {
+      "label": "Base(s) de datos",
+      "hint": {
+        "fast": "Añade los patrones recomendados en las reglas backend.",
+        "advanced": "Vector DB → activa las reglas RAG en content-seo.md."
+      },
+      "opts": {
+        "none": "Ninguna"
+      }
+    },
+    "ci_cd": {
+      "label": "CI/CD",
+      "hint": {
+        "fast": "Genera los hooks apropiados en settings.json.",
+        "advanced": "GitHub Actions = hooks lint/test auto antes de push."
+      },
+      "opts": {
+        "none": "Sin CI todavía"
+      }
+    },
+    "commit_style": {
+      "label": "Convención de commits",
+      "hint": {
+        "fast": "Conventional Commits = feat/fix/chore + changelog auto.",
+        "advanced": "Impacta las instrucciones en la sección workflow de CLAUDE.md."
+      },
+      "opts": {
+        "semantic": "Semántico simple (verbo + descripción)",
+        "none": "Sin convención"
+      }
+    },
+    "tdd_level": {
+      "label": "Enfoque de tests",
+      "hint": {
+        "fast": "TDD estricto = tests antes del código, SIEMPRE. Genera tdd-workflow.md.",
+        "advanced": "Activa el workflow TDD en las reglas generadas."
+      },
+      "opts": {
+        "tdd_strict": "TDD estricto — tests antes del código, siempre",
+        "tdd_soft": "Tests después de la implementación, antes del commit",
+        "critical": "Tests solo para código crítico",
+        "none": "Sin tests (por ahora)"
+      }
+    },
+    "test_coverage": {
+      "label": "Cobertura mínima de tests",
+      "hint": {
+        "fast": "Integrado en quality-gates.md como métrica bloqueante.",
+        "advanced": "80% es el estándar de la industria. 60% aceptable para proto."
+      },
+      "opts": {
+        "95": "95% — estándar crítico (fintech, salud)",
+        "80": "80% — estándar de la industria",
+        "60": "60% — aceptable (proto/startup)",
+        "0": "Sin mínimo"
+      }
+    },
+    "hooks_wanted": {
+      "label": "Verificaciones automáticas (hooks)",
+      "hint": {
+        "fast": "PostToolUse hooks — se ejecutan automáticamente después de cada edición.",
+        "advanced": "No activar todo: elegir lo que realmente aporta valor."
+      },
+      "opts": {
+        "lint": "Lint después de editar",
+        "typecheck": "Type check después de editar",
+        "test": "Tests unitarios antes del commit",
+        "format": "Formateo auto después de editar",
+        "security": "Scan de seguridad antes del commit"
+      }
+    },
+    "agents_wanted": {
+      "label": "Agentes especializados a activar",
+      "hint": {
+        "fast": "Agentes seleccionados automáticamente según tu stack.",
+        "advanced": "Los agentes recomendados están preseleccionados según tus respuestas. Ajusta libremente.",
+        "deep": "Catálogo completo — búsqueda y filtro por categoría disponibles."
+      }
+    },
+    "skills_wanted": {
+      "label": "Skills a instalar en tu proyecto",
+      "hint": {
+        "fast": "Los skills amplían lo que tu asistente puede hacer — más de 1600 skills de la comunidad disponibles.",
+        "advanced": "Los skills son conjuntos de instrucciones reutilizables en .claude/skills/. Busca por nombre, categoría o autor.",
+        "deep": "Catálogo completo de skills de anthropics, antigravity, alirezarezvani, composio y más."
+      }
+    },
+    "commands_wanted": {
+      "label": "Comandos slash a añadir a tu proyecto",
+      "hint": {
+        "fast": "Los comandos son /slash-commands reutilizables para Claude Code — elige los que encajan con tu flujo de trabajo.",
+        "advanced": "128+ slash commands de la comunidad — git, tests, debug, docs y más. Se depositan en .claude/commands/.",
+        "deep": "Catálogo completo de comandos comunitarios. Filtra por categoría o autor."
+      }
+    },
+    "never_do": {
+      "label": "Lo que el asistente NUNCA debe hacer en este proyecto",
+      "ph": "ej: Nunca reescribir los tests para que pasen. Nunca usar any en TS. No tocar src/legacy/…",
+      "hint": {
+        "fast": "Piensa en lo que ya te ha causado problemas.",
+        "advanced": "Transformado en hard stops explícitos en quality-gates.md."
+      }
+    },
+    "frozen_files": {
+      "label": "Archivos / módulos que nunca se deben tocar",
+      "ph": "ej: src/legacy/payments.ts (migración en curso). infra/k8s/ (otro equipo). src/auth/ (freeze Q3)…",
+      "hint": {
+        "fast": "¿Zonas frágiles o gestionadas por otra persona?",
+        "advanced": "Inyectado en CLAUDE.local.md como congelación de sesión."
+      }
+    },
+    "decisions_made": {
+      "label": "Decisiones técnicas importantes ya tomadas",
+      "ph": "ej: PostgreSQL (no MongoDB). Auth via Auth0. Frontend SPA, sin SSR. API REST (no GraphQL)…",
+      "hint": {
+        "fast": "Las grandes decisiones sobre las que no quieres volver atrás.",
+        "advanced": "Genera un ADR-001 pre-rellenado con cada decisión estructurada."
+      }
+    },
+    "compliance": {
+      "label": "Restricciones de cumplimiento o seguridad",
+      "hint": {
+        "fast": "Si tratas datos de usuarios, el RGPD probablemente aplica.",
+        "advanced": "Activa las reglas correspondientes en security.md."
+      },
+      "opts": {
+        "none": "Sin restricciones específicas",
+        "gdpr": "RGPD / datos personales",
+        "hipaa": "HIPAA / salud",
+        "pci": "PCI DSS / pagos",
+        "internal_sec": "Política de seguridad interna"
+      }
+    },
+    "response_style": {
+      "label": "Estilo de respuesta esperado",
+      "hint": {
+        "fast": "Lo que más te ayuda a entender y avanzar.",
+        "advanced": "Codificado en behavior.md como contrato de comportamiento."
+      },
+      "opts": {
+        "concise": "Conciso — directo al grano",
+        "explain": "Explica sus decisiones",
+        "challenge": "Cuestiona antes de ejecutar",
+        "one_sol": "Una sola solución (sin alternativas)",
+        "french": "Siempre en español",
+        "diff_first": "Diffs antes de archivos completos"
+      }
+    },
+    "model_routing": {
+      "label": "Routing multi-modelo",
+      "hint": {
+        "fast": "Haiku = 3× más barato para tareas repetitivas.",
+        "advanced": "Patrón Writer(Sonnet)/Reviewer(Haiku) reduce costos en 60%."
+      },
+      "opts": {
+        "haiku_workers": "Haiku — agentes workers / review bulk",
+        "sonnet_main": "Sonnet — desarrollo principal",
+        "opus_arch": "Opus — decisiones arquitectónicas"
+      }
+    },
+    "mcp_integrations": {
+      "label": "Integraciones MCP a configurar",
+      "hint": {
+        "fast": "MCP extiende el asistente con herramientas externas (DB, navegador, APIs).",
+        "advanced": "Cada integración requiere un servidor MCP configurado en settings.json."
+      },
+      "opts": {
+        "browser": "Navegador (Playwright)",
+        "db_mcp": "Base de datos (MCP)"
+      }
+    }
+  },
+  "landing": {
+    "meta_description": "Configura tu entorno de desarrollo de IA en menos de 5 minutos. Elige entre 647 agentes, 1.611 habilidades y 128 comandos adaptados a tu stack.",
+    "nav_how": "// cómo funciona",
+    "nav_get": "// qué obtienes",
+    "nav_agents": "// agentes",
+    "nav_features": "// características",
+    "nav_cta": "[ iniciar asistente ]",
+    "nav_mob_cta": "[ iniciar asistente ]",
+    "hero_h1": "Tu asistente IA,<br><span>perfectamente configurado.</span>",
+    "hero_sub": "Responde unas preguntas. Obtén una configuración IA completa y lista para producción — agentes, reglas, docs — en un solo ZIP.",
+    "hero_cta": "<span class=\"caret\">&gt;</span> iniciar asistente",
+    "slide0_eyebrow": "// para los que construyen a las 3am",
+    "slide0_line1": "Tienes ideas que",
+    "slide0_line2": "ya deberían estar corriendo.",
+    "slide0_sub": "La brecha entre lo que imaginas y lo que se lanza no es talento. Es infraestructura que falta. Vamos a arreglarlo.",
+    "slide1_eyebrow": "// 647 agentes · 1.611 habilidades · 128 comandos",
+    "slide1_line1": "¿Y si tu IA conociera tu stack,",
+    "slide1_line2": "tus reglas, antes de escribir una palabra?",
+    "slide1_sub": "Agentes especialistas seleccionados para tu proyecto. Pre-cargados con tus estándares, tu arquitectura, tu forma de pensar — antes de la primera sesión.",
+    "slide2_eyebrow": "// de cero a contribuidor en &lt; 5 min",
+    "slide2_line1": "En cinco minutos,",
+    "slide2_line2": "tu IA se convierte en co-fundador.",
+    "slide2_sub": "Suelta la config. Mira cómo tu asistente pasa de herramienta genérica a experto del dominio — leyendo cada regla, cada spec de agente, entregando desde el día cero.",
+    "slide2_cta": "<span class=\"caret\">&gt;</span> lanzar asistente",
+    "stat_agents": "Agentes",
+    "stat_skills": "Habilidades",
+    "stat_commands": "Comandos",
+    "stat_files": "Archivos generados",
+    "stat_levels": "Niveles de experiencia",
+    "stat_time": "Tiempo de config",
+    "how_label": "<span>//</span> proceso",
+    "how_title": "Cómo funciona",
+    "how_sub": "Tres pasos de cero a un entorno IA completamente configurado. Sin boilerplate, sin suposiciones.",
+    "step1_title": "Responde preguntas sobre tu proyecto",
+    "step1_desc": "Elige el modo Rápido (6 preguntas), Avanzado (14) o Experto (24). El asistente aprende tu stack, tamaño de equipo, dominio y flujos de trabajo para construir un perfil preciso.",
+    "step2_title": "Explora 647 agentes, 1.611 habilidades y 128 comandos",
+    "step2_desc": "Nuestro motor de puntuación clasifica los agentes por relevancia para tu stack. Explora también 1.611 habilidades y 128 comandos slash. Activa lo que necesitas y confirma tu selección.",
+    "step3_title": "Descarga tu config IA completa como ZIP",
+    "step3_desc": "Obtén tu archivo de config principal, reglas, specs de agentes, docs de arquitectura y un ADR — listo para colocar en la raíz de tu proyecto e iniciar inmediatamente.",
+    "get_label": "<span>//</span> resultado",
+    "get_title": "Qué obtienes",
+    "get_sub": "Una configuración IA completa y estructurada que tu asistente lee, entiende y aplica desde el primer mensaje.",
+    "fc1_title": "Config IA — El brief maestro",
+    "fc1_desc": "Contexto del proyecto, visión arquitectónica, convenciones del equipo y estándares de código — todo en un archivo que tu IA lee primero.",
+    "fc2_title": ".ai/agents/ — Equipo de especialistas",
+    "fc2_desc": "Agentes preseleccionados para tu stack. Cada uno viene con una persona, alcance, capacidades y ejemplos de invocación.",
+    "fc3_title": ".ai/rules/ — Controles de calidad",
+    "fc3_desc": "Reglas de seguridad, TDD, comportamiento y específicas de stack que imponen tus estándares en cada cambio generado por IA.",
+    "fc4_title": "docs/ — Arquitectura + decisiones",
+    "fc4_desc": "Visión arquitectónica, glosario y ADR-001 pre-estructurado para tu proyecto — para que la IA entienda el porqué, no solo el qué.",
+    "agents_title": "647 agentes · 1.611 habilidades · 128 comandos",
+    "agents_sub": "Seleccionados a mano de 12+ repositorios GitHub. Agentes, habilidades reutilizables y comandos slash — todos los dominios cubiertos.",
+    "feat_label": "<span>//</span> características",
+    "feat_title": "Construido para desarrolladores serios",
+    "feat_sub": "Cada decisión de diseño optimizada para el desarrollador que se preocupa por la calidad, la seguridad y avanzar rápido sin romper cosas.",
+    "bfc1_title": "Recomendaciones inteligentes",
+    "bfc1_desc": "Nuestro motor de puntuación analiza tu stack, equipo y flujo de trabajo para destacar exactamente los agentes que necesitas. Sin ruido, solo las herramientas correctas. Cada recomendación está clasificada con una puntuación de relevancia superior a 80.",
+    "bfc1_meta": "<div class=\"bfc-meta-dot\"></div> Motor de puntuación activo",
+    "bfc2_title": "2.386 recursos seleccionados",
+    "bfc2_desc": "647 agentes, 1.611 habilidades y 128 comandos — seleccionados a mano de 12+ repositorios GitHub. Backend, frontend, seguridad, IA/ML, DevOps — todas las especialidades cubiertas. Fuentes: avivl, wshobson, hesreallyhim, y más.",
+    "bfc2_meta": "<div class=\"bfc-meta-dot\"></div> 2.386 recursos indexados",
+    "bfc3_title": "Bootstrap instantáneo",
+    "bfc3_desc": "Coloca el ZIP en la raíz de tu proyecto, pega un prompt. Tu asistente IA lee cada regla, cada spec de agente y comienza a contribuir inmediatamente. Del descargado al primer commit en menos de 5 minutos.",
+    "bfc3_meta": "<div class=\"bfc-meta-dot\"></div> Cero config requerida",
+    "demo_label": "<span>//</span> demo",
+    "demo_title": "Verlo en acción",
+    "demo_sub": "Una sesión real — modo Avanzado, stack TypeScript + React.",
+    "demo_hint": "// vista previa estática — lanza el asistente para la experiencia real",
+    "cta_label": "<span>$</span> listo para publicar",
+    "cta_h2": "Deja de configurar.<br><span>Empieza a construir.</span>",
+    "cta_sub": "Tu asistente IA está esperando instrucciones adecuadas. Dale el contexto que necesita — en menos de 5 minutos.",
+    "cta_btn": "<span class=\"caret\">&gt;</span> iniciar asistente",
+    "cta_note": "gratis, sin cuenta requerida",
+    "foot_wizard": "Asistente",
+    "foot_how": "Cómo funciona",
+    "foot_agents": "Agentes",
+    "foot_feat": "Características",
+    "foot_copy": "// construido para desarrolladores"
+  }
+}

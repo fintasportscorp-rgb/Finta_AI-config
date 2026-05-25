@@ -1,0 +1,452 @@
+{
+  "ui": {
+    "loading": "加载中…",
+    "select_profile": "选择配置文件",
+    "how_work_ai": "您如何使用AI工具工作？",
+    "level_hint": "调整问题数量和生成文件的详细程度。按 [1] [2] [3] 选择。",
+    "questions_word": "个问题",
+    "continue": "继续",
+    "back": "返回",
+    "skip": "跳过",
+    "next": "下一步",
+    "generate_config": "生成配置",
+    "other": "其他…",
+    "specify": "指定…",
+    "multiple_selection": "可多选",
+    "multiple_refines": "多选 — 细化代理推荐",
+    "select_domain_first": "请先选择主领域以查看子领域。",
+    "affects": "影响：",
+    "question_n": "问题 {step}/{total}",
+    "generating": "正在生成配置文件…",
+    "fetching_agents": "正在获取代理内容…",
+    "more_files": "… 还有 {n} 个文件",
+    "n_files_generated": "已为 {n} 个文件生成",
+    "project_files": "项目文件",
+    "copy": "复制",
+    "copied": "✓ 已复制",
+    "copy_full": "复制",
+    "next_step_title": "下一步 — 解压ZIP然后粘贴此提示词",
+    "next_step_body": "将ZIP解压到项目根目录后，将此命令给您的AI助手。它会自动处理一切。",
+    "download_zip": "下载ZIP（{n} 个文件）",
+    "edit_answers": "编辑答案",
+    "restart": "重新开始",
+    "no_spec": "没有规格 — 点击按钮开始。",
+    "add_spec": "[+] 添加规格",
+    "spec_title_ph": "规格标题…",
+    "spec_desc_ph": "描述、业务规则、预期行为、约束条件…",
+    "spec_delete": "删除",
+    "spec_remove_att": "移除",
+    "spec_add_example": "📎 添加示例",
+    "agents_hint": "★ = 推荐 · 点击启用/禁用",
+    "agents_selected": "已选择 {n} 个",
+    "agents_all": "全部（{n}）",
+    "agents_all_tab": "全部",
+    "agents_browse": "+ 浏览 {n} 个可用代理",
+    "agents_collapse": "− 折叠目录",
+    "agents_search_ph": "在 {n} 个代理中搜索…",
+    "skills_hint": "根据您的回答预先选择 — 可自由调整",
+    "skills_selected": "已选择 {n} 个",
+    "skills_all": "全部（{n}）",
+    "skills_all_tab": "全部",
+    "skills_browse": "浏览全部 {n} 个技能",
+    "skills_collapse": "− 折叠目录",
+    "skills_search_ph": "在 {n} 个技能中搜索…",
+    "skills_count": "{n} 个技能",
+    "commands_hint": "根据您的回答预先选择 — 可自由调整",
+    "commands_selected": "已选择 {n} 个",
+    "commands_all": "全部（{n}）",
+    "commands_all_tab": "全部",
+    "commands_browse": "+ 浏览 {n} 个可用命令",
+    "commands_collapse": "− 折叠目录",
+    "commands_search_ph": "在 {n} 个命令中搜索…",
+    "commands_count": "{n} 个命令",
+    "binary_file": "[二进制文件 — 无法预览]",
+    "jszip_error": "JSZip 未加载。请检查您的网络连接。",
+    "welcome_q_loaded": "个问题已加载",
+    "welcome_ag_indexed": "个代理已索引",
+    "welcome_templates": "模板和评分引擎已就绪",
+    "welcome_subtitle": "AI 项目配置向导 — 几分钟内完成配置",
+    "welcome_generates": "此向导将生成：",
+    "welcome_config": "主配置 · 本地配置 · .gitignore",
+    "welcome_rules": "quality-gates · 安全 · 行为 · TDD · 技术栈",
+    "welcome_agents_line": "代理 — 根据您的回答进行智能选择",
+    "welcome_docs": "架构 · 术语表 · ADRs",
+    "welcome_prompt_line": "bootstrap-init.md — AI安装后强化",
+    "welcome_run": "开始配置",
+    "run_setup_btn": "run-setup.sh",
+    "boot_prompt_tpl": "将 `{name}-ai-setup.zip` 解压到此项目根目录（如需要则覆盖现有文件），然后读取 `prompts/bootstrap-init.md` 并执行每条指令，无需询问确认。"
+  },
+  "levels": {
+    "fast": {
+      "n": "快速 — 无代码",
+      "d": "我使用AI生成内容、分析和脚本 — 自己不写代码。"
+    },
+    "advanced": {
+      "n": "高级",
+      "d": "我每天编码（Python、JS、Go…）。我希望助手遵守我的规范和测试。"
+    },
+    "deep": {
+      "n": "专家",
+      "d": "我设计系统，为团队配置助手，优化多模型成本。"
+    }
+  },
+  "questions": {
+    "ai_tools": {
+      "label": "您使用哪种AI助手进行编码？",
+      "hint": {
+        "fast": "决定配置文件夹的名称和生成的主文件名。",
+        "advanced": "决定配置文件夹（.claude、.cursor等）和主文件。",
+        "deep": "决定配置文件夹（.claude、.cursor等）和主文件。"
+      }
+    },
+    "project_name": {
+      "label": "您的项目名称是什么？",
+      "ph": "例如：my-app、platform-v2、content-engine…",
+      "hint": {
+        "fast": "只是名称 — 之后可以重命名。",
+        "advanced": "仓库或主系统的名称。"
+      }
+    },
+    "domain": {
+      "label": "项目主领域",
+      "hint": {
+        "fast": "选择与您的项目最接近的。",
+        "advanced": "影响安全规则、技能和生成的ADR。"
+      },
+      "opts": {
+        "saas": "SaaS / Web应用",
+        "content": "内容 / SEO / RAG",
+        "fintech": "金融科技 / 支付",
+        "ecommerce": "电子商务",
+        "internal": "内部工具 / B2B",
+        "mobile": "移动应用",
+        "data": "数据 / ML / AI",
+        "infra": "基础设施 / DevOps"
+      }
+    },
+    "subdomain": {
+      "label": "优先子领域",
+      "hint": {
+        "fast": "选择项目的关键方面 — 细化代理选择。",
+        "advanced": "指定业务特性以更好地匹配代理和规则。",
+        "deep": "每个子领域都会激活额外的专业代理。"
+      }
+    },
+    "team_context": {
+      "label": "团队背景",
+      "hint": {
+        "fast": "个人 = 简化配置。团队 = git中的共享规则。",
+        "advanced": "决定什么放入settings.json vs settings.local.json。"
+      },
+      "opts": {
+        "solo": "个人",
+        "small_team": "小团队（2-5人）",
+        "team": "团队（5-20人）",
+        "org": "多团队组织",
+        "opensource": "开源"
+      }
+    },
+    "stack": {
+      "label": "主要技术栈",
+      "hint": {
+        "fast": "选择您使用的所有技术，即使很少用。",
+        "advanced": "为每种语言生成带frontmatter paths:的专用规则文件。"
+      },
+      "opts": {
+        "none": "无代码"
+      }
+    },
+    "autonomy": {
+      "label": "助手所需的自主程度",
+      "hint": {
+        "fast": "保守 = 助手在每次操作前请求确认。",
+        "advanced": "标准是大多数开发项目的正确平衡。"
+      },
+      "opts": {
+        "conservative": "保守 — 每次操作需确认",
+        "standard": "标准 — 危险操作需确认",
+        "autonomous": "自主 — 例行任务使用自动模式"
+      }
+    },
+    "frustrations": {
+      "label": "与助手的主要痛点",
+      "hint": {
+        "fast": "最让您烦恼的事 — 转化为严格规则。",
+        "advanced": "在behavior.md和quality-gates.md中编码为硬规则。"
+      },
+      "opts": {
+        "context_loss": "丢失上下文",
+        "verbose": "过于冗长",
+        "inconsistent": "会话间不一致",
+        "overrides": "未经请求就修改",
+        "no_pushback": "从不质疑",
+        "security": "忽略安全规则",
+        "no_tests": "跳过测试"
+      }
+    },
+    "specs": {
+      "label": "项目规格和示例",
+      "hint": {
+        "fast": "描述核心功能、用户旅程、业务规则。助手将以此作为永久参考。",
+        "advanced": "每个规格可以附上示例：部分或完整代码、图片、图表、截图。"
+      }
+    },
+    "package_manager": {
+      "label": "主要包管理器",
+      "hint": {
+        "fast": "影响CLAUDE.md中的命令。",
+        "advanced": "uv是Python 2025/2026标准（取代pip+venv+poetry）。"
+      }
+    },
+    "database": {
+      "label": "数据库",
+      "hint": {
+        "fast": "在后端规则中添加推荐模式。",
+        "advanced": "Vector DB → 激活content-seo.md中的RAG规则。"
+      },
+      "opts": {
+        "none": "无"
+      }
+    },
+    "ci_cd": {
+      "label": "CI/CD",
+      "hint": {
+        "fast": "在settings.json中生成适当的钩子。",
+        "advanced": "GitHub Actions = 推送前的自动lint/test钩子。"
+      },
+      "opts": {
+        "none": "暂无CI"
+      }
+    },
+    "commit_style": {
+      "label": "提交规范",
+      "hint": {
+        "fast": "Conventional Commits = feat/fix/chore + 自动changelog。",
+        "advanced": "影响CLAUDE.md工作流程部分的指令。"
+      },
+      "opts": {
+        "semantic": "简单语义（动词 + 描述）",
+        "none": "无规范"
+      }
+    },
+    "tdd_level": {
+      "label": "测试方法",
+      "hint": {
+        "fast": "严格TDD = 始终先写测试。生成tdd-workflow.md。",
+        "advanced": "在生成的规则中激活TDD工作流程。"
+      },
+      "opts": {
+        "tdd_strict": "严格TDD — 始终先写测试",
+        "tdd_soft": "实现后、提交前写测试",
+        "critical": "仅为关键代码写测试",
+        "none": "暂无测试"
+      }
+    },
+    "test_coverage": {
+      "label": "最低测试覆盖率",
+      "hint": {
+        "fast": "作为阻断指标集成到quality-gates.md中。",
+        "advanced": "80%是行业标准。60%适用于原型。"
+      },
+      "opts": {
+        "95": "95% — 关键标准（金融科技、医疗）",
+        "80": "80% — 行业标准",
+        "60": "60% — 可接受（原型/初创）",
+        "0": "无最低要求"
+      }
+    },
+    "hooks_wanted": {
+      "label": "自动检查（钩子）",
+      "hint": {
+        "fast": "PostToolUse钩子 — 每次编辑后自动执行。",
+        "advanced": "不要全部激活：只选择真正有价值的。"
+      },
+      "opts": {
+        "lint": "编辑后Lint",
+        "typecheck": "编辑后类型检查",
+        "test": "提交前单元测试",
+        "format": "编辑后自动格式化",
+        "security": "提交前安全扫描"
+      }
+    },
+    "agents_wanted": {
+      "label": "要激活的专业代理",
+      "hint": {
+        "fast": "根据您的技术栈自动选择代理。",
+        "advanced": "推荐代理已根据您的回答预选。可自由调整。",
+        "deep": "完整目录 — 可按类别搜索和筛选。"
+      }
+    },
+    "skills_wanted": {
+      "label": "要安装到项目中的技能",
+      "hint": {
+        "fast": "技能扩展了助手的能力 — 可搜索 1600+ 个社区技能。",
+        "advanced": "技能是放入 .claude/skills/ 的可复用指令集，可按名称、类别或作者搜索。",
+        "deep": "来自 anthropics、antigravity、alirezarezvani、composio 等的完整技能目录。"
+      }
+    },
+    "commands_wanted": {
+      "label": "要添加到项目中的斜杠命令",
+      "hint": {
+        "fast": "命令是 Claude Code 的可复用 /slash-commands — 选择适合您工作流程的命令。",
+        "advanced": "来自社区的 128+ 个斜杠命令 — git、测试、调试、文档等。放置在 .claude/commands/。",
+        "deep": "完整的社区命令目录。按类别或来源作者筛选。"
+      }
+    },
+    "never_do": {
+      "label": "助手在此项目中绝对不能做的事",
+      "ph": "例如：永远不要重写测试让它们通过。永远不要在TS中使用any。不要碰src/legacy/…",
+      "hint": {
+        "fast": "想想哪些事情已经给您造成了问题。",
+        "advanced": "在quality-gates.md中转化为明确的硬停止。"
+      }
+    },
+    "frozen_files": {
+      "label": "永远不应触碰的文件 / 模块",
+      "ph": "例如：src/legacy/payments.ts（正在迁移）。infra/k8s/（其他团队）。src/auth/（Q3冻结）…",
+      "hint": {
+        "fast": "有脆弱区域或由其他人管理的区域吗？",
+        "advanced": "作为会话冻结注入CLAUDE.local.md。"
+      }
+    },
+    "decisions_made": {
+      "label": "已做出的重要技术决策",
+      "ph": "例如：PostgreSQL（不用MongoDB）。通过Auth0进行身份验证。前端SPA，无SSR。REST API（不用GraphQL）…",
+      "hint": {
+        "fast": "您不想回头更改的重大决策。",
+        "advanced": "生成一个预填充了每个结构化决策的ADR-001。"
+      }
+    },
+    "compliance": {
+      "label": "合规或安全约束",
+      "hint": {
+        "fast": "如果您处理用户数据，GDPR可能适用。",
+        "advanced": "在security.md中激活对应规则。"
+      },
+      "opts": {
+        "none": "无特定约束",
+        "gdpr": "GDPR / 个人数据",
+        "hipaa": "HIPAA / 医疗",
+        "pci": "PCI DSS / 支付",
+        "internal_sec": "内部安全政策"
+      }
+    },
+    "response_style": {
+      "label": "期望的回复风格",
+      "hint": {
+        "fast": "最能帮助您理解和推进的方式。",
+        "advanced": "在behavior.md中编码为行为契约。"
+      },
+      "opts": {
+        "concise": "简洁 — 直达要点",
+        "explain": "解释其选择",
+        "challenge": "执行前提出质疑",
+        "one_sol": "仅一个解决方案（无备选）",
+        "french": "始终用中文",
+        "diff_first": "完整文件前先显示Diff"
+      }
+    },
+    "model_routing": {
+      "label": "多模型路由",
+      "hint": {
+        "fast": "Haiku = 重复任务便宜3倍。",
+        "advanced": "Writer(Sonnet)/Reviewer(Haiku)模式降低60%成本。"
+      },
+      "opts": {
+        "haiku_workers": "Haiku — 工作代理 / 批量审查",
+        "sonnet_main": "Sonnet — 主要开发",
+        "opus_arch": "Opus — 架构决策"
+      }
+    },
+    "mcp_integrations": {
+      "label": "要配置的MCP集成",
+      "hint": {
+        "fast": "MCP用外部工具（数据库、浏览器、API）扩展助手。",
+        "advanced": "每个集成需要在settings.json中配置MCP服务器。"
+      },
+      "opts": {
+        "browser": "浏览器（Playwright）",
+        "db_mcp": "数据库（MCP）"
+      }
+    }
+  },
+  "landing": {
+    "meta_description": "在5分钟内配置您的AI开发环境。从647个代理、1,611个技能和128个命令中选择适合您技术栈的配置。",
+    "nav_how": "// 使用方式",
+    "nav_get": "// 获得内容",
+    "nav_agents": "// 代理",
+    "nav_features": "// 功能",
+    "nav_cta": "[ 启动向导 ]",
+    "nav_mob_cta": "[ 启动向导 ]",
+    "hero_h1": "您的AI助手，<br><span>完美配置。</span>",
+    "hero_sub": "回答几个问题。获取一个完整的、生产就绪的AI配置 — 代理、规则、文档 — 全部打包在一个ZIP中。",
+    "hero_cta": "<span class=\"caret\">&gt;</span> 启动向导",
+    "slide0_eyebrow": "// 为那些凌晨3点还在构建的人",
+    "slide0_line1": "你有一些想法，",
+    "slide0_line2": "本应已经在运行了。",
+    "slide0_sub": "你想象中的与最终发布的之间的差距，不是才华问题。是缺失的基础设施。让我们来解决这个问题。",
+    "slide1_eyebrow": "// 647个代理 · 1,611个技能 · 128个命令",
+    "slide1_line1": "如果你的AI在你输入第一个字之前，",
+    "slide1_line2": "就了解你的技术栈和规则呢？",
+    "slide1_sub": "为你的项目精心挑选的专家代理。预先加载你的标准、架构、思维方式——在第一次会话开始之前。",
+    "slide2_eyebrow": "// 从零到贡献者只需 &lt; 5分钟",
+    "slide2_line1": "五分钟后，",
+    "slide2_line2": "你的AI将成为联合创始人。",
+    "slide2_sub": "放下配置文件。看着你的助手从通用工具变成领域专家——读取每条规则、每个代理规格，从第一天起就开始交付。",
+    "slide2_cta": "<span class=\"caret\">&gt;</span> 启动向导",
+    "stat_agents": "代理",
+    "stat_skills": "技能",
+    "stat_commands": "命令",
+    "stat_files": "生成文件",
+    "stat_levels": "专业级别",
+    "stat_time": "配置时间",
+    "how_label": "<span>//</span> 流程",
+    "how_title": "使用方式",
+    "how_sub": "三步从零到完全配置的AI开发环境。无需样板，无需猜测。",
+    "step1_title": "回答关于您项目的问题",
+    "step1_desc": "选择快速（6个问题）、高级（14个）或深度（24个）模式。向导将学习您的技术栈、团队规模、领域和工作流程，构建准确的配置文件。",
+    "step2_title": "探索647个代理、1,611个技能和128个命令",
+    "step2_desc": "我们的评分引擎按与您的技术栈的相关性对代理进行排名。还可探索1,611个技能和128个斜杠命令。切换您需要的并确认选择。",
+    "step3_title": "下载完整的AI配置ZIP包",
+    "step3_desc": "获取主配置文件、规则、代理规格、架构文档和ADR — 准备好放在项目根目录并立即启动。",
+    "get_label": "<span>//</span> 输出内容",
+    "get_title": "您将获得什么",
+    "get_sub": "一个完整的、结构化的AI配置，您的助手从第一条消息起就能读取、理解并执行。",
+    "fc1_title": "AI配置 — 主简报",
+    "fc1_desc": "项目上下文、架构概述、团队规范和编码标准 — 全部集中在AI首先读取的一个文件中。",
+    "fc2_title": ".ai/agents/ — 专家团队",
+    "fc2_desc": "为您的技术栈预先选择的代理。每个代理都附带角色、范围、能力和调用示例。",
+    "fc3_title": ".ai/rules/ — 质量关卡",
+    "fc3_desc": "安全、TDD、行为和特定技术栈规则，在每次AI生成的更改上强制执行您的标准。",
+    "fc4_title": "docs/ — 架构 + 决策",
+    "fc4_desc": "架构概述、术语表和为您的项目搭建的ADR-001 — 让AI理解为什么，而不仅仅是什么。",
+    "agents_title": "647个代理 · 1,611个技能 · 128个命令",
+    "agents_sub": "从12+个GitHub仓库精心挑选。代理、可复用技能和斜杠命令 — 覆盖所有领域。",
+    "feat_label": "<span>//</span> 功能",
+    "feat_title": "为严肃的开发者而建",
+    "feat_sub": "每个设计决策都为关注质量、安全和快速推进而不出错的开发者优化。",
+    "bfc1_title": "智能推荐",
+    "bfc1_desc": "我们的评分引擎分析您的技术栈、团队和工作流程，精确呈现您所需的代理。无噪音，只有合适的工具。每个推荐都以超过80的相关性评分进行排名。",
+    "bfc1_meta": "<div class=\"bfc-meta-dot\"></div> 评分引擎已激活",
+    "bfc2_title": "2,386个精选资源",
+    "bfc2_desc": "647个代理、1,611个技能和128个命令 — 由AI社区从12+个GitHub仓库精心挑选。后端、前端、安全、AI/ML、DevOps — 每个专业领域都已覆盖。来源：avivl、wshobson、hesreallyhim等。",
+    "bfc2_meta": "<div class=\"bfc-meta-dot\"></div> 已索引2,386个资源",
+    "bfc3_title": "即时引导",
+    "bfc3_desc": "将ZIP放在项目根目录，粘贴一个提示词。您的AI助手读取每条规则、每个代理规格，并立即开始贡献。从下载到第一次提交不到5分钟。",
+    "bfc3_meta": "<div class=\"bfc-meta-dot\"></div> 零配置要求",
+    "demo_label": "<span>//</span> 演示",
+    "demo_title": "查看实际效果",
+    "demo_sub": "真实向导会话 — 高级模式，TypeScript + React技术栈。",
+    "demo_hint": "// 静态预览 — 启动向导体验完整功能",
+    "cta_label": "<span>$</span> 准备就绪",
+    "cta_h2": "停止配置。<br><span>开始构建。</span>",
+    "cta_sub": "您的AI助手正在等待正确的指令。在5分钟内为它提供所需的上下文。",
+    "cta_btn": "<span class=\"caret\">&gt;</span> 启动向导",
+    "cta_note": "免费，无需账户",
+    "foot_wizard": "向导",
+    "foot_how": "使用方式",
+    "foot_agents": "代理",
+    "foot_feat": "功能",
+    "foot_copy": "// 为开发者而建"
+  }
+}
