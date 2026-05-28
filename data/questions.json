@@ -347,6 +347,19 @@
     },
 
     {
+      "id": "orchestration_type",
+      "phase": "deep",
+      "type": "orchestration_picker",
+      "label": "Agent Orchestration Strategy",
+      "targets": ["docs/architecture.md", "docs/orchestration.md"],
+      "hint": {
+        "fast": "Choose how your agents coordinate with each other.",
+        "advanced": "Define how your agents collaborate — sequential, parallel, hierarchical, or custom.",
+        "deep": "Define the orchestration pattern and assign roles to each of your selected agents."
+      }
+    },
+
+    {
       "id": "skills_wanted",
       "phase": "fast",
       "type": "skill_picker",

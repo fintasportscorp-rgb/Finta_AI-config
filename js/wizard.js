@@ -2,6 +2,7 @@
 // I18N
 // ═══════════════════════════════════════════════════════════
 const SUPPORTED_LANGS = ['en', 'fr', 'es', 'de', 'pt', 'ja', 'zh', 'ko'];
+const BOOK_LM_URL = 'https://notebooklm.google.com/notebook/70873a7e-89a4-423f-bdbe-530fcbc3f9d9/preview';
 const LANG_FLAGS = {en:'https://flagcdn.com/w40/gb.png',fr:'https://flagcdn.com/w40/fr.png',es:'https://flagcdn.com/w40/es.png',de:'https://flagcdn.com/w40/de.png',pt:'https://flagcdn.com/w40/pt.png',ja:'https://flagcdn.com/w40/jp.png',zh:'https://flagcdn.com/w40/cn.png',ko:'https://flagcdn.com/w40/kr.png'};
 
 function toggleLangMenu() {
@@ -583,7 +584,10 @@ function renderSkillPicker(q, ans, level) {
   return `
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.4rem">
       <span class="ap-hint" style="margin-bottom:0">${t('skills_hint')}</span>
-      <span class="ap-count" id="skill-count">${t('skills_selected',{n:selected.size})}</span>
+      <div style="display:flex;align-items:center;gap:.7rem">
+        <a href="${BOOK_LM_URL}" target="_blank" rel="noopener" class="booklm-btn">📘 Our Book LM</a>
+        <span class="ap-count" id="skill-count">${t('skills_selected',{n:selected.size})}</span>
+      </div>
     </div>
     ${recCatTabs}
     <div class="ap-grid" id="skill-rec-grid">${recCardsHtml}</div>
@@ -618,7 +622,10 @@ function renderAgentPicker(q, ans, level) {
   return `
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.4rem">
       <span class="ap-hint" style="margin-bottom:0">${t('agents_hint')}</span>
-      <span class="ap-count" id="agent-count">${t('agents_selected',{n:selected.size})}</span>
+      <div style="display:flex;align-items:center;gap:.7rem">
+        <a href="${BOOK_LM_URL}" target="_blank" rel="noopener" class="booklm-btn">📘 Our Book LM</a>
+        <span class="ap-count" id="agent-count">${t('agents_selected',{n:selected.size})}</span>
+      </div>
     </div>
     ${recCatTabsHtml}
     <div class="ap-grid" id="rec-grid">${recCardsHtml}</div>
@@ -1018,7 +1025,10 @@ function renderCommandPicker(q, ans, level) {
   return `
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.4rem">
       <span class="ap-hint" style="margin-bottom:0">${t('commands_hint')}</span>
-      <span class="ap-count" id="cmd-count">${t('commands_selected',{n:selected.size})}</span>
+      <div style="display:flex;align-items:center;gap:.7rem">
+        <a href="${BOOK_LM_URL}" target="_blank" rel="noopener" class="booklm-btn">📘 Our Book LM</a>
+        <span class="ap-count" id="cmd-count">${t('commands_selected',{n:selected.size})}</span>
+      </div>
     </div>
     ${selCatTabs}
     <div class="ap-grid" id="cmd-sel-grid">${selCardsHtml}</div>
@@ -1026,6 +1036,104 @@ function renderCommandPicker(q, ans, level) {
       ${t('commands_browse',{n:COMMANDS_CATALOG.length})}
     </button>
     <div id="cmd-full-catalog" style="display:none"></div>`;
+}
+
+// ═══════════════════════════════════════════════════════════
+// ORCHESTRATION PICKER
+// ═══════════════════════════════════════════════════════════
+const ORCH_TYPES = [
+  { v:'sequential',   i:'→',  l:'Sequential Chain',      d:'Agents in series — output of one becomes input of next' },
+  { v:'parallel',     i:'⫶',  l:'Parallel Execution',    d:'Agents run simultaneously, results aggregated at the end' },
+  { v:'hierarchical', i:'▲',  l:'Hierarchical',          d:'Supervisor directs and coordinates Worker agents' },
+  { v:'router',       i:'◈',  l:'Router / Selector',     d:'One agent dynamically selects which specialist handles next' },
+  { v:'debate',       i:'⟺', l:'Multi-Agent Debate',    d:'Agents critique each other, converging on best answer' },
+  { v:'swarm',        i:'◉',  l:'Swarm',                 d:'Self-organizing agents dynamically pick up tasks' },
+  { v:'hitl',         i:'👤', l:'Human-in-the-Loop',     d:'Human validation required at defined checkpoints' },
+  { v:'custom',       i:'⬡',  l:'Custom Graph',          d:'Free-form connections — design your own topology' }
+];
+
+const ORCH_ROLES = [
+  { v:'supervisor',  l:'Supervisor', c:'var(--amb)' },
+  { v:'worker',      l:'Worker',     c:'var(--grn2)' },
+  { v:'critic',      l:'Critic',     c:'var(--acl)' },
+  { v:'router',      l:'Router',     c:'var(--grn3)' },
+  { v:'validator',   l:'Validator',  c:'rgba(57,255,20,.7)' },
+  { v:'fallback',    l:'Fallback',   c:'var(--mut)' }
+];
+
+function renderOrchestrationPicker(q, ans, level) {
+  if (!ans.orchestration) ans.orchestration = { type: null, roles: {} };
+  const ot = ans.orchestration;
+  const agents = (ans.agents_wanted || []).map(id => AGENTS_CATALOG.find(a => a.id === id)).filter(Boolean);
+
+  const typeCards = ORCH_TYPES.map(tp => `
+    <div class="orch-card${ot.type === tp.v ? ' sel' : ''}" onclick="pickOrchType('${tp.v}')">
+      <span class="orch-icon">${tp.i}</span>
+      <div>
+        <div class="orch-name">${tp.l}</div>
+        <div class="orch-desc">${tp.d}</div>
+      </div>
+    </div>`).join('');
+
+  const roleSection = ot.type && agents.length ? `
+  <div class="orch-roles-section">
+    <div class="tl dim" style="margin-bottom:.7rem"><span class="pfx">[--]</span> Assign a role to each of your selected agents</div>
+    ${agents.map(a => {
+      const currentRole = ot.roles[a.id] || 'worker';
+      const roleBtns = ORCH_ROLES.map(r =>
+        `<button class="orch-role-btn${currentRole === r.v ? ' sel' : ''}"
+          style="${currentRole === r.v ? `border-color:${r.c};color:${r.c}` : ''}"
+          onclick="setOrchRole('${a.id}','${r.v}')">${r.l}</button>`
+      ).join('');
+      return `<div class="orch-agent-row">
+        <span class="orch-agent-name">${a.name || a.id}</span>
+        <div class="orch-role-btns">${roleBtns}</div>
+      </div>`;
+    }).join('')}
+  </div>` : (ot.type && !agents.length ? `
+  <div class="tl dim" style="margin-top:.8rem"><span class="pfx">[--]</span> Select agents in the previous step to assign roles here.</div>` : '');
+
+  return `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem">
+      <span class="ap-hint" style="margin-bottom:0">Select a pattern — then assign roles to your agents</span>
+      <a href="${BOOK_LM_URL}" target="_blank" rel="noopener" class="booklm-btn">📘 Our Book LM</a>
+    </div>
+    <div class="orch-grid">${typeCards}</div>
+    ${roleSection}`;
+}
+
+function pickOrchType(v) {
+  if (!S.ans.orchestration) S.ans.orchestration = { type: null, roles: {} };
+  S.ans.orchestration.type = v;
+  const agents = (S.ans.agents_wanted || []);
+  if (!S.ans.orchestration.roles || !Object.keys(S.ans.orchestration.roles).length) {
+    S.ans.orchestration.roles = {};
+    agents.forEach((id, i) => { S.ans.orchestration.roles[id] = i === 0 ? 'supervisor' : 'worker'; });
+  }
+  // Re-render only the orchestration section
+  const container = document.querySelector('.orch-grid');
+  if (container && container.parentElement) {
+    const newHtml = renderOrchestrationPicker(activeQs()[S.step], S.ans, S.level);
+    container.parentElement.innerHTML = newHtml;
+  }
+}
+
+function setOrchRole(agentId, role) {
+  if (!S.ans.orchestration) S.ans.orchestration = { type: null, roles: {} };
+  S.ans.orchestration.roles[agentId] = role;
+  const row = document.querySelector(`.orch-agent-row [onclick="setOrchRole('${agentId}','${role}')"]`);
+  if (row) {
+    const parent = row.closest('.orch-agent-row');
+    if (parent) {
+      parent.querySelectorAll('.orch-role-btn').forEach(b => {
+        const bRole = b.getAttribute('onclick').match(/'([^']+)'\)$/)[1];
+        const roleColor = (ORCH_ROLES.find(r => r.v === bRole) || {}).c || 'var(--mut)';
+        b.classList.toggle('sel', bRole === role);
+        b.style.borderColor = bRole === role ? roleColor : '';
+        b.style.color       = bRole === role ? roleColor : '';
+      });
+    }
+  }
 }
 
 function showError() {
@@ -1860,6 +1968,43 @@ function generateFiles(ans, level, agentContents = {}, skillContents = {}, comma
     `---`, `_Date:_ ${today} · _Author:_ [Name]`
   ].join('\n');
 
+  // ── docs/orchestration.md ────────────────────────────────
+  const orch = ans.orchestration;
+  if (orch && orch.type) {
+    const orchLabels = { sequential:'Sequential Chain', parallel:'Parallel Execution', hierarchical:'Hierarchical (Supervisor → Workers)', router:'Router / Agent Selector', debate:'Multi-Agent Debate', swarm:'Swarm / Self-Organizing', hitl:'Human-in-the-Loop', custom:'Custom Graph' };
+    const roleLabels = { supervisor:'Supervisor', worker:'Worker', critic:'Critic', router:'Router', validator:'Validator', fallback:'Fallback' };
+    const orchDesc = {
+      sequential: 'Agents execute in a fixed sequence. Each agent receives the output of the previous one as its input.',
+      parallel:   'All agents run simultaneously on the same input. Results are collected and aggregated.',
+      hierarchical:'A Supervisor agent breaks down the task and delegates sub-tasks to Worker agents.',
+      router:     'A Router agent analyzes the incoming request and selects the most appropriate specialist.',
+      debate:     'Multiple agents propose solutions. A Critic agent evaluates and iterates until convergence.',
+      swarm:      'Agents self-organize and dynamically pick up available tasks from a shared queue.',
+      hitl:       'The AI pipeline pauses at defined checkpoints for human review and approval.',
+      custom:     'Custom topology — agents connect according to a manually defined graph.'
+    };
+    const agentRoleLines = Object.entries(orch.roles || {}).map(([id, role]) => {
+      const agent = AGENTS_CATALOG.find(a => a.id === id);
+      return `| ${agent ? agent.name : id} | ${roleLabels[role] || role} |`;
+    });
+    F['docs/orchestration.md'] = [
+      `# Orchestration Configuration`,``,
+      `**Pattern:** ${orchLabels[orch.type] || orch.type}`,``,
+      `## Description`,
+      orchDesc[orch.type] || '',``,
+      `## Agent Roles`,
+      `| Agent | Role |`,
+      `|-------|------|`,
+      ...agentRoleLines,``,
+      `## Orchestration JSON`,
+      `\`\`\`json`,
+      JSON.stringify(orch, null, 2),
+      `\`\`\``,``,
+      `---`,
+      `_To reload this diagram in the Finta wizard, import this JSON into the orchestration step._`
+    ].join('\n');
+  }
+
   // ── prompts/bootstrap-init.md ────────────────────────────
   const hasDomainRules = !!(ARBO.domainRules && domains.length);
   const rulesFiles = [
@@ -2249,6 +2394,8 @@ function rQuestion(el) {
     }
   } else if (q.type === 'agent_picker') {
     inp = renderAgentPicker(q, S.ans, S.level);
+  } else if (q.type === 'orchestration_picker') {
+    inp = renderOrchestrationPicker(q, S.ans, S.level);
   } else if (q.type === 'skill_picker') {
     inp = renderSkillPicker(q, S.ans, S.level);
   } else if (q.type === 'command_picker') {
@@ -2398,9 +2545,10 @@ function isAnswered(q) {
     return Array.isArray(S.ans.subdomain) && S.ans.subdomain.length > 0;
   }
   if (q.type === 'subdomain_for') { const sels = (S.ans.subdomains || {})[q.domainKey]; return Array.isArray(sels) && sels.length > 0; }
-  if (q.type === 'agent_picker')   return Array.isArray(S.ans.agents_wanted)   && S.ans.agents_wanted.length   > 0;
-  if (q.type === 'skill_picker')   return Array.isArray(S.ans.skills_wanted)   && S.ans.skills_wanted.length   > 0;
-  if (q.type === 'command_picker') return Array.isArray(S.ans.commands_wanted) && S.ans.commands_wanted.length > 0;
+  if (q.type === 'agent_picker')        return Array.isArray(S.ans.agents_wanted)   && S.ans.agents_wanted.length   > 0;
+  if (q.type === 'orchestration_picker') return !!(S.ans.orchestration && S.ans.orchestration.type);
+  if (q.type === 'skill_picker')        return Array.isArray(S.ans.skills_wanted)   && S.ans.skills_wanted.length   > 0;
+  if (q.type === 'command_picker')      return Array.isArray(S.ans.commands_wanted) && S.ans.commands_wanted.length > 0;
   if (q.type === 'specs')        return Array.isArray(S.ans.specs) && S.ans.specs.some(s => s.title || s.description);
   return false;
 }
@@ -2441,9 +2589,15 @@ function ansValuePreview(q) {
     const opts = (ARBO.subdomains || {})[q.domainKey] || [];
     return sels.map(v => { const o = opts.find(x => x.v === v); return o ? o.l : v; }).join(', ');
   }
-  if (q.type === 'agent_picker')   { const n = (S.ans.agents_wanted||[]).length;   return n ? `${n} agent${n>1?'s':''}` : ''; }
-  if (q.type === 'skill_picker')   { const n = (S.ans.skills_wanted||[]).length;   return n ? `${n} skill${n>1?'s':''}` : ''; }
-  if (q.type === 'command_picker') { const n = (S.ans.commands_wanted||[]).length; return n ? `${n} command${n>1?'s':''}` : ''; }
+  if (q.type === 'agent_picker')        { const n = (S.ans.agents_wanted||[]).length;   return n ? `${n} agent${n>1?'s':''}` : ''; }
+  if (q.type === 'orchestration_picker') {
+    const o = S.ans.orchestration;
+    if (!o || !o.type) return '';
+    const lbl = { sequential:'Sequential', parallel:'Parallel', hierarchical:'Hierarchical', router:'Router', debate:'Debate', swarm:'Swarm', hitl:'Human-in-the-Loop', custom:'Custom Graph' };
+    return lbl[o.type] || o.type;
+  }
+  if (q.type === 'skill_picker')        { const n = (S.ans.skills_wanted||[]).length;   return n ? `${n} skill${n>1?'s':''}` : ''; }
+  if (q.type === 'command_picker')      { const n = (S.ans.commands_wanted||[]).length; return n ? `${n} command${n>1?'s':''}` : ''; }
   if (q.type === 'specs')        { const n = (S.ans.specs||[]).filter(s=>s.title||s.description).length; return n ? `${n} spec${n>1?'s':''}` : ''; }
   return '';
 }
@@ -2751,7 +2905,7 @@ document.addEventListener('keydown', function(e) {
     const q = activeQs()[S.step];
     if (e.key === 'Backspace') { e.preventDefault(); prevStep(); }
     // Enter advances only for non-text input types
-    else if (e.key === 'Enter' && q && !['text','textarea','agent_picker','skill_picker','command_picker','specs'].includes(q.type)) {
+    else if (e.key === 'Enter' && q && !['text','textarea','agent_picker','orchestration_picker','skill_picker','command_picker','specs'].includes(q.type)) {
       e.preventDefault(); nextStep();
     }
 

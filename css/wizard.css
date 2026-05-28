@@ -1338,6 +1338,89 @@ pre{
   flex-shrink:0;
 }
 
+/* ─── BOOK LM BUTTON ─── */
+.booklm-btn{
+  font-family:inherit;
+  font-size:.65rem;
+  color:var(--acl);
+  text-decoration:none;
+  padding:.2rem .55rem;
+  border:1px solid rgba(168,154,248,.3);
+  border-radius:var(--r);
+  background:rgba(124,106,247,.08);
+  transition:all .15s;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+.booklm-btn:hover{
+  border-color:rgba(168,154,248,.6);
+  background:rgba(124,106,247,.15);
+  color:var(--acl);
+}
+
+/* ─── ORCHESTRATION PICKER ─── */
+.orch-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:.5rem;
+  margin-bottom:1rem;
+}
+.orch-card{
+  display:flex;
+  align-items:flex-start;
+  gap:.7rem;
+  padding:.65rem .85rem;
+  border:1px solid var(--brd);
+  border-radius:var(--r);
+  background:var(--sur2);
+  cursor:pointer;
+  transition:all .1s;
+  user-select:none;
+}
+.orch-card:hover{border-color:rgba(57,255,20,.35);background:rgba(57,255,20,.03)}
+.orch-card.sel{border-color:var(--acc);background:var(--acd)}
+.orch-icon{font-size:1.2rem;flex-shrink:0;margin-top:.05rem;line-height:1}
+.orch-name{font-size:.8rem;font-weight:600;color:var(--txt);margin-bottom:.15rem}
+.orch-card.sel .orch-name{color:var(--acl)}
+.orch-desc{font-size:.67rem;color:var(--mut);line-height:1.4}
+.orch-roles-section{
+  border-top:1px solid var(--brd);
+  padding-top:.85rem;
+  margin-top:.2rem;
+}
+.orch-agent-row{
+  display:flex;
+  align-items:center;
+  gap:.7rem;
+  padding:.35rem 0;
+  border-bottom:1px solid rgba(255,255,255,.04);
+  flex-wrap:wrap;
+}
+.orch-agent-name{
+  font-size:.77rem;
+  color:var(--grn3);
+  min-width:10rem;
+  flex-shrink:0;
+}
+.orch-role-btns{
+  display:flex;
+  gap:.3rem;
+  flex-wrap:wrap;
+}
+.orch-role-btn{
+  font-family:inherit;
+  font-size:.62rem;
+  padding:.18rem .45rem;
+  border:1px solid var(--brd);
+  border-radius:2px;
+  background:none;
+  color:var(--mut);
+  cursor:pointer;
+  transition:all .1s;
+}
+.orch-role-btn:hover{border-color:var(--grn2);color:var(--grn2)}
+.orch-role-btn.sel{font-weight:600}
+
 /* ─── QSEL TOGGLE BUTTON ─── */
 .qsel-toggle-btn{
   display:flex;
