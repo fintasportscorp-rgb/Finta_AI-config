@@ -1061,6 +1061,148 @@ const ORCH_ROLES = [
   { v:'fallback',    l:'Fallback',   c:'var(--mut)' }
 ];
 
+// Cytoscape role colors (CSS-var-free, used directly in canvas)
+const CY_ROLE_COLORS = {
+  supervisor: { bg:'#f0a500', text:'#050905' },
+  worker:     { bg:'#50fa7b', text:'#050905' },
+  critic:     { bg:'#bd93f9', text:'#0a0840' },
+  router:     { bg:'#8be9fd', text:'#050905' },
+  validator:  { bg:'#98e4a5', text:'#050905' },
+  fallback:   { bg:'#6e768a', text:'#f8f8f2' }
+};
+
+function generateCyElements(orch, agents) {
+  const nodes = agents.map(a => {
+    const role  = orch.roles[a.id] || 'worker';
+    const c     = CY_ROLE_COLORS[role] || CY_ROLE_COLORS.worker;
+    return { data: { id: a.id, label: (a.name || a.id).slice(0, 15), role, bg: c.bg, text: c.text } };
+  });
+
+  const edges = [];
+  const byRole = r => agents.filter(a => (orch.roles[a.id] || 'worker') === r).map(a => a.id);
+  const sups = byRole('supervisor'), routers = byRole('router');
+  const others = agents.filter(a => !sups.includes(a.id) && !routers.includes(a.id)).map(a => a.id);
+
+  const addEdge = (src, tgt, lbl) => edges.push({ data: { id: `${src}-${tgt}`, source: src, target: tgt, label: lbl || '' } });
+
+  if (orch.type === 'sequential' || orch.type === 'hitl') {
+    for (let i = 0; i < agents.length - 1; i++)
+      addEdge(agents[i].id, agents[i+1].id, orch.type === 'hitl' ? '✓ human' : '');
+  } else if (orch.type === 'parallel') {
+    const anchor = sups[0] || agents[0]?.id;
+    agents.filter(a => a.id !== anchor).forEach((a, i) => addEdge(anchor, a.id));
+  } else if (orch.type === 'hierarchical' || orch.type === 'custom') {
+    const tops = sups.length ? sups : (agents[0] ? [agents[0].id] : []);
+    const rest = agents.filter(a => !tops.includes(a.id)).map(a => a.id);
+    tops.forEach(s => rest.forEach(w => addEdge(s, w)));
+  } else if (orch.type === 'router') {
+    const rts = routers.length ? routers : (agents[0] ? [agents[0].id] : []);
+    const tgts = agents.filter(a => !rts.includes(a.id)).map(a => a.id);
+    rts.forEach(r => tgts.forEach(t => addEdge(r, t)));
+  } else if (orch.type === 'debate' || orch.type === 'swarm') {
+    for (let i = 0; i < agents.length; i++)
+      for (let j = i + 1; j < agents.length; j++)
+        addEdge(agents[i].id, agents[j].id);
+  }
+
+  return [...nodes, ...edges];
+}
+
+function getCyLayout(orchType) {
+  if (orchType === 'sequential' || orchType === 'hitl')
+    return { name:'breadthfirst', directed:true, spacingFactor:1.6, avoidOverlap:true, nodeDimensionsIncludeLabels:true };
+  if (orchType === 'hierarchical' || orchType === 'router' || orchType === 'custom' || orchType === 'parallel')
+    return { name:'breadthfirst', directed:true, spacingFactor:1.4, avoidOverlap:true };
+  return { name:'circle', spacingFactor:1.5, avoidOverlap:true };
+}
+
+function buildOrchDiagram() {
+  const wrap = document.getElementById('orch-diagram-wrap');
+  const cont = document.getElementById('orch-diagram');
+  if (!cont) return;
+
+  if (typeof cytoscape === 'undefined') {
+    cont.innerHTML = '<div style="padding:1rem;color:var(--red);font-size:.78rem">[!] Cytoscape.js not loaded — check connection.</div>';
+    return;
+  }
+
+  if (window._cy) { try { window._cy.destroy(); } catch(_) {} window._cy = null; }
+
+  const orch   = S.ans.orchestration || {};
+  const agents = (S.ans.agents_wanted || []).map(id => AGENTS_CATALOG.find(a => a.id === id)).filter(Boolean);
+  if (!agents.length) return;
+
+  cont.style.display = '';
+  if (wrap) wrap.style.display = '';
+
+  const elements = generateCyElements(orch, agents);
+
+  window._cy = cytoscape({
+    container: cont,
+    elements,
+    style: [
+      { selector: 'node', style: {
+        'background-color': 'data(bg)',
+        'label':            'data(label)',
+        'color':            'data(text)',
+        'font-family':      'JetBrains Mono, monospace',
+        'font-size':        '11px',
+        'font-weight':      '700',
+        'text-valign':      'center',
+        'text-halign':      'center',
+        'width':            110,
+        'height':           36,
+        'shape':            'roundrectangle',
+        'text-wrap':        'ellipsis',
+        'text-max-width':   '105px'
+      }},
+      { selector: 'node:selected', style: { 'border-width': 2, 'border-color': '#7c6af7' }},
+      { selector: 'edge', style: {
+        'width':                  1.5,
+        'line-color':             '#4a7a4a',
+        'target-arrow-color':     '#50fa7b',
+        'target-arrow-shape':     'triangle',
+        'curve-style':            'bezier',
+        'arrow-scale':            1.1,
+        'label':                  'data(label)',
+        'font-size':              '9px',
+        'color':                  '#4a7a4a',
+        'text-background-color':  '#0a0e0a',
+        'text-background-opacity': 1,
+        'text-background-padding': '2px'
+      }}
+    ],
+    layout: getCyLayout(orch.type),
+    userZoomingEnabled: true,
+    userPanningEnabled: true,
+    minZoom: 0.3,
+    maxZoom: 3
+  });
+
+  // Show toolbar buttons
+  ['orch-relayout-btn','orch-save-png-btn'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = '';
+  });
+}
+
+function relayoutDiagram() {
+  if (!window._cy) return;
+  const orch = S.ans.orchestration || {};
+  window._cy.layout(getCyLayout(orch.type)).run();
+}
+
+function saveDiagramPng() {
+  if (!window._cy) return;
+  const png = window._cy.png({ full: true, scale: 2, bg: '#0a0e0a' });
+  if (!S.ans.orchestration) S.ans.orchestration = { type: null, roles: {} };
+  S.ans.orchestration.diagramPng  = png;
+  S.ans.orchestration.graph       = window._cy.json();
+
+  const btn = document.getElementById('orch-save-png-btn');
+  if (btn) { btn.textContent = '✓ Saved in ZIP'; setTimeout(() => { btn.textContent = '📷 Save PNG'; }, 2200); }
+}
+
 function renderOrchestrationPicker(q, ans, level) {
   if (!ans.orchestration) ans.orchestration = { type: null, roles: {} };
   const ot = ans.orchestration;
@@ -1077,7 +1219,7 @@ function renderOrchestrationPicker(q, ans, level) {
 
   const roleSection = ot.type && agents.length ? `
   <div class="orch-roles-section">
-    <div class="tl dim" style="margin-bottom:.7rem"><span class="pfx">[--]</span> Assign a role to each of your selected agents</div>
+    <div class="tl dim" style="margin-bottom:.7rem"><span class="pfx">[--]</span> Assign a role to each selected agent</div>
     ${agents.map(a => {
       const currentRole = ot.roles[a.id] || 'worker';
       const roleBtns = ORCH_ROLES.map(r =>
@@ -1093,24 +1235,38 @@ function renderOrchestrationPicker(q, ans, level) {
   </div>` : (ot.type && !agents.length ? `
   <div class="tl dim" style="margin-top:.8rem"><span class="pfx">[--]</span> Select agents in the previous step to assign roles here.</div>` : '');
 
+  const diagramSection = ot.type && agents.length ? `
+  <div class="orch-diagram-wrap" id="orch-diagram-wrap" style="display:${ot.diagramPng ? '' : 'none'}">
+    <div class="orch-diagram-container" id="orch-diagram"></div>
+  </div>
+  <div class="orch-diagram-toolbar">
+    <button class="btn bs" onclick="buildOrchDiagram()" style="font-size:.7rem;padding:.22rem .6rem">⬡ Build Diagram</button>
+    <button class="btn bs" id="orch-relayout-btn" style="display:none;font-size:.7rem;padding:.22rem .6rem" onclick="relayoutDiagram()">↺ Re-layout</button>
+    <button class="btn bs" id="orch-save-png-btn" style="display:none;font-size:.7rem;padding:.22rem .6rem" onclick="saveDiagramPng()">📷 Save PNG</button>
+    <span class="orch-diagram-hint">Drag nodes · Pinch/scroll to zoom · Save PNG → included in ZIP</span>
+  </div>` : '';
+
   return `
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem">
       <span class="ap-hint" style="margin-bottom:0">Select a pattern — then assign roles to your agents</span>
       <a href="${BOOK_LM_URL}" target="_blank" rel="noopener" class="booklm-btn">📘 Our Book LM</a>
     </div>
     <div class="orch-grid">${typeCards}</div>
-    ${roleSection}`;
+    ${roleSection}
+    ${diagramSection}`;
 }
 
 function pickOrchType(v) {
   if (!S.ans.orchestration) S.ans.orchestration = { type: null, roles: {} };
+  if (window._cy) { try { window._cy.destroy(); } catch(_) {} window._cy = null; }
   S.ans.orchestration.type = v;
+  S.ans.orchestration.diagramPng = null;
+  S.ans.orchestration.graph = null;
   const agents = (S.ans.agents_wanted || []);
   if (!S.ans.orchestration.roles || !Object.keys(S.ans.orchestration.roles).length) {
     S.ans.orchestration.roles = {};
     agents.forEach((id, i) => { S.ans.orchestration.roles[id] = i === 0 ? 'supervisor' : 'worker'; });
   }
-  // Re-render only the orchestration section
   const container = document.querySelector('.orch-grid');
   if (container && container.parentElement) {
     const newHtml = renderOrchestrationPicker(activeQs()[S.step], S.ans, S.level);
@@ -1121,6 +1277,8 @@ function pickOrchType(v) {
 function setOrchRole(agentId, role) {
   if (!S.ans.orchestration) S.ans.orchestration = { type: null, roles: {} };
   S.ans.orchestration.roles[agentId] = role;
+
+  // Update role button UI
   const row = document.querySelector(`.orch-agent-row [onclick="setOrchRole('${agentId}','${role}')"]`);
   if (row) {
     const parent = row.closest('.orch-agent-row');
@@ -1133,6 +1291,13 @@ function setOrchRole(agentId, role) {
         b.style.color       = bRole === role ? roleColor : '';
       });
     }
+  }
+
+  // Live-update Cytoscape node color if diagram already built
+  if (window._cy) {
+    const c = CY_ROLE_COLORS[role] || CY_ROLE_COLORS.worker;
+    const node = window._cy.getElementById(agentId);
+    if (node.length) { node.style('background-color', c.bg); node.style('color', c.text); }
   }
 }
 
@@ -1987,6 +2152,7 @@ function generateFiles(ans, level, agentContents = {}, skillContents = {}, comma
       const agent = AGENTS_CATALOG.find(a => a.id === id);
       return `| ${agent ? agent.name : id} | ${roleLabels[role] || role} |`;
     });
+    const orchJson = { type: orch.type, roles: orch.roles || {} };
     F['docs/orchestration.md'] = [
       `# Orchestration Configuration`,``,
       `**Pattern:** ${orchLabels[orch.type] || orch.type}`,``,
@@ -1996,13 +2162,25 @@ function generateFiles(ans, level, agentContents = {}, skillContents = {}, comma
       `| Agent | Role |`,
       `|-------|------|`,
       ...agentRoleLines,``,
+      orch.diagramPng ? `## Diagram\n\n![Orchestration Diagram](./orchestration-diagram.png)\n` : '',
       `## Orchestration JSON`,
       `\`\`\`json`,
-      JSON.stringify(orch, null, 2),
+      JSON.stringify(orchJson, null, 2),
       `\`\`\``,``,
       `---`,
       `_To reload this diagram in the Finta wizard, import this JSON into the orchestration step._`
-    ].join('\n');
+    ].filter(l => l !== null).join('\n');
+
+    // Include PNG in ZIP if saved
+    if (orch.diagramPng) {
+      try {
+        const b64  = orch.diagramPng.split(',')[1];
+        const bin  = atob(b64);
+        const buf  = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) buf[i] = bin.charCodeAt(i);
+        F['docs/orchestration-diagram.png'] = buf.buffer;
+      } catch(_) {}
+    }
   }
 
   // ── prompts/bootstrap-init.md ────────────────────────────

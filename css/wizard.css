@@ -1421,6 +1421,43 @@ pre{
 .orch-role-btn:hover{border-color:var(--grn2);color:var(--grn2)}
 .orch-role-btn.sel{font-weight:600}
 
+/* ─── ORCHESTRATION DIAGRAM ─── */
+.orch-diagram-wrap{
+  margin-top:.9rem;
+  border:1px solid var(--brd);
+  border-radius:var(--r);
+  overflow:hidden;
+  background:var(--cod);
+}
+.orch-diagram-container{
+  width:100%;
+  height:360px;
+  background:var(--cod);
+  display:block;
+}
+@media(max-width:600px){
+  .orch-diagram-container{height:260px}
+}
+.orch-diagram-toolbar{
+  display:flex;
+  align-items:center;
+  gap:.45rem;
+  padding:.45rem .75rem;
+  border-top:1px solid var(--brd);
+  background:var(--sur2);
+  flex-wrap:wrap;
+  margin-top:.6rem;
+}
+.orch-diagram-hint{
+  font-size:.62rem;
+  color:var(--mut);
+  margin-left:auto;
+  white-space:nowrap;
+}
+@media(max-width:500px){
+  .orch-diagram-hint{display:none}
+}
+
 /* ─── QSEL TOGGLE BUTTON ─── */
 .qsel-toggle-btn{
   display:flex;
