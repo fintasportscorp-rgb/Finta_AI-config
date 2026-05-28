@@ -1103,7 +1103,8 @@ function loadSession() {
 // ═══════════════════════════════════════════════════════════
 // ÉTAT
 // ═══════════════════════════════════════════════════════════
-const S = { screen:'level', level:null, step:0, ans:{}, selectedQs: new Set(), qTab:'fast' };
+const S = { screen:'objectif', level:null, step:0, ans:{}, selectedQs: new Set(), qTab:'fast' };
+let _qselOpen = false;
 
 function defaultQsForLevel(v) {
   if (v === 'fast')     return new Set(QUESTIONS.filter(q => q.phase === 'fast').map(q => q.id));
@@ -1149,17 +1150,31 @@ function rQuestionSelector() {
 
   const total = S.selectedQs.size;
   return `<div class="qsel-panel">
-  <div class="qsel-header">
-    <span class="qsel-header-label">Questions sélectionnées</span>
-    <span class="qsel-header-count">${total} question${total !== 1 ? 's' : ''}</span>
+  <div class="qsel-toggle-btn" onclick="toggleQselPanel()">
+    <span class="qsel-toggle-icon">⚙</span>
+    <span class="qsel-toggle-label">Modifier le questionnaire</span>
+    <span style="flex:1"></span>
+    <span class="qsel-header-count">${total} q</span>
+    <span id="qsel-tog-arrow" class="qsel-tog-arrow">${_qselOpen ? '▲' : '▼'}</span>
   </div>
-  <div class="qsel-tabs">${tabs}</div>
-  <div class="qsel-list">${items}</div>
+  <div id="qsel-body" style="display:${_qselOpen ? '' : 'none'}">
+    <div class="qsel-explain"><span class="pfx">[--]</span> Activez/désactivez les questions pour personnaliser le wizard selon vos besoins</div>
+    <div class="qsel-tabs">${tabs}</div>
+    <div class="qsel-list">${items}</div>
+  </div>
 </div>`;
+}
+
+function toggleQselPanel() {
+  _qselOpen = !_qselOpen;
+  const body  = document.getElementById('qsel-body');
+  const arrow = document.getElementById('qsel-tog-arrow');
+  if (body)  body.style.display  = _qselOpen ? '' : 'none';
+  if (arrow) arrow.textContent   = _qselOpen ? '▲' : '▼';
 }
 function progress() {
   const n = activeQs().length;
-  return { welcome:0, level:5, questions:10+(S.step/Math.max(n,1))*83, results:100 }[S.screen] ?? 0;
+  return { welcome:0, objectif:3, level:8, questions:13+(S.step/Math.max(n,1))*82, results:100 }[S.screen] ?? 0;
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -1867,13 +1882,23 @@ function generateFiles(ans, level, agentContents = {}, skillContents = {}, comma
 
   const cfgFile = pkgmgr === 'uv' || pkgmgr === 'poetry' ? 'pyproject.toml' : pkgmgr === 'go_mod' ? 'go.mod' : pkgmgr === 'cargo' ? 'Cargo.toml' : 'package.json';
 
+  const isImprove = ans.objectif === 'improve_existing';
   F['prompts/bootstrap-init.md'] = [
-    `# 🚀 Bootstrap Init — ${name}`,
+    `# ${isImprove ? '🔧' : '🚀'} Bootstrap Init — ${name}`,
     `<!-- Executed automatically by the AI on first session after unzipping -->`,``,
+    ...(isImprove ? [
+      `> ⚠️ **EXISTING CONFIGURATION MODE**`,
+      `> `,
+      `> **DO NOT** overwrite or delete any existing configuration files.`,
+      `> **ONLY** add new content or extend existing files.`,
+      `> Review the existing setup BEFORE making any changes.`,
+      `> When in doubt: show a diff and ask for confirmation before applying.`,
+      ``,
+    ] : []),
     `---`,``,
-    `A new AI configuration has been set up for project **${name}**.`,
+    `${isImprove ? 'An existing AI configuration is being **extended**' : 'A new AI configuration has been set up'} for project **${name}**.`,
     `**Domain**: ${domains.map(dk => M.domain[dk]||dk).join(', ')} · **Stack**: ${stackLabels.join(', ')||'TBD'}`,``,
-    `Your mission: enrich each rule file with project-specific details.`,``,
+    `Your mission: ${isImprove ? 'extend and enrich the existing config — **preserve all existing content**' : 'enrich each rule file with project-specific details'}.`,``,
     `## Step 1 — Required reading`,
     `Read these files in order:`,
     rulesFiles.map(f => `- \`${f}\``).join('\n'),``,
@@ -1965,6 +1990,7 @@ function render() {
   const phaseLabel = S.level ? `[${S.level}]` : '';
   const stepInfo = {
     welcome:   'v2.0.0',
+    objectif:  '[setup context]',
     level:     '[select profile]',
     questions: `q ${String(S.step+1).padStart(2,'0')}/${qs.length}  ${phaseLabel}`,
     results:   '[done]'
@@ -1983,8 +2009,8 @@ function render() {
     <div style="font-size:.63rem;color:var(--mut);white-space:nowrap;font-family:inherit">${stepInfo}</div>`;
   win.appendChild(bar);
 
-  // Progress bar (slim stripe, not on welcome)
-  if (S.screen !== 'welcome') {
+  // Progress bar (slim stripe, not on welcome/objectif)
+  if (S.screen !== 'welcome' && S.screen !== 'objectif') {
     const pw = document.createElement('div');
     pw.className = 'prog-wrap';
     pw.innerHTML = `<div class="prog-bar" style="width:${progress()}%"></div>`;
@@ -2000,7 +2026,7 @@ function render() {
   win.appendChild(body);
   app.appendChild(win);
 
-  const fn = { welcome:rWelcome, level:rLevel, questions:rQuestion, results:rResults }[S.screen] || rWelcome;
+  const fn = { welcome:rWelcome, objectif:rObjectif, level:rLevel, questions:rQuestion, results:rResults }[S.screen] || rWelcome;
   Promise.resolve(fn(c)).catch(console.error);
 }
 
@@ -2040,6 +2066,44 @@ function rWelcome(el) {
     <button class="btn bp" onclick="goLevel()" style="font-size:.85rem;padding:.55rem 1.7rem">
       ${t('run_setup_btn')}
       <kbd style="margin-left:.5rem;font-size:.62rem;background:var(--sur2);border:1px solid var(--brd);padding:.1rem .4rem;color:var(--mut);font-family:inherit;border-radius:2px">ENTER</kbd>
+    </button>
+  </div>
+</div>`;
+}
+
+function rObjectif(el) {
+  const v = S.ans.objectif;
+  el.innerHTML = `
+<div>
+  <div class="tl cmd" style="margin-bottom:.8rem"><span class="pfx">$</span> init --configure</div>
+  <div style="font-size:.87rem;color:var(--txt);margin-bottom:.2rem">Quel est l'objectif de cette configuration ?</div>
+  <div class="tl dim" style="margin-bottom:1.2rem"><span class="pfx">[--]</span> Adapte le comportement du prompt généré. Appuyez sur [1] [2] pour sélectionner.</div>
+
+  <div class="lgrid">
+    <div class="lcard${v==='new_project'?' sel':''}" onclick="pickObjectif('new_project')">
+      <div style="display:flex;align-items:baseline;gap:.65rem;width:100%">
+        <span style="color:var(--mut);font-size:.7rem;flex-shrink:0;letter-spacing:.02em">[1]</span>
+        <div style="flex:1">
+          <div class="ln">🚀 Nouveau projet</div>
+          <div class="ld">Partir de zéro — générer une configuration complète pour un projet neuf</div>
+        </div>
+      </div>
+    </div>
+    <div class="lcard${v==='improve_existing'?' sel':''}" onclick="pickObjectif('improve_existing')">
+      <div style="display:flex;align-items:baseline;gap:.65rem;width:100%">
+        <span style="color:var(--mut);font-size:.7rem;flex-shrink:0;letter-spacing:.02em">[2]</span>
+        <div style="flex:1">
+          <div class="ln">🔧 Configuration existante</div>
+          <div class="ld">Améliorer / étendre un setup déjà en place</div>
+          <div style="margin-top:.35rem;font-size:.7rem;color:var(--amb)">[⚠] Le prompt généré ne réinitialisera pas ta configuration existante</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav">
+    <button class="btn bp" onclick="goLevel()" ${!v ? 'disabled' : ''}>
+      ${t('continue')}
     </button>
   </div>
 </div>`;
@@ -2301,6 +2365,7 @@ ${buildAnsPanel()}
 <div class="boot-box">
   <h3>${t('next_step_title')}</h3>
   <p>${t('next_step_body')}</p>
+  ${S.ans.objectif === 'improve_existing' ? `<div class="improve-warn"><span>[⚠]</span> Mode amélioration — ce prompt <strong>préserve</strong> ta configuration existante. Aucun fichier existant ne sera réinitialisé.</div>` : ''}
   <div style="position:relative;margin-top:.5rem">
     <pre id="boot-prompt" style="background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.07);border-left:2px solid var(--acc);padding:.7rem 3rem .7rem .85rem;font-size:.85rem;line-height:1.55;white-space:pre-wrap;word-break:break-word;color:var(--grn3);margin:0">${t('boot_prompt_tpl',{name})}</pre>
     <button onclick="copyBootPrompt()" style="position:absolute;top:.45rem;right:.45rem;background:var(--acd);border:1px solid rgba(124,106,247,.4);color:var(--acl);padding:.18rem .5rem;font-size:.68rem;cursor:pointer;font-family:inherit">${t('copy_full')}</button>
@@ -2401,7 +2466,28 @@ function toggleAnsPanel() {
 function buildAnsPanel() {
   const qs      = activeQs();
   const filled  = qs.filter(q => isAnswered(q)).length;
-  const rows    = qs.map((q, idx) => {
+
+  const objLabels   = { new_project:'Nouveau projet', improve_existing:'Configuration existante' };
+  const levelLabels = { fast:'Fast — No Code', advanced:'Advanced', deep:'Deep' };
+
+  const metaRows = [
+    S.ans.objectif !== undefined ? `<div class="ans-row" onclick="goObjectif()" title="Objectif du projet">
+      <span class="ans-status ok">[✓]</span>
+      <div class="ans-info">
+        <div class="ans-label">Objectif du projet</div>
+        <div class="ans-value filled">${esc(objLabels[S.ans.objectif] || S.ans.objectif)}</div>
+      </div>
+    </div>` : '',
+    S.level ? `<div class="ans-row" onclick="goLevel()" title="Profil de configuration">
+      <span class="ans-status ok">[✓]</span>
+      <div class="ans-info">
+        <div class="ans-label">Profil de configuration</div>
+        <div class="ans-value filled">${esc(levelLabels[S.level] || S.level)}</div>
+      </div>
+    </div>` : ''
+  ].join('');
+
+  const rows = qs.map((q, idx) => {
     const ok      = isAnswered(q);
     const preview = ok ? esc(ansValuePreview(q)) : '';
     return `<div class="ans-row" onclick="goToQuestion(${idx})" title="${esc(q.label)}">
@@ -2421,17 +2507,24 @@ function buildAnsPanel() {
       <span id="ans-panel-toggle" class="ans-panel-hd-toggle open">▲</span>
     </div>
   </div>
-  <div class="ans-panel-body" id="ans-panel-body">${rows}</div>
+  <div class="ans-panel-body" id="ans-panel-body">${metaRows}${rows}</div>
 </div>`;
 }
 
 // ═══════════════════════════════════════════════════════════
 // ACTIONS
 // ═══════════════════════════════════════════════════════════
-function goWelcome() { S.screen='level'; render(); }
-function goLevel()   { S.screen='level';   render(); }
-function pickLevel(v){ S.level=v; S.selectedQs=defaultQsForLevel(v); S.qTab='fast'; render(); }
-function setQTab(tab){ S.qTab=tab; render(); }
+function goWelcome()    { S.screen='level'; render(); }
+function goObjectif()   { S.screen='objectif'; render(); }
+function goLevel()      { S.screen='level'; render(); }
+function pickObjectif(v){ S.ans.objectif=v; render(); }
+function pickLevel(v)   { S.level=v; S.selectedQs=defaultQsForLevel(v); S.qTab='fast'; render(); }
+function setQTab(tab) {
+  S.qTab = tab;
+  const sy = window.scrollY;
+  render();
+  window.scrollTo(0, sy);
+}
 function toggleQSel(id){
   const q = QUESTIONS.find(qq => qq.id === id);
   if (q && q.req) return;
@@ -2499,7 +2592,7 @@ function toggleMOther(id, btn) {
     if (show) w.querySelector('input').focus();
   }
 }
-function reset() { S.screen='level'; S.level=null; S.step=0; S.ans={}; S.selectedQs=new Set(); window._af=null; clearSession(); render(); }
+function reset() { S.screen='objectif'; S.level=null; S.step=0; S.ans={}; S.selectedQs=new Set(); _qselOpen=false; window._af=null; clearSession(); render(); }
 function resetFresh() { reset(); }
 function reviewWizard() { S.screen='questions'; S.step=0; render(); }
 function copyBootPrompt() {
@@ -2644,7 +2737,12 @@ document.addEventListener('keydown', function(e) {
   // Don't intercept when user is typing
   if (e.target.matches('input, textarea, .ap-search')) return;
 
-  if (S.screen === 'level') {
+  if (S.screen === 'objectif') {
+    const map = { '1':'new_project', '2':'improve_existing' };
+    if (map[e.key]) { e.preventDefault(); pickObjectif(map[e.key]); }
+    else if (e.key === 'Enter' && S.ans.objectif) { e.preventDefault(); goLevel(); }
+
+  } else if (S.screen === 'level') {
     const map = { '1':'fast', '2':'advanced', '3':'deep' };
     if (map[e.key]) { e.preventDefault(); pickLevel(map[e.key]); }
     else if (e.key === 'Enter' && S.level) { e.preventDefault(); startQs(); }
