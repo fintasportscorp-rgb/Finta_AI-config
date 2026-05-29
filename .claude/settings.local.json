@@ -189,7 +189,11 @@
       "Bash(sed 's/_.*//')",
       "Bash(node -e \"JSON.parse\\(require\\(''fs''\\).readFileSync\\(''c:/Users/Propriétaire/Desktop/CLAUDE/data/arbo.json'',''utf8''\\)\\); console.log\\(''arbo.json OK''\\)\")",
       "Bash(node -e \"JSON.parse\\(require\\(''fs''\\).readFileSync\\(''c:/Users/Propriétaire/Desktop/CLAUDE/data/questions.json'',''utf8''\\)\\); console.log\\(''questions.json OK''\\)\")",
-      "Bash(node --check \"c:/Users/Propriétaire/Desktop/CLAUDE/js/wizard.js\")"
+      "Bash(node --check \"c:/Users/Propriétaire/Desktop/CLAUDE/js/wizard.js\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d['agents'][:3], indent=2\\)\\)\")",
+      "Bash(npx playwright *)",
+      "Bash(npm list *)",
+      "Bash(pip show *)"
     ],
     "additionalDirectories": [
       "c:\\Users\\Propriétaire\\Desktop\\CLAUDE",

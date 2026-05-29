@@ -23,9 +23,27 @@
   "questions": [
 
     {
-      "id": "ai_tools",
+      "id": "objectif",
       "phase": "fast",
       "type": "single",
+      "req": true,
+      "other": false,
+      "label": "Project purpose",
+      "targets": ["prompts/bootstrap-init.md"],
+      "hint": {
+        "fast": "Adapts the generated bootstrap prompt — new setup vs. extending an existing config.",
+        "advanced": "Determines whether the generated prompt preserves or overwrites existing config files."
+      },
+      "opts": [
+        { "v": "new_project",      "l": "New project",      "i": "🚀", "d": "Start from scratch — generate a complete config for a brand new project." },
+        { "v": "improve_existing", "l": "Existing config",  "i": "🔧", "d": "Extend / improve an existing setup. The prompt will never overwrite your current files." }
+      ]
+    },
+
+    {
+      "id": "ai_tools",
+      "phase": "fast",
+      "type": "multi",
       "req": true,
       "label": "Which AI assistant do you use for coding?",
       "targets": ["CLAUDE.md"],
@@ -46,7 +64,13 @@
         {"v": "continue_ai", "l": "Continue",          "i": "🔄", "d": "Open source · IDE"},
         {"v": "cline",       "l": "Cline",             "i": "🔌", "d": "Open source · VSCode"},
         {"v": "amazon_q",    "l": "Amazon Q",          "i": "☁️", "d": "AWS"},
-        {"v": "devin",       "l": "Devin",             "i": "🦾", "d": "Cognition AI"}
+        {"v": "devin",       "l": "Devin",             "i": "🦾", "d": "Cognition AI"},
+        {"v": "deepseek",      "l": "DeepSeek",         "i": "🔍", "d": "DeepSeek AI"},
+        {"v": "tongyi_lingma", "l": "Tongyi Lingma",    "i": "☁️", "d": "Alibaba Cloud"},
+        {"v": "baidu_comate",  "l": "Baidu Comate",     "i": "🔵", "d": "Baidu"},
+        {"v": "codegeex",      "l": "CodeGeeX",         "i": "🤖", "d": "Zhipu AI · VSCode"},
+        {"v": "kimi",          "l": "Kimi",             "i": "🌙", "d": "Moonshot AI"},
+        {"v": "marscode",      "l": "MarsCode",         "i": "🎯", "d": "ByteDance"}
       ]
     },
 
@@ -89,7 +113,8 @@
         { "v": "embedded",    "l": "Embedded & Edge Computing",                 "i": "⚙️" },
         { "v": "media",       "l": "Media & Streaming Systems",                 "i": "🎬" },
         { "v": "devtools",    "l": "Developer Tools & Infrastructure",          "i": "🛠️" },
-        { "v": "fintech",     "l": "Financial & Regulated Transaction Systems", "i": "💳" }
+        { "v": "fintech",     "l": "Financial & Regulated Transaction Systems", "i": "💳" },
+        { "v": "coaching",    "l": "Coaching & Sport Management",               "i": "🏃" }
       ]
     },
 
@@ -202,7 +227,7 @@
     {
       "id": "package_manager",
       "phase": "deep",
-      "type": "single",
+      "type": "multi",
       "label": "Main package manager",
       "targets": ["CLAUDE.md", ".claude/rules/"],
       "hint": {
@@ -244,7 +269,7 @@
     {
       "id": "ci_cd",
       "phase": "deep",
-      "type": "single",
+      "type": "multi",
       "label": "CI/CD",
       "targets": ["CLAUDE.md", ".claude/settings.json"],
       "hint": {
@@ -459,9 +484,22 @@
         { "v": "explain",    "l": "Explains its choices",                  "i": "📖" },
         { "v": "challenge",  "l": "Challenges before executing",           "i": "⚔️" },
         { "v": "one_sol",    "l": "One solution only (no alternatives)",   "i": "✦"  },
-        { "v": "french",     "l": "Always in French",                      "i": "🇫🇷" },
         { "v": "diff_first", "l": "Diffs before full files",               "i": "📝" }
       ]
+    },
+
+    {
+      "id": "output_language",
+      "phase": "deep",
+      "type": "text",
+      "label": "Export language for assistant responses",
+      "ph": "e.g. French, English, Spanish…",
+      "targets": [".claude/rules/behavior.md"],
+      "hint": {
+        "fast": "The assistant will always respond in this language.",
+        "advanced": "Encoded in behavior.md — overrides the assistant's default language.",
+        "deep": "Encoded in behavior.md as a hard language constraint."
+      }
     },
 
     {

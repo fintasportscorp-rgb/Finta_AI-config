@@ -91,6 +91,17 @@
     }
   },
   "questions": {
+    "objectif": {
+      "label": "项目目的",
+      "hint": {
+        "fast": "调整生成的引导提示词 — 新建项目还是扩展现有配置。",
+        "advanced": "确定生成的提示词是保留还是覆盖现有配置文件。"
+      },
+      "opts": {
+        "new_project":      "新项目 — 从零开始",
+        "improve_existing": "现有配置 — 扩展 / 改进"
+      }
+    },
     "ai_tools": {
       "label": "您使用哪种AI助手进行编码？",
       "hint": {

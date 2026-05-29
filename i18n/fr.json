@@ -91,6 +91,17 @@
     }
   },
   "questions": {
+    "objectif": {
+      "label": "Objectif du projet",
+      "hint": {
+        "fast": "Adapte le prompt bootstrap généré — nouveau projet ou extension d'une config existante.",
+        "advanced": "Détermine si le prompt généré préserve ou écrase les fichiers de configuration existants."
+      },
+      "opts": {
+        "new_project":      "Nouveau projet — partir de zéro",
+        "improve_existing": "Config existante — étendre / améliorer"
+      }
+    },
     "ai_tools": {
       "label": "Quel assistant IA utilises-tu pour coder ?",
       "hint": {

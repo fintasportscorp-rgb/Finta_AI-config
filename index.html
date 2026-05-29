@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Finta — AI Configuration for Developers</title>
-<meta name="description" content="Configure your AI development environment in under 5 minutes. Choose from 647 agents, 1,611 skills &amp; 128 commands tailored to your stack.">
+<meta name="description" content="Configure your AI development environment in under 5 minutes. Choose from 681 agents, 1,623 skills &amp; 128 commands tailored to your stack.">
 <meta property="og:title" content="Finta — AI Configuration for Developers">
-<meta property="og:description" content="Configure your AI development environment in under 5 minutes. Choose from 647 agents, 1,611 skills &amp; 128 commands tailored to your stack.">
+<meta property="og:description" content="Configure your AI development environment in under 5 minutes. Choose from 681 agents, 1,623 skills &amp; 128 commands tailored to your stack.">
 <meta property="og:image" content="https://config.fintalab.com/logo/setup.png">
 <meta property="og:url" content="https://config.fintalab.com">
 <meta property="og:type" content="website">
@@ -27,6 +27,135 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/index.css">
+<style>
+/* ── NEW SECTIONS ───────────────────────────────────── */
+
+/* Project path section */
+.paths-section{padding:100px 48px;max-width:1200px;margin:0 auto}
+.paths-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:56px}
+@media(max-width:768px){.paths-grid{grid-template-columns:1fr}}
+.path-card{
+  border:1px solid var(--brd, #222);
+  border-radius:8px;
+  padding:40px 36px;
+  background:var(--sur, #0d0d0d);
+  position:relative;
+  overflow:hidden;
+  transition:border-color .25s,transform .25s;
+  cursor:pointer;
+}
+.path-card:hover{border-color:var(--acl, #7c6af7);transform:translateY(-3px)}
+.path-card.new-proj{border-color:rgba(57,255,20,.25)}
+.path-card.new-proj:hover{border-color:rgba(57,255,20,.7)}
+.path-card.exist-proj{border-color:rgba(124,106,247,.25)}
+.path-badge{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;
+  padding:.25rem .6rem;border-radius:3px;margin-bottom:1.5rem;
+  font-weight:600;
+}
+.badge-new{background:rgba(57,255,20,.1);color:#39ff14;border:1px solid rgba(57,255,20,.3)}
+.badge-exist{background:rgba(124,106,247,.1);color:#9d8ff7;border:1px solid rgba(124,106,247,.3)}
+.path-title{font-size:1.4rem;font-weight:700;margin-bottom:.75rem;letter-spacing:-.01em}
+.path-desc{font-size:.87rem;color:#888;line-height:1.65;margin-bottom:2rem}
+.path-steps{list-style:none;padding:0;margin:0 0 2rem 0;display:flex;flex-direction:column;gap:.5rem}
+.path-steps li{font-size:.78rem;color:#aaa;display:flex;align-items:flex-start;gap:.6rem}
+.path-steps li::before{content:'→';color:#555;flex-shrink:0;margin-top:.05em}
+.path-steps li strong{color:#ddd}
+.path-link{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.8rem;font-weight:600;text-decoration:none;
+  padding:.55rem 1.1rem;border-radius:4px;
+  transition:background .15s;
+  font-family:inherit;
+}
+.path-link-new{background:rgba(57,255,20,.1);color:#39ff14;border:1px solid rgba(57,255,20,.3)}
+.path-link-new:hover{background:rgba(57,255,20,.2)}
+.path-link-exist{background:rgba(124,106,247,.12);color:#9d8ff7;border:1px solid rgba(124,106,247,.4)}
+.path-link-exist:hover{background:rgba(124,106,247,.22)}
+
+/* path animated SVG */
+.path-svg-wrap{position:relative;height:90px;margin-bottom:2rem;overflow:visible}
+
+/* Story section */
+.story-section{
+  padding:120px 48px;
+  background:linear-gradient(180deg,transparent 0%,rgba(124,106,247,.03) 50%,transparent 100%);
+  position:relative;overflow:hidden;
+}
+.story-inner{max-width:960px;margin:0 auto}
+.story-kicker{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:#7c6af7;margin-bottom:1rem}
+.story-headline{font-size:clamp(1.8rem,4vw,3rem);font-weight:700;line-height:1.15;letter-spacing:-.02em;margin-bottom:1.2rem}
+.story-headline em{font-style:normal;color:#39ff14}
+.story-body{font-size:1rem;color:#888;line-height:1.8;max-width:640px}
+.story-timeline{margin-top:64px;display:flex;flex-direction:column;gap:0}
+.stl-item{display:flex;gap:32px;position:relative}
+.stl-item+.stl-item{margin-top:0}
+.stl-left{display:flex;flex-direction:column;align-items:center;width:48px;flex-shrink:0}
+.stl-dot{
+  width:12px;height:12px;border-radius:50%;flex-shrink:0;
+  border:2px solid #7c6af7;background:#0d0d0d;
+  position:relative;z-index:2;margin-top:4px;
+  transition:background .3s,border-color .3s;
+}
+.stl-dot.active{background:#7c6af7;box-shadow:0 0 12px rgba(124,106,247,.6)}
+.stl-dot.done{background:#39ff14;border-color:#39ff14;box-shadow:0 0 10px rgba(57,255,20,.5)}
+.stl-line{flex:1;width:2px;background:linear-gradient(180deg,rgba(124,106,247,.4) 0%,rgba(124,106,247,.08) 100%);margin-top:2px}
+.stl-content{padding-bottom:48px;flex:1}
+.stl-label{font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:#555;margin-bottom:.4rem}
+.stl-title{font-size:1.05rem;font-weight:600;margin-bottom:.5rem;color:#e0e0e0}
+.stl-desc{font-size:.84rem;color:#777;line-height:1.6}
+.stl-code{
+  display:inline-block;margin-top:.7rem;
+  background:rgba(124,106,247,.08);border:1px solid rgba(124,106,247,.2);
+  border-radius:4px;padding:.3rem .7rem;font-size:.75rem;color:#9d8ff7;
+}
+
+/* Beyond code section */
+.beyond-section{padding:100px 48px;max-width:1200px;margin:0 auto}
+.beyond-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px}
+@media(max-width:900px){.beyond-grid{grid-template-columns:1fr}}
+.beyond-card{
+  border:1px solid var(--brd,#222);border-radius:8px;padding:32px 28px;
+  background:var(--sur,#0d0d0d);position:relative;overflow:hidden;
+}
+.beyond-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  border-radius:8px 8px 0 0;
+}
+.beyond-card.sport::before{background:linear-gradient(90deg,#39ff14,#00e5ff)}
+.beyond-card.coaching::before{background:linear-gradient(90deg,#f7b731,#ff6b35)}
+.beyond-card.holistic::before{background:linear-gradient(90deg,#7c6af7,#ff6b9d)}
+.beyond-icon{font-size:1.8rem;margin-bottom:1rem}
+.beyond-tag{font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;padding:.2rem .5rem;border-radius:2px;margin-bottom:1rem;display:inline-block}
+.tag-sport{background:rgba(57,255,20,.08);color:#39ff14;border:1px solid rgba(57,255,20,.2)}
+.tag-coaching{background:rgba(247,183,49,.08);color:#f7b731;border:1px solid rgba(247,183,49,.2)}
+.tag-holistic{background:rgba(124,106,247,.08);color:#9d8ff7;border:1px solid rgba(124,106,247,.2)}
+.beyond-title{font-size:1.1rem;font-weight:600;margin-bottom:.6rem}
+.beyond-desc{font-size:.82rem;color:#777;line-height:1.6;margin-bottom:1.2rem}
+.beyond-agents{display:flex;flex-wrap:wrap;gap:.35rem}
+.ba-chip{font-size:.62rem;background:rgba(255,255,255,.04);border:1px solid #2a2a2a;border-radius:2px;padding:.18rem .45rem;color:#666}
+
+/* SVG animations */
+@keyframes dashIn{from{stroke-dashoffset:300}to{stroke-dashoffset:0}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+@keyframes flow{from{stroke-dashoffset:40}to{stroke-dashoffset:0}}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+.svg-path-anim{stroke-dasharray:300;stroke-dashoffset:300;animation:dashIn 1.4s ease forwards}
+.svg-fade{opacity:0;animation:fadeUp .6s ease forwards}
+.svg-pulse{animation:pulse 2s ease-in-out infinite}
+.svg-flow{stroke-dasharray:8 4;animation:flow .9s linear infinite}
+.svg-spin{animation:spin 8s linear infinite;transform-origin:center}
+
+/* animated orbit ring */
+.orbit-ring{
+  position:absolute;border-radius:50%;border:1px solid;
+  animation:spin linear infinite;
+}
+</style>
 </head>
 <body>
 
@@ -34,6 +163,9 @@
 <nav>
   <div class="nav-logo"><span>~/</span>config.finta</div>
   <div class="nav-right">
+    <a href="#project" class="nav-link" style="display:none" id="nav-project">// new project</a>
+    <a href="#how" class="nav-link" id="nav-how">// how it works</a>
+    <a href="#agents" class="nav-link" id="nav-agents">// agents</a>
     <a href="./wizard.html" class="nav-cta">[ launch wizard ]</a>
     <div id="lang-float">
       <button id="lang-trigger" onclick="toggleLangMenu()" aria-haspopup="true" aria-expanded="false">
@@ -59,7 +191,7 @@
 
 <div class="nav-mobile-menu" id="nav-mobile-menu">
   <a href="#how" onclick="closeMobileMenu()">// how it works</a>
-  <a href="#get" onclick="closeMobileMenu()">// what you get</a>
+  <a href="#project" onclick="closeMobileMenu()">// new project</a>
   <a href="#agents" onclick="closeMobileMenu()">// agents</a>
   <a href="#features" onclick="closeMobileMenu()">// features</a>
   <a href="./wizard.html" class="nav-mobile-cta">[ launch wizard ]</a>
@@ -88,17 +220,17 @@
 
     <!-- Slide 2: The Vision -->
     <div class="slide-panel" id="slide-1">
-      <div class="slide-eyebrow">// 647 agents · 1,611 skills · 128 commands</div>
+      <div class="slide-eyebrow">// 681 agents · 1,623 skills · 128 commands</div>
       <h1 class="slide-h1">
         <span class="slide-line">What if your AI knew your stack,</span>
         <span class="slide-line accent-line">your rules, before you typed a word?</span>
       </h1>
-      <p class="slide-sub">Specialist agents hand-picked for your project. Pre-loaded with your standards, your architecture, your way of thinking — before session one even begins.</p>
+      <p class="slide-sub">681 specialist agents hand-picked for your project. Pre-loaded with your standards, your architecture, your way of thinking — before session one even begins.</p>
     </div>
 
     <!-- Slide 3: The CTA -->
     <div class="slide-panel" id="slide-2">
-      <div class="slide-eyebrow">// from zero to contributor in &lt; 5 min</div>
+      <div class="slide-eyebrow">// new project or existing codebase — both in &lt; 5 min</div>
       <h1 class="slide-h1">
         <span class="slide-line">Five minutes from now,</span>
         <span class="slide-line accent-line">your AI becomes a co-founder.</span>
@@ -124,11 +256,11 @@
 <!-- ─── STATS BAR ─── -->
 <div class="stats-bar" id="stats-bar">
   <div class="stat-item">
-    <div class="stat-num" data-target="647">0</div>
+    <div class="stat-num" data-target="681">0</div>
     <div class="stat-label">Agents</div>
   </div>
   <div class="stat-item">
-    <div class="stat-num" data-target="1611">0</div>
+    <div class="stat-num" data-target="1623">0</div>
     <div class="stat-label">Skills</div>
   </div>
   <div class="stat-item">
@@ -136,18 +268,172 @@
     <div class="stat-label">Commands</div>
   </div>
   <div class="stat-item">
-    <div class="stat-num" data-target="30" data-suffix="+">0</div>
-    <div class="stat-label">Files Generated</div>
+    <div class="stat-num" data-target="2432">0</div>
+    <div class="stat-label">Total Resources</div>
   </div>
   <div class="stat-item">
     <div class="stat-num" data-target="3">0</div>
     <div class="stat-label">Expertise Levels</div>
   </div>
   <div class="stat-item">
-    <div class="stat-num" data-prefix="&lt; " data-target="5" data-suffix=" min">0</div>
+    <div class="stat-prefix">&lt;&nbsp;</div>
+    <div class="stat-num" data-target="5">0</div>
+    <div class="stat-suffix">&nbsp;min</div>
     <div class="stat-label">Setup Time</div>
   </div>
 </div>
+
+<!-- ─── STORY: THE PROBLEM ─── -->
+<section class="story-section" id="story">
+  <div class="story-inner">
+    <div class="story-kicker reveal">// the problem we're solving</div>
+    <h2 class="story-headline reveal reveal-delay-1">
+      It's Monday morning.<br>New project. Blank repo.<br>
+      Your AI assistant is <em>completely lost.</em>
+    </h2>
+    <p class="story-body reveal reveal-delay-2">
+      It doesn't know your stack. It doesn't know your conventions. It doesn't know whether you're building a fintech startup or a sport analytics platform. Every session starts from zero. You repeat yourself. It hallucinates. You fix it. Repeat.
+    </p>
+
+    <div class="story-timeline reveal reveal-delay-3">
+
+      <div class="stl-item">
+        <div class="stl-left">
+          <div class="stl-dot" id="stl-0"></div>
+          <div class="stl-line"></div>
+        </div>
+        <div class="stl-content">
+          <div class="stl-label">// the pain</div>
+          <div class="stl-title">Session 1: "What stack are we using?"</div>
+          <div class="stl-desc">You type it all out. React, TypeScript, Supabase, Stripe. Security-first. No any types. TDD. It nods. You build. It forgets half of it by session 3.</div>
+          <span class="stl-code">$ cat README.md | pbcopy | paste into chat again...</span>
+        </div>
+      </div>
+
+      <div class="stl-item">
+        <div class="stl-left">
+          <div class="stl-dot" id="stl-1"></div>
+          <div class="stl-line"></div>
+        </div>
+        <div class="stl-content">
+          <div class="stl-label">// the discovery</div>
+          <div class="stl-title">What if the AI had a briefing file?</div>
+          <div class="stl-desc">A CLAUDE.md that says everything — stack, architecture, agent roster, rules, standards — and gets read at the start of every session automatically. No repeating yourself. Ever.</div>
+          <span class="stl-code">// CLAUDE.md, .claude/agents/, .claude/rules/ → loaded once, used forever</span>
+        </div>
+      </div>
+
+      <div class="stl-item">
+        <div class="stl-left">
+          <div class="stl-dot" id="stl-2"></div>
+          <div class="stl-line"></div>
+        </div>
+        <div class="stl-content">
+          <div class="stl-label">// the problem with that</div>
+          <div class="stl-title">Writing it from scratch takes days.</div>
+          <div class="stl-desc">Researching the right agents. Picking the right skills. Writing security rules. Structuring the architecture doc. By the time you've configured the AI, you could have shipped three features.</div>
+          <span class="stl-code">⏱ avg 4–8 hours to configure manually. once.</span>
+        </div>
+      </div>
+
+      <div class="stl-item">
+        <div class="stl-left">
+          <div class="stl-dot active" id="stl-3"></div>
+        </div>
+        <div class="stl-content">
+          <div class="stl-label">// the solution</div>
+          <div class="stl-title">Finta does it in 5 minutes. For any project.</div>
+          <div class="stl-desc">Answer 13–29 questions. Our scoring engine picks your agents, builds your rules, generates your config. Download. Drop. Done. Whether you're starting fresh or configuring an existing codebase.</div>
+          <a href="./wizard.html" class="path-link path-link-exist" style="margin-top:.8rem;display:inline-flex">
+            <span>&gt;</span> start now →
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── NEW OR EXISTING PROJECT ─── -->
+<section id="project">
+<div class="paths-section">
+  <div class="section-label reveal"><span>//</span> your starting point</div>
+  <h2 class="section-title reveal">New project or existing codebase?</h2>
+  <p class="section-sub reveal reveal-delay-1">Finta works for both. The wizard adapts its output to where you are — blank repo or 3-year-old monorepo.</p>
+
+  <div class="paths-grid">
+
+    <!-- NEW PROJECT -->
+    <div class="path-card new-proj reveal reveal-delay-2" onclick="window.location='./wizard.html?mode=new'">
+      <div class="path-svg-wrap">
+        <svg viewBox="0 0 420 90" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+          <!-- baseline -->
+          <line x1="20" y1="45" x2="400" y2="45" stroke="#1a1a1a" stroke-width="1"/>
+          <!-- animated path -->
+          <path d="M 20 45 L 100 45 L 140 20 L 180 20 L 220 45 L 280 45 L 320 15 L 380 15" stroke="#39ff14" stroke-width="1.5" fill="none" class="svg-path-anim" style="animation-delay:.1s"/>
+          <!-- nodes -->
+          <circle cx="100" cy="45" r="4" fill="#0d0d0d" stroke="#39ff14" stroke-width="1.5" class="svg-fade" style="animation-delay:.5s"/>
+          <circle cx="180" cy="20" r="4" fill="#0d0d0d" stroke="#39ff14" stroke-width="1.5" class="svg-fade" style="animation-delay:.7s"/>
+          <circle cx="280" cy="45" r="4" fill="#0d0d0d" stroke="#39ff14" stroke-width="1.5" class="svg-fade" style="animation-delay:.9s"/>
+          <circle cx="380" cy="15" r="6" fill="#39ff14" class="svg-fade svg-pulse" style="animation-delay:1.1s"/>
+          <!-- labels -->
+          <text x="95" y="60" font-size="9" fill="#39ff14" opacity=".6" font-family="monospace" class="svg-fade" style="animation-delay:.6s">blank</text>
+          <text x="175" y="13" font-size="9" fill="#39ff14" opacity=".6" font-family="monospace" class="svg-fade" style="animation-delay:.8s">wizard</text>
+          <text x="262" y="60" font-size="9" fill="#39ff14" opacity=".6" font-family="monospace" class="svg-fade" style="animation-delay:1s">config</text>
+          <text x="362" y="10" font-size="9" fill="#39ff14" font-family="monospace" class="svg-fade" style="animation-delay:1.2s">ship ✓</text>
+        </svg>
+      </div>
+      <div class="path-badge badge-new">// new project</div>
+      <div class="path-title">Blank repo → production-ready AI config</div>
+      <p class="path-desc">Starting from zero? Perfect. Tell the wizard your stack, domain, and team size. In 13–29 questions you'll have a complete AI configuration — agents, rules, architecture docs — ready to drop at your project root.</p>
+      <ul class="path-steps">
+        <li>Answer <strong>13 questions</strong> (Fast) or up to 29 (Deep mode)</li>
+        <li>Scoring engine picks <strong>the right agents</strong> for your stack</li>
+        <li>Get <strong>CLAUDE.md, agents/, rules/, docs/</strong> — all generated</li>
+        <li>Drop the ZIP, paste one prompt, <strong>start building</strong></li>
+      </ul>
+      <a href="./wizard.html" class="path-link path-link-new" onclick="event.stopPropagation()">
+        <span>&gt;</span> start new project
+      </a>
+    </div>
+
+    <!-- EXISTING PROJECT -->
+    <div class="path-card exist-proj reveal reveal-delay-3" onclick="window.location='./wizard.html?mode=existing'">
+      <div class="path-svg-wrap">
+        <svg viewBox="0 0 420 90" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+          <!-- existing messy lines -->
+          <path d="M 20 30 Q 80 50 120 35 Q 160 20 200 40" stroke="#2a2a2a" stroke-width="1" fill="none"/>
+          <path d="M 20 55 Q 70 35 110 55 Q 150 70 190 50" stroke="#2a2a2a" stroke-width="1" fill="none"/>
+          <!-- finta overlay -->
+          <path d="M 200 40 L 240 40 L 280 18 L 380 18" stroke="#7c6af7" stroke-width="1.5" fill="none" class="svg-path-anim" style="animation-delay:.3s"/>
+          <path d="M 200 50 L 240 50 L 280 68 L 320 68 L 360 45 L 380 45" stroke="#7c6af7" stroke-width="1" stroke-opacity=".5" fill="none" class="svg-path-anim" style="animation-delay:.6s"/>
+          <!-- finta processing node -->
+          <rect x="185" y="28" width="30" height="30" rx="3" fill="#0d0d0d" stroke="#7c6af7" stroke-width="1.5" class="svg-fade" style="animation-delay:.2s"/>
+          <text x="193" y="48" font-size="10" fill="#7c6af7" font-family="monospace" class="svg-fade" style="animation-delay:.4s">F</text>
+          <!-- output nodes -->
+          <circle cx="380" cy="18" r="5" fill="#0d0d0d" stroke="#7c6af7" stroke-width="1.5" class="svg-fade" style="animation-delay:.9s"/>
+          <circle cx="380" cy="45" r="5" fill="#7c6af7" class="svg-fade svg-pulse" style="animation-delay:1.1s"/>
+          <text x="340" y="13" font-size="8" fill="#9d8ff7" opacity=".8" font-family="monospace" class="svg-fade" style="animation-delay:1s">agents</text>
+          <text x="340" y="61" font-size="8" fill="#9d8ff7" opacity=".8" font-family="monospace" class="svg-fade" style="animation-delay:1.2s">rules</text>
+        </svg>
+      </div>
+      <div class="path-badge badge-exist">// existing codebase</div>
+      <div class="path-title">Running project → AI that finally gets it</div>
+      <p class="path-desc">Already mid-build? The wizard generates a config that fits your existing architecture — not a blank-slate template. Describe what you're building, your pain points, your current workflow. Get an AI that understands your context from day one.</p>
+      <ul class="path-steps">
+        <li>Describe your <strong>existing stack and architecture</strong></li>
+        <li>Select <strong>agents for your active pain points</strong> (performance, security, testing…)</li>
+        <li>Config is generated to <strong>layer on top</strong> of your project, not replace it</li>
+        <li>Your AI reads your <strong>existing conventions</strong> immediately</li>
+      </ul>
+      <a href="./wizard.html" class="path-link path-link-exist" onclick="event.stopPropagation()">
+        <span>&gt;</span> configure existing project
+      </a>
+    </div>
+
+  </div>
+</div>
+</section>
 
 <!-- ─── HOW IT WORKS ─── -->
 <section class="how-section" id="how">
@@ -159,17 +445,17 @@
     <div class="step-card reveal reveal-delay-1">
       <div class="step-num">[01]</div>
       <div class="step-title">Answer questions about your project</div>
-      <p class="step-desc">Choose Fast (6 questions), Advanced (14), or Deep (24) mode. The wizard learns your stack, team size, domain, and workflows to build an accurate profile.</p>
+      <p class="step-desc">Choose Fast (13 questions), Advanced (27), or Deep (29) mode. The wizard learns your stack, team size, domain, and workflows to build an accurate profile. Answers persist — resume anytime.</p>
     </div>
     <div class="step-card reveal reveal-delay-2">
       <div class="step-num">[02]</div>
-      <div class="step-title">Browse 647 agents, 1,611 skills & 128 commands</div>
-      <p class="step-desc">Our scoring engine ranks agents by relevance to your stack. Explore 1,611 curated skills and 128 slash commands too. Toggle what you need, confirm your selection.</p>
+      <div class="step-title">Browse 681 agents, 1,623 skills & 128 commands</div>
+      <p class="step-desc">Our scoring engine ranks agents by relevance to your answers. Explore 1,623 curated skills and 128 slash commands. Toggle what you need, confirm your selection. Board view available for fast review.</p>
     </div>
     <div class="step-card reveal reveal-delay-3">
       <div class="step-num">[03]</div>
       <div class="step-title">Download your complete AI config as ZIP</div>
-      <p class="step-desc">Get your main AI config file, rules, agent specs, architecture docs, and an ADR — ready to drop at your project root and boot immediately.</p>
+      <p class="step-desc">Get your main AI config file, rules, agent specs, architecture docs, and an ADR — ready to drop at your project root. Works with Claude Code, Cursor, Windsurf, and Copilot.</p>
     </div>
   </div>
 </section>
@@ -181,7 +467,6 @@
   <p class="section-sub reveal reveal-delay-1">A complete, structured AI configuration that your assistant reads, understands, and acts on from the first message.</p>
 
   <div class="get-grid">
-    <!-- File Tree -->
     <div class="reveal reveal-delay-1">
       <div class="file-tree-window">
         <div class="terminal-bar">
@@ -194,24 +479,23 @@
       </div>
     </div>
 
-    <!-- Feature cards -->
     <div class="feature-cards">
       <div class="feature-card reveal reveal-delay-2">
         <div class="fc-icon">📄</div>
         <div class="fc-title">AI config — The master brief</div>
-        <p class="fc-desc">Project context, architecture overview, team conventions, and coding standards — all in one file your AI reads first.</p>
+        <p class="fc-desc">Project context, architecture overview, team conventions, and coding standards — all in one file your AI reads first, every session.</p>
         <span class="fc-tag">root-level</span>
       </div>
       <div class="feature-card reveal reveal-delay-3">
         <div class="fc-icon">🤖</div>
         <div class="fc-title">.ai/agents/ — Specialist roster</div>
-        <p class="fc-desc">Curated agents pre-selected for your stack. Each one ships with a persona, scope, capabilities, and example invocations.</p>
+        <p class="fc-desc">Curated agents pre-selected for your stack. Each ships with a persona, scope, capabilities, and example invocations. 681 to choose from.</p>
         <span class="fc-tag">.ai/agents/</span>
       </div>
       <div class="feature-card reveal reveal-delay-4">
         <div class="fc-icon">⚖️</div>
         <div class="fc-title">.ai/rules/ — Quality gates</div>
-        <p class="fc-desc">Security, TDD, behavior, and stack-specific rules that enforce your standards on every AI-generated change.</p>
+        <p class="fc-desc">Security, TDD, behavior, and stack-specific rules that enforce your standards on every AI-generated change. Auto-generated from your answers.</p>
         <span class="fc-tag">.ai/rules/</span>
       </div>
       <div class="feature-card reveal reveal-delay-5">
@@ -227,13 +511,127 @@
 <!-- ─── AGENT SHOWCASE ─── -->
 <section class="agents-section" id="agents">
   <div class="section-label reveal"><span>//</span> agents</div>
-  <h2 class="section-title reveal">647 agents · 1,611 skills · 128 commands</h2>
-  <p class="section-sub reveal reveal-delay-1">Hand-picked from 12+ GitHub repositories. Agents, reusable skills, and slash commands — every domain covered.</p>
+  <h2 class="section-title reveal">681 agents · 1,623 skills · 128 commands</h2>
+  <p class="section-sub reveal reveal-delay-1">Hand-picked from 12+ GitHub repositories — plus Finta's own sport, coaching, and holistic agent libraries. Every domain covered.</p>
 
   <div class="marquee-wrapper reveal">
     <div class="marquee-track" id="marquee-1"></div>
     <div class="marquee-track reverse" id="marquee-2"></div>
   </div>
+</section>
+
+<!-- ─── BEYOND CODE ─── -->
+<section id="beyond">
+<div class="beyond-section">
+  <div class="section-label reveal"><span>//</span> beyond code</div>
+  <h2 class="section-title reveal">Not just for developers.</h2>
+  <p class="section-sub reveal reveal-delay-1">Finta now ships three exclusive agent libraries for sport performance, football coaching, and holistic professional development — built with the same rigour as the technical catalog.</p>
+
+  <div class="beyond-grid">
+
+    <div class="beyond-card sport reveal reveal-delay-1">
+      <div class="beyond-icon">🏃</div>
+      <div class="beyond-tag tag-sport">sport performance</div>
+      <div class="beyond-title">Multi-Sport Agents</div>
+      <p class="beyond-desc">11 specialist agents covering biomechanics, physical preparation, skill acquisition, mental performance, sport neuroscience, analytics, and team culture — for any sport, any level.</p>
+      <div class="beyond-agents">
+        <span class="ba-chip">biomechanics</span>
+        <span class="ba-chip">load-management</span>
+        <span class="ba-chip">skill-acquisition</span>
+        <span class="ba-chip">mental-prep</span>
+        <span class="ba-chip">neuroscience</span>
+        <span class="ba-chip">analytics</span>
+        <span class="ba-chip">+5 more</span>
+      </div>
+    </div>
+
+    <div class="beyond-card coaching reveal reveal-delay-2">
+      <div class="beyond-icon">⚽</div>
+      <div class="beyond-tag tag-coaching">football coaching</div>
+      <div class="beyond-title">Football Coaching Agents</div>
+      <p class="beyond-desc">11 football-specific agents with deep tactical, physical, and psychological knowledge — from Guardiola positional play to ecological dynamics, periodisation to pre-match protocols.</p>
+      <div class="beyond-agents">
+        <span class="ba-chip">tactical-philosophy</span>
+        <span class="ba-chip">decision-science</span>
+        <span class="ba-chip">complex-systems</span>
+        <span class="ba-chip">ethics</span>
+        <span class="ba-chip">technology</span>
+        <span class="ba-chip">+6 more</span>
+      </div>
+    </div>
+
+    <div class="beyond-card holistic reveal reveal-delay-3">
+      <div class="beyond-icon">🔮</div>
+      <div class="beyond-tag tag-holistic">holistic development</div>
+      <div class="beyond-title">Professional Development Agents</div>
+      <p class="beyond-desc">12 agents for personal and professional growth — career strategy, emotional intelligence, productivity, purpose &amp; values, learning science, resilience, and sustainable performance. Evidence-based.</p>
+      <div class="beyond-agents">
+        <span class="ba-chip">career-development</span>
+        <span class="ba-chip">emotional-intelligence</span>
+        <span class="ba-chip">deep-work</span>
+        <span class="ba-chip">purpose-values</span>
+        <span class="ba-chip">burnout</span>
+        <span class="ba-chip">+7 more</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- animated SVG: agent network -->
+  <div class="reveal reveal-delay-4" style="margin-top:64px;text-align:center">
+    <svg viewBox="0 0 800 220" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:800px;height:auto">
+      <!-- center node: Finta -->
+      <circle cx="400" cy="110" r="28" fill="#0d0d0d" stroke="#7c6af7" stroke-width="2" class="svg-pulse"/>
+      <text x="400" y="106" text-anchor="middle" font-size="9" fill="#9d8ff7" font-family="monospace" font-weight="600">FINTA</text>
+      <text x="400" y="118" text-anchor="middle" font-size="7" fill="#7c6af7" font-family="monospace">2,432 resources</text>
+
+      <!-- spokes to domain nodes -->
+      <line x1="400" y1="82" x2="400" y2="32" stroke="#7c6af7" stroke-width="1" stroke-opacity=".4" class="svg-flow"/>
+      <line x1="373" y1="92" x2="210" y2="50" stroke="#39ff14" stroke-width="1" stroke-opacity=".4" class="svg-flow" style="animation-delay:.2s"/>
+      <line x1="372" y1="128" x2="190" y2="170" stroke="#39ff14" stroke-width="1" stroke-opacity=".4" class="svg-flow" style="animation-delay:.4s"/>
+      <line x1="427" y1="92" x2="590" y2="50" stroke="#f7b731" stroke-width="1" stroke-opacity=".4" class="svg-flow" style="animation-delay:.1s"/>
+      <line x1="428" y1="128" x2="610" y2="170" stroke="#f7b731" stroke-width="1" stroke-opacity=".4" class="svg-flow" style="animation-delay:.3s"/>
+      <line x1="400" y1="138" x2="400" y2="188" stroke="#ff6b9d" stroke-width="1" stroke-opacity=".4" class="svg-flow" style="animation-delay:.5s"/>
+
+      <!-- domain nodes -->
+      <!-- top: AI/ML -->
+      <circle cx="400" cy="25" r="16" fill="#0d0d0d" stroke="#7c6af7" stroke-width="1.5" class="svg-fade" style="animation-delay:.3s"/>
+      <text x="400" y="22" text-anchor="middle" font-size="7" fill="#9d8ff7" font-family="monospace" class="svg-fade" style="animation-delay:.4s">AI/ML</text>
+      <text x="400" y="31" text-anchor="middle" font-size="6" fill="#666" font-family="monospace" class="svg-fade" style="animation-delay:.4s">334 skills</text>
+
+      <!-- top-left: backend -->
+      <circle cx="200" cy="44" r="18" fill="#0d0d0d" stroke="#39ff14" stroke-width="1.5" class="svg-fade" style="animation-delay:.4s"/>
+      <text x="200" y="41" text-anchor="middle" font-size="7" fill="#39ff14" font-family="monospace" class="svg-fade" style="animation-delay:.5s">backend</text>
+      <text x="200" y="50" text-anchor="middle" font-size="6" fill="#666" font-family="monospace" class="svg-fade" style="animation-delay:.5s">130+ agents</text>
+
+      <!-- bottom-left: sport -->
+      <circle cx="180" cy="175" r="20" fill="#0d0d0d" stroke="#39ff14" stroke-width="1.5" class="svg-fade" style="animation-delay:.5s"/>
+      <text x="180" y="172" text-anchor="middle" font-size="7" fill="#39ff14" font-family="monospace" class="svg-fade" style="animation-delay:.6s">sport</text>
+      <text x="180" y="181" text-anchor="middle" font-size="6" fill="#666" font-family="monospace" class="svg-fade" style="animation-delay:.6s">22 agents</text>
+
+      <!-- top-right: security -->
+      <circle cx="600" cy="44" r="18" fill="#0d0d0d" stroke="#f7b731" stroke-width="1.5" class="svg-fade" style="animation-delay:.4s"/>
+      <text x="600" y="41" text-anchor="middle" font-size="7" fill="#f7b731" font-family="monospace" class="svg-fade" style="animation-delay:.5s">security</text>
+      <text x="600" y="50" text-anchor="middle" font-size="6" fill="#666" font-family="monospace" class="svg-fade" style="animation-delay:.5s">134 skills</text>
+
+      <!-- bottom-right: holistic -->
+      <circle cx="620" cy="175" r="20" fill="#0d0d0d" stroke="#f7b731" stroke-width="1.5" class="svg-fade" style="animation-delay:.5s"/>
+      <text x="620" y="172" text-anchor="middle" font-size="7" fill="#f7b731" font-family="monospace" class="svg-fade" style="animation-delay:.6s">holistic</text>
+      <text x="620" y="181" text-anchor="middle" font-size="6" fill="#666" font-family="monospace" class="svg-fade" style="animation-delay:.6s">12 agents</text>
+
+      <!-- bottom: coaching -->
+      <circle cx="400" cy="195" r="18" fill="#0d0d0d" stroke="#ff6b9d" stroke-width="1.5" class="svg-fade" style="animation-delay:.6s"/>
+      <text x="400" y="192" text-anchor="middle" font-size="7" fill="#ff6b9d" font-family="monospace" class="svg-fade" style="animation-delay:.7s">coaching</text>
+      <text x="400" y="201" text-anchor="middle" font-size="6" fill="#666" font-family="monospace" class="svg-fade" style="animation-delay:.7s">11 agents</text>
+
+      <!-- micro satellite nodes (decorative) -->
+      <circle cx="110" cy="105" r="6" fill="#0d0d0d" stroke="#39ff14" stroke-width="1" opacity=".5" class="svg-pulse" style="animation-delay:.3s"/>
+      <circle cx="690" cy="105" r="6" fill="#0d0d0d" stroke="#f7b731" stroke-width="1" opacity=".5" class="svg-pulse" style="animation-delay:.6s"/>
+      <circle cx="300" cy="12" r="4" fill="#7c6af7" opacity=".4" class="svg-pulse" style="animation-delay:.9s"/>
+      <circle cx="500" cy="12" r="4" fill="#7c6af7" opacity=".4" class="svg-pulse" style="animation-delay:1.2s"/>
+    </svg>
+  </div>
+</div>
 </section>
 
 <!-- ─── FEATURE DEEP DIVE ─── -->
@@ -246,7 +644,7 @@
     <div class="big-feature-card reveal reveal-delay-1">
       <span class="bfc-icon">⚙</span>
       <div class="bfc-title">Intelligent Recommendations</div>
-      <p class="bfc-desc">Our scoring engine analyzes your stack, team, and workflow to surface the exact agents you need. No noise, just the right tools. Every recommendation is ranked with a relevance score above 80.</p>
+      <p class="bfc-desc">Our scoring engine analyzes your stack, team, and workflow to surface the exact agents you need. No noise, just the right tools. Every recommendation is ranked with a relevance score above 80. Board view for power users.</p>
       <div class="bfc-meta">
         <div class="bfc-meta-dot"></div>
         Scoring engine active
@@ -254,17 +652,17 @@
     </div>
     <div class="big-feature-card reveal reveal-delay-2">
       <span class="bfc-icon">⬡</span>
-      <div class="bfc-title">2,386 Curated Resources</div>
-      <p class="bfc-desc">647 agents, 1,611 skills, and 128 commands — hand-picked from 12+ GitHub repositories. Backend, frontend, security, AI/ML, DevOps — every specialty covered. Sources include avivl, wshobson, hesreallyhim, and more.</p>
+      <div class="bfc-title">2,432 Curated Resources</div>
+      <p class="bfc-desc">681 agents, 1,623 skills, and 128 commands — hand-picked from 12+ GitHub repositories plus Finta's exclusive sport, coaching, and holistic libraries. Backend, frontend, security, AI/ML, DevOps, sport performance — every specialty covered.</p>
       <div class="bfc-meta">
         <div class="bfc-meta-dot"></div>
-        2,386 resources indexed
+        2,432 resources indexed
       </div>
     </div>
     <div class="big-feature-card reveal reveal-delay-3">
       <span class="bfc-icon">⚡</span>
       <div class="bfc-title">Instant Bootstrap</div>
-      <p class="bfc-desc">Drop the ZIP at your project root, paste one prompt. Your AI assistant reads every rule, every agent spec, and starts contributing immediately. From download to first commit in under 5 minutes.</p>
+      <p class="bfc-desc">Drop the ZIP at your project root, paste one prompt. Your AI assistant reads every rule, every agent spec, and starts contributing immediately. From download to first commit in under 5 minutes. Works for new and existing projects.</p>
       <div class="bfc-meta">
         <div class="bfc-meta-dot"></div>
         Zero config required
@@ -293,8 +691,8 @@
 <span class="demo-line demo-prompt"><span class="dl-dollar">$</span> wizard --level advanced</span>
 <span class="demo-blank"></span>
 <span class="demo-line demo-loading">[&gt;&gt;] Loading configuration...</span>
-<span class="demo-line demo-ok">[OK] 647 agents indexed</span>
-<span class="demo-line demo-ok">[OK] 1,611 skills indexed</span>
+<span class="demo-line demo-ok">[OK] 681 agents indexed</span>
+<span class="demo-line demo-ok">[OK] 1,623 skills indexed</span>
 <span class="demo-line demo-ok">[OK] 128 commands indexed</span>
 <span class="demo-line demo-ok">[OK] Scoring engine ready</span>
 <span class="demo-blank"></span>
@@ -305,13 +703,13 @@
 <span class="demo-line demo-input">&gt; [✓] TypeScript&nbsp;&nbsp;[✓] React&nbsp;&nbsp;[✓] Node.js</span>
 <span class="demo-blank"></span>
 <span class="demo-line demo-prompt"><span class="dl-dollar">$</span> Select your expertise level:</span>
-<span class="demo-line demo-input">&gt; [2] Advanced — 14 questions</span>
+<span class="demo-line demo-input">&gt; [2] Advanced — 27 questions</span>
 <span class="demo-blank"></span>
 <span class="demo-line demo-loading">[&gt;&gt;] Computing agent recommendations...</span>
-<span class="demo-line demo-ok">[OK] 12 agents matched (score &gt; 80)</span>
-<span class="demo-line demo-ok">[OK] Generating 27 configuration files...</span>
-<span class="demo-line demo-ok">[OK] Building AI.md with project context...</span>
-<span class="demo-line demo-ok">[OK] Writing .ai/rules/typescript.md...</span>
+<span class="demo-line demo-ok">[OK] 14 agents matched (score &gt; 80)</span>
+<span class="demo-line demo-ok">[OK] Generating configuration files...</span>
+<span class="demo-line demo-ok">[OK] Building CLAUDE.md with project context...</span>
+<span class="demo-line demo-ok">[OK] Writing .claude/rules/typescript.md...</span>
 <span class="demo-line demo-ok">[OK] Packaging docs/architecture.md...</span>
 <span class="demo-blank"></span>
 <span class="demo-line demo-success">$ Generated: my-project-ai-setup.zip <span class="cursor" style="width:7px;height:12px;"></span></span>
@@ -325,12 +723,12 @@
 <section class="cta-section" id="cta">
   <div class="cta-label reveal"><span>$</span> ready to ship</div>
   <h2 class="cta-h2 reveal reveal-delay-1">Stop configuring.<br><span>Start building.</span></h2>
-  <p class="cta-sub reveal reveal-delay-2">Your AI assistant is waiting for proper instructions. Give it the context it needs — in under 5 minutes.</p>
+  <p class="cta-sub reveal reveal-delay-2">681 agents are waiting for the right project. Give your AI the context it needs — in under 5 minutes. New project or existing codebase.</p>
   <div class="cta-group reveal reveal-delay-3">
     <a href="./wizard.html" class="cta-btn">
       <span class="caret">&gt;</span> launch wizard
     </a>
-    <span class="cta-note">free, no account required</span>
+    <span class="cta-note">free · no account · works with Claude Code, Cursor &amp; Copilot</span>
   </div>
 </section>
 
@@ -342,12 +740,63 @@
   <div class="footer-links">
     <a href="./wizard.html">Wizard</a>
     <a href="#how">How it works</a>
+    <a href="#project">New project</a>
     <a href="#agents">Agents</a>
     <a href="#features">Features</a>
   </div>
-  <div class="footer-copy">// built for developers</div>
+  <div class="footer-copy">// built for developers — and coaches, and athletes, and humans</div>
 </footer>
 
 <script src="js/index.js"></script>
+
+<script>
+/* ── TIMELINE DOTS INTERSECTION OBSERVER ── */
+(function() {
+  const dots = document.querySelectorAll('.stl-dot');
+  if (!dots.length) return;
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('done');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.6 });
+  dots.forEach(d => obs.observe(d));
+})();
+
+/* ── STAT BAR: handle prefix/suffix divs ── */
+(function() {
+  document.querySelectorAll('.stat-prefix,.stat-suffix').forEach(el => {
+    el.style.display = 'inline';
+    el.style.fontSize = '.72rem';
+    el.style.color = 'var(--mut,#555)';
+    el.style.fontFamily = 'inherit';
+  });
+  const nums = document.querySelectorAll('.stat-item');
+  nums.forEach(item => {
+    const inner = item.querySelector('.stat-prefix, .stat-suffix, .stat-num');
+    if (inner) {
+      item.style.display = 'flex';
+      item.style.flexDirection = 'column';
+      item.style.alignItems = 'center';
+    }
+    // merge prefix+num+suffix into a row
+    const pre = item.querySelector('.stat-prefix');
+    const num = item.querySelector('.stat-num');
+    const suf = item.querySelector('.stat-suffix');
+    if ((pre || suf) && num) {
+      const row = document.createElement('div');
+      row.style.display = 'flex';
+      row.style.alignItems = 'baseline';
+      row.style.gap = '0';
+      if (pre) { row.appendChild(pre); }
+      row.appendChild(num);
+      if (suf) { row.appendChild(suf); }
+      item.insertBefore(row, item.querySelector('.stat-label'));
+    }
+  });
+})();
+</script>
 </body>
 </html>

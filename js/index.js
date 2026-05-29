@@ -119,6 +119,8 @@ function initNeuralNet() {
   const ctx = canvas.getContext('2d');
   let W = 0, H = 0;
   let nnRafId = null;
+  let nnVisible = false;
+  let nnLastTs = 0;
 
   const nodes = NN_NODES_DATA.map(d => ({
     ...d,
@@ -189,6 +191,9 @@ function initNeuralNet() {
   }
 
   function draw(ts) {
+    if (!nnVisible) { nnRafId = null; return; }
+    if (ts - nnLastTs < 33) { nnRafId = requestAnimationFrame(draw); return; }
+    nnLastTs = ts;
     ctx.clearRect(0, 0, W, H);
 
     const pos = {};
@@ -337,7 +342,10 @@ function initNeuralNet() {
     nnRafId = requestAnimationFrame(draw);
   }
 
-  nnRafId = requestAnimationFrame(draw);
+  new IntersectionObserver(function(entries) {
+    nnVisible = entries[0].isIntersecting;
+    if (nnVisible && !nnRafId) { nnLastTs = 0; nnRafId = requestAnimationFrame(draw); }
+  }, { threshold: 0.01 }).observe(canvas.parentElement);
 }
 
 // ─── AGENT MARQUEE ───
@@ -504,10 +512,16 @@ function buildMarquee() {
   window.addEventListener('resize', resize);
 
   let pMode = 0;
+  let pVisible = true;
+  let pLastTs = 0;
+  let pRafId = null;
   window._setParticleMode = function(m) { pMode = m; };
 
   function draw(ts) {
-    requestAnimationFrame(draw);
+    if (!pVisible) { pRafId = null; return; }
+    if (ts - pLastTs < 33) { pRafId = requestAnimationFrame(draw); return; }
+    pLastTs = ts;
+    pRafId = requestAnimationFrame(draw);
     if (canvas.offsetWidth !== W || canvas.offsetHeight !== H) resize();
     ctx.clearRect(0, 0, W, H);
 
@@ -624,7 +638,11 @@ function buildMarquee() {
     }
   }
 
-  requestAnimationFrame(draw);
+  new IntersectionObserver(function(entries) {
+    pVisible = entries[0].isIntersecting;
+    if (pVisible && !pRafId) { pLastTs = 0; pRafId = requestAnimationFrame(draw); }
+  }, { threshold: 0.01 }).observe(canvas.parentElement);
+  pRafId = requestAnimationFrame(draw);
 
 })();
 

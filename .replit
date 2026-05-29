@@ -33,6 +33,14 @@ outputType = "webview"
 localPort = 5000
 externalPort = 80
 
+[[ports]]
+localPort = 7654
+externalPort = 3000
+
+[[ports]]
+localPort = 8080
+externalPort = 8080
+
 [deployment]
 deploymentTarget = "static"
 publicDir = "."

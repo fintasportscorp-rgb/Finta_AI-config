@@ -91,6 +91,17 @@
     }
   },
   "questions": {
+    "objectif": {
+      "label": "Projektziel",
+      "hint": {
+        "fast": "Passt den generierten Bootstrap-Prompt an — neues Projekt oder Erweiterung einer bestehenden Config.",
+        "advanced": "Bestimmt, ob der generierte Prompt bestehende Konfigurationsdateien beibehält oder überschreibt."
+      },
+      "opts": {
+        "new_project":      "Neues Projekt — von Grund auf neu",
+        "improve_existing": "Bestehende Config — erweitern / verbessern"
+      }
+    },
     "ai_tools": {
       "label": "Welchen KI-Assistenten nutzt du zum Programmieren?",
       "hint": {

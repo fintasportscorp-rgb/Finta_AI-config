@@ -54,7 +54,13 @@
       "cline":        "CLINE.md",
       "amazon_q":     "AMAZONQ.md",
       "copilot":      "COPILOT.md",
-      "devin":        "DEVIN.md"
+      "devin":           "DEVIN.md",
+      "deepseek":        "DEEPSEEK.md",
+      "tongyi_lingma":   "LINGMA.md",
+      "baidu_comate":    "COMATE.md",
+      "codegeex":        "CODEGEEX.md",
+      "kimi":            "KIMI.md",
+      "marscode":        "MARSCODE.md"
     },
     "aiLocalFile": {
       "claude_code":  "CLAUDE.local.md",
@@ -68,7 +74,13 @@
       "cline":        "CLINE.local.md",
       "amazon_q":     "AMAZONQ.local.md",
       "copilot":      "COPILOT.local.md",
-      "devin":        "DEVIN.local.md"
+      "devin":           "DEVIN.local.md",
+      "deepseek":        "DEEPSEEK.local.md",
+      "tongyi_lingma":   "LINGMA.local.md",
+      "baidu_comate":    "COMATE.local.md",
+      "codegeex":        "CODEGEEX.local.md",
+      "kimi":            "KIMI.local.md",
+      "marscode":        "MARSCODE.local.md"
     },
     "aiToolFolder": {
       "claude_code": ".claude",
@@ -82,7 +94,13 @@
       "cline":       ".cline",
       "amazon_q":    ".amazonq",
       "copilot":     ".github",
-      "devin":       ".devin"
+      "devin":          ".devin",
+      "deepseek":       ".deepseek",
+      "tongyi_lingma":  ".lingma",
+      "baidu_comate":   ".comate",
+      "codegeex":       ".codegeex",
+      "kimi":           ".kimi",
+      "marscode":       ".marscode"
     },
     "aiTools": {
       "claude_code": "Claude Code",
@@ -96,7 +114,13 @@
       "continue_ai": "Continue",
       "cline":       "Cline",
       "amazon_q":    "Amazon Q",
-      "devin":       "Devin"
+      "devin":          "Devin",
+      "deepseek":       "DeepSeek",
+      "tongyi_lingma":  "Tongyi Lingma",
+      "baidu_comate":   "Baidu Comate",
+      "codegeex":       "CodeGeeX",
+      "kimi":           "Kimi",
+      "marscode":       "MarsCode"
     },
     "stackLabels": {
       "react":      "React / Next.js",
@@ -450,6 +474,7 @@
       { "when": {"domain": "ai"},          "names": ["ai-engineer","langchain-expert","machine-learning-engineer"], "w": 9 },
       { "when": {"domain": "content"},     "names": ["content-writer","seo-specialist"], "w": 6 },
       { "when": {"domain": "business"},    "names": ["code-reviewer","architect-reviewer"], "w": 6 },
+      { "when": {"domain": "coaching"},    "names": ["decision-science-coach","coaching-philosophy","mental-preparation-coach","team-culture-leadership","physical-preparation-coach","sport-neuroscience-coach","skill-acquisition-coach","complex-systems-coach","biomechanics-movement-coach","ethics-behavioral-economics","sport-technology-analytics"], "w": 10 },
       { "when": {"domain": "security"},    "names": ["security-auditor","compliance-auditor","pentest-expert"], "w": 10 },
       { "when": {"domain": "mleng"},       "names": ["machine-learning-engineer","mlops-engineer","pytorch-expert"], "w": 9 },
       { "when": {"domain": "blockchain"},  "names": ["security-auditor","compliance-auditor"], "w": 9 },
