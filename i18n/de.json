@@ -98,7 +98,7 @@
         "advanced": "Bestimmt, ob der generierte Prompt bestehende Konfigurationsdateien beibehält oder überschreibt."
       },
       "opts": {
-        "new_project":      "Neues Projekt — von Grund auf neu",
+        "new_project": "Neues Projekt — von Grund auf neu",
         "improve_existing": "Bestehende Config — erweitern / verbessern"
       }
     },
@@ -458,6 +458,25 @@
     "foot_how": "Wie es funktioniert",
     "foot_agents": "Agenten",
     "foot_feat": "Funktionen",
-    "foot_copy": "// für Entwickler gebaut"
+    "foot_copy": "// für Entwickler gebaut",
+    "project_label": "<span>//</span> dein Ausgangspunkt",
+    "project_title": "Neues Projekt oder bestehende Codebasis?",
+    "project_sub": "Finta funktioniert für beides. Der Wizard passt seine Ausgabe an deinen Stand an — leeres Repo oder 3 Jahre altes Monorepo.",
+    "path_new_badge": "// neues Projekt",
+    "path_new_title": "Leeres Repo → produktionsbereite KI-Konfiguration",
+    "path_new_desc": "Von Null anfangen? Perfekt. Beschreibe deinen Stack, deine Domain und die Teamgröße. In 13–29 Fragen erhältst du eine vollständige KI-Konfiguration — Agenten, Regeln, Architekturdokumentation.",
+    "path_new_step1": "Beantworte 13 Fragen (Schnell) oder bis zu 29 (Deep)",
+    "path_new_step2": "Die Scoring-Engine wählt die richtigen Agenten für deinen Stack",
+    "path_new_step3": "Erhalte CLAUDE.md, agents/, rules/, docs/ — alles generiert",
+    "path_new_step4": "ZIP ablegen, Prompt einfügen, loslegen",
+    "path_new_cta": "> Neues Projekt starten",
+    "path_exist_badge": "// bestehende Codebasis",
+    "path_exist_title": "Laufendes Projekt → KI, die dich endlich versteht",
+    "path_exist_desc": "Bereits in der Entwicklung? Der Wizard generiert eine Config für deine bestehende Architektur — keine generische Vorlage. Beschreibe, was du baust, deine Schmerzpunkte und deinen Workflow.",
+    "path_exist_step1": "Beschreibe deinen bestehenden Stack und deine Architektur",
+    "path_exist_step2": "Wähle Agenten für deine aktuellen Problemstellen",
+    "path_exist_step3": "Config legt sich über dein Projekt, ersetzt es nicht",
+    "path_exist_step4": "Deine KI liest sofort deine bestehenden Konventionen",
+    "path_exist_cta": "> Bestehendes Projekt konfigurieren"
   }
 }

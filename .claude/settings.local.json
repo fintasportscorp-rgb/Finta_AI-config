@@ -193,7 +193,8 @@
       "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d['agents'][:3], indent=2\\)\\)\")",
       "Bash(npx playwright *)",
       "Bash(npm list *)",
-      "Bash(pip show *)"
+      "Bash(pip show *)",
+      "Bash(grep -E '\\\\.\\(html|css|js\\)$')"
     ],
     "additionalDirectories": [
       "c:\\Users\\Propriétaire\\Desktop\\CLAUDE",

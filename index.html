@@ -31,7 +31,7 @@
 /* ── NEW SECTIONS ───────────────────────────────────── */
 
 /* Project path section */
-.paths-section{padding:100px 48px;max-width:1200px;margin:0 auto}
+.paths-section{padding:80px clamp(16px,5vw,64px);max-width:1200px;margin:0 auto}
 .paths-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:56px}
 @media(max-width:768px){.paths-grid{grid-template-columns:1fr}}
 .path-card{
@@ -112,7 +112,7 @@
 }
 
 /* Beyond code section */
-.beyond-section{padding:100px 48px;max-width:1200px;margin:0 auto}
+.beyond-section{padding:80px clamp(16px,5vw,64px);max-width:1200px;margin:0 auto}
 .beyond-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px}
 @media(max-width:900px){.beyond-grid{grid-template-columns:1fr}}
 .beyond-card{
@@ -155,6 +155,7 @@
   position:absolute;border-radius:50%;border:1px solid;
   animation:spin linear infinite;
 }
+
 </style>
 </head>
 <body>
@@ -164,8 +165,6 @@
   <div class="nav-logo"><span>~/</span>config.finta</div>
   <div class="nav-right">
     <a href="#project" class="nav-link" style="display:none" id="nav-project">// new project</a>
-    <a href="#how" class="nav-link" id="nav-how">// how it works</a>
-    <a href="#agents" class="nav-link" id="nav-agents">// agents</a>
     <a href="./wizard.html" class="nav-cta">[ launch wizard ]</a>
     <div id="lang-float">
       <button id="lang-trigger" onclick="toggleLangMenu()" aria-haspopup="true" aria-expanded="false">
@@ -190,9 +189,7 @@
 </nav>
 
 <div class="nav-mobile-menu" id="nav-mobile-menu">
-  <a href="#how" onclick="closeMobileMenu()">// how it works</a>
   <a href="#project" onclick="closeMobileMenu()">// new project</a>
-  <a href="#agents" onclick="closeMobileMenu()">// agents</a>
   <a href="#features" onclick="closeMobileMenu()">// features</a>
   <a href="./wizard.html" class="nav-mobile-cta">[ launch wizard ]</a>
 </div>
@@ -286,12 +283,12 @@
 <!-- ─── STORY: THE PROBLEM ─── -->
 <section class="story-section" id="story">
   <div class="story-inner">
-    <div class="story-kicker reveal">// the problem we're solving</div>
-    <h2 class="story-headline reveal reveal-delay-1">
+    <div class="story-kicker reveal" data-i18n="idx_story_kicker">// the problem we're solving</div>
+    <h2 class="story-headline reveal reveal-delay-1" data-i18n="idx_story_h2">
       It's Monday morning.<br>New project. Blank repo.<br>
       Your AI assistant is <em>completely lost.</em>
     </h2>
-    <p class="story-body reveal reveal-delay-2">
+    <p class="story-body reveal reveal-delay-2" data-i18n="idx_story_body">
       It doesn't know your stack. It doesn't know your conventions. It doesn't know whether you're building a fintech startup or a sport analytics platform. Every session starts from zero. You repeat yourself. It hallucinates. You fix it. Repeat.
     </p>
 
@@ -303,8 +300,8 @@
           <div class="stl-line"></div>
         </div>
         <div class="stl-content">
-          <div class="stl-label">// the pain</div>
-          <div class="stl-title">Session 1: "What stack are we using?"</div>
+          <div class="stl-label" data-i18n="idx_stl_pain">// the pain</div>
+          <div class="stl-title" data-i18n="idx_stl_pain_title">Session 1: "What stack are we using?"</div>
           <div class="stl-desc">You type it all out. React, TypeScript, Supabase, Stripe. Security-first. No any types. TDD. It nods. You build. It forgets half of it by session 3.</div>
           <span class="stl-code">$ cat README.md | pbcopy | paste into chat again...</span>
         </div>
@@ -316,8 +313,8 @@
           <div class="stl-line"></div>
         </div>
         <div class="stl-content">
-          <div class="stl-label">// the discovery</div>
-          <div class="stl-title">What if the AI had a briefing file?</div>
+          <div class="stl-label" data-i18n="idx_stl_discovery">// the discovery</div>
+          <div class="stl-title" data-i18n="idx_stl_discovery_title">What if the AI had a briefing file?</div>
           <div class="stl-desc">A CLAUDE.md that says everything — stack, architecture, agent roster, rules, standards — and gets read at the start of every session automatically. No repeating yourself. Ever.</div>
           <span class="stl-code">// CLAUDE.md, .claude/agents/, .claude/rules/ → loaded once, used forever</span>
         </div>
@@ -329,8 +326,8 @@
           <div class="stl-line"></div>
         </div>
         <div class="stl-content">
-          <div class="stl-label">// the problem with that</div>
-          <div class="stl-title">Writing it from scratch takes days.</div>
+          <div class="stl-label" data-i18n="idx_stl_problem">// the problem with that</div>
+          <div class="stl-title" data-i18n="idx_stl_problem_title">Writing it from scratch takes days.</div>
           <div class="stl-desc">Researching the right agents. Picking the right skills. Writing security rules. Structuring the architecture doc. By the time you've configured the AI, you could have shipped three features.</div>
           <span class="stl-code">⏱ avg 4–8 hours to configure manually. once.</span>
         </div>
@@ -341,8 +338,8 @@
           <div class="stl-dot active" id="stl-3"></div>
         </div>
         <div class="stl-content">
-          <div class="stl-label">// the solution</div>
-          <div class="stl-title">Finta does it in 5 minutes. For any project.</div>
+          <div class="stl-label" data-i18n="idx_stl_solution">// the solution</div>
+          <div class="stl-title" data-i18n="idx_stl_solution_title">Finta does it in 5 minutes. For any project.</div>
           <div class="stl-desc">Answer 13–29 questions. Our scoring engine picks your agents, builds your rules, generates your config. Download. Drop. Done. Whether you're starting fresh or configuring an existing codebase.</div>
           <a href="./wizard.html" class="path-link path-link-exist" style="margin-top:.8rem;display:inline-flex">
             <span>&gt;</span> start now →
@@ -466,44 +463,30 @@
   <h2 class="section-title reveal">What you get</h2>
   <p class="section-sub reveal reveal-delay-1">A complete, structured AI configuration that your assistant reads, understands, and acts on from the first message.</p>
 
-  <div class="get-grid">
-    <div class="reveal reveal-delay-1">
-      <div class="file-tree-window">
-        <div class="terminal-bar">
-          <div class="terminal-dot dot-red"></div>
-          <div class="terminal-dot dot-yellow"></div>
-          <div class="terminal-dot dot-green"></div>
-          <span class="terminal-title">neural map — project structure</span>
-        </div>
-        <canvas id="neural-net" class="neural-net-canvas"></canvas>
-      </div>
+  <div class="feature-cards feature-cards--grid">
+    <div class="feature-card reveal reveal-delay-2">
+      <div class="fc-icon">📄</div>
+      <div class="fc-title">AI config — The master brief</div>
+      <p class="fc-desc">Project context, architecture overview, team conventions, and coding standards — all in one file your AI reads first, every session.</p>
+      <span class="fc-tag">root-level</span>
     </div>
-
-    <div class="feature-cards">
-      <div class="feature-card reveal reveal-delay-2">
-        <div class="fc-icon">📄</div>
-        <div class="fc-title">AI config — The master brief</div>
-        <p class="fc-desc">Project context, architecture overview, team conventions, and coding standards — all in one file your AI reads first, every session.</p>
-        <span class="fc-tag">root-level</span>
-      </div>
-      <div class="feature-card reveal reveal-delay-3">
-        <div class="fc-icon">🤖</div>
-        <div class="fc-title">.ai/agents/ — Specialist roster</div>
-        <p class="fc-desc">Curated agents pre-selected for your stack. Each ships with a persona, scope, capabilities, and example invocations. 681 to choose from.</p>
-        <span class="fc-tag">.ai/agents/</span>
-      </div>
-      <div class="feature-card reveal reveal-delay-4">
-        <div class="fc-icon">⚖️</div>
-        <div class="fc-title">.ai/rules/ — Quality gates</div>
-        <p class="fc-desc">Security, TDD, behavior, and stack-specific rules that enforce your standards on every AI-generated change. Auto-generated from your answers.</p>
-        <span class="fc-tag">.ai/rules/</span>
-      </div>
-      <div class="feature-card reveal reveal-delay-5">
-        <div class="fc-icon">📐</div>
-        <div class="fc-title">docs/ — Architecture + decisions</div>
-        <p class="fc-desc">Architecture overview, glossary, and ADR-001 scaffolded for your project — so the AI understands the why, not just the what.</p>
-        <span class="fc-tag">docs/</span>
-      </div>
+    <div class="feature-card reveal reveal-delay-3">
+      <div class="fc-icon">🤖</div>
+      <div class="fc-title">.ai/agents/ — Specialist roster</div>
+      <p class="fc-desc">Curated agents pre-selected for your stack. Each ships with a persona, scope, capabilities, and example invocations. 681 to choose from.</p>
+      <span class="fc-tag">.ai/agents/</span>
+    </div>
+    <div class="feature-card reveal reveal-delay-4">
+      <div class="fc-icon">⚖️</div>
+      <div class="fc-title">.ai/rules/ — Quality gates</div>
+      <p class="fc-desc">Security, TDD, behavior, and stack-specific rules that enforce your standards on every AI-generated change. Auto-generated from your answers.</p>
+      <span class="fc-tag">.ai/rules/</span>
+    </div>
+    <div class="feature-card reveal reveal-delay-5">
+      <div class="fc-icon">📐</div>
+      <div class="fc-title">docs/ — Architecture + decisions</div>
+      <p class="fc-desc">Architecture overview, glossary, and ADR-001 scaffolded for your project — so the AI understands the why, not just the what.</p>
+      <span class="fc-tag">docs/</span>
     </div>
   </div>
 </section>
@@ -518,14 +501,26 @@
     <div class="marquee-track" id="marquee-1"></div>
     <div class="marquee-track reverse" id="marquee-2"></div>
   </div>
+
+  <div class="neural-net-wrap reveal reveal-delay-2">
+    <div class="file-tree-window" style="max-width:900px;margin:0 auto">
+      <div class="terminal-bar">
+        <div class="terminal-dot dot-red"></div>
+        <div class="terminal-dot dot-yellow"></div>
+        <div class="terminal-dot dot-green"></div>
+        <span class="terminal-title">config output — .claude/ · agents/ · rules/ · docs/</span>
+      </div>
+      <canvas id="neural-net" class="neural-net-canvas"></canvas>
+    </div>
+  </div>
 </section>
 
 <!-- ─── BEYOND CODE ─── -->
 <section id="beyond">
 <div class="beyond-section">
-  <div class="section-label reveal"><span>//</span> beyond code</div>
-  <h2 class="section-title reveal">Not just for developers.</h2>
-  <p class="section-sub reveal reveal-delay-1">Finta now ships three exclusive agent libraries for sport performance, football coaching, and holistic professional development — built with the same rigour as the technical catalog.</p>
+  <div class="section-label reveal" data-i18n="idx_beyond_label"><span>//</span> beyond code</div>
+  <h2 class="section-title reveal" data-i18n="idx_beyond_h2">Not just for developers.</h2>
+  <p class="section-sub reveal reveal-delay-1" data-i18n="idx_beyond_sub">Finta now ships three exclusive agent libraries for sport performance, football coaching, and holistic professional development — built with the same rigour as the technical catalog.</p>
 
   <div class="beyond-grid">
 
@@ -577,60 +572,6 @@
 
   </div>
 
-  <!-- animated SVG: agent network -->
-  <div class="reveal reveal-delay-4" style="margin-top:64px;text-align:center">
-    <svg viewBox="0 0 800 220" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:800px;height:auto">
-      <!-- center node: Finta -->
-      <circle cx="400" cy="110" r="28" fill="#0d0d0d" stroke="#7c6af7" stroke-width="2" class="svg-pulse"/>
-      <text x="400" y="106" text-anchor="middle" font-size="9" fill="#9d8ff7" font-family="monospace" font-weight="600">FINTA</text>
-      <text x="400" y="118" text-anchor="middle" font-size="7" fill="#7c6af7" font-family="monospace">2,432 resources</text>
-
-      <!-- spokes to domain nodes -->
-      <line x1="400" y1="82" x2="400" y2="32" stroke="#7c6af7" stroke-width="1" stroke-opacity=".4" class="svg-flow"/>
-      <line x1="373" y1="92" x2="210" y2="50" stroke="#39ff14" stroke-width="1" stroke-opacity=".4" class="svg-flow" style="animation-delay:.2s"/>
-      <line x1="372" y1="128" x2="190" y2="170" stroke="#39ff14" stroke-width="1" stroke-opacity=".4" class="svg-flow" style="animation-delay:.4s"/>
-      <line x1="427" y1="92" x2="590" y2="50" stroke="#f7b731" stroke-width="1" stroke-opacity=".4" class="svg-flow" style="animation-delay:.1s"/>
-      <line x1="428" y1="128" x2="610" y2="170" stroke="#f7b731" stroke-width="1" stroke-opacity=".4" class="svg-flow" style="animation-delay:.3s"/>
-      <line x1="400" y1="138" x2="400" y2="188" stroke="#ff6b9d" stroke-width="1" stroke-opacity=".4" class="svg-flow" style="animation-delay:.5s"/>
-
-      <!-- domain nodes -->
-      <!-- top: AI/ML -->
-      <circle cx="400" cy="25" r="16" fill="#0d0d0d" stroke="#7c6af7" stroke-width="1.5" class="svg-fade" style="animation-delay:.3s"/>
-      <text x="400" y="22" text-anchor="middle" font-size="7" fill="#9d8ff7" font-family="monospace" class="svg-fade" style="animation-delay:.4s">AI/ML</text>
-      <text x="400" y="31" text-anchor="middle" font-size="6" fill="#666" font-family="monospace" class="svg-fade" style="animation-delay:.4s">334 skills</text>
-
-      <!-- top-left: backend -->
-      <circle cx="200" cy="44" r="18" fill="#0d0d0d" stroke="#39ff14" stroke-width="1.5" class="svg-fade" style="animation-delay:.4s"/>
-      <text x="200" y="41" text-anchor="middle" font-size="7" fill="#39ff14" font-family="monospace" class="svg-fade" style="animation-delay:.5s">backend</text>
-      <text x="200" y="50" text-anchor="middle" font-size="6" fill="#666" font-family="monospace" class="svg-fade" style="animation-delay:.5s">130+ agents</text>
-
-      <!-- bottom-left: sport -->
-      <circle cx="180" cy="175" r="20" fill="#0d0d0d" stroke="#39ff14" stroke-width="1.5" class="svg-fade" style="animation-delay:.5s"/>
-      <text x="180" y="172" text-anchor="middle" font-size="7" fill="#39ff14" font-family="monospace" class="svg-fade" style="animation-delay:.6s">sport</text>
-      <text x="180" y="181" text-anchor="middle" font-size="6" fill="#666" font-family="monospace" class="svg-fade" style="animation-delay:.6s">22 agents</text>
-
-      <!-- top-right: security -->
-      <circle cx="600" cy="44" r="18" fill="#0d0d0d" stroke="#f7b731" stroke-width="1.5" class="svg-fade" style="animation-delay:.4s"/>
-      <text x="600" y="41" text-anchor="middle" font-size="7" fill="#f7b731" font-family="monospace" class="svg-fade" style="animation-delay:.5s">security</text>
-      <text x="600" y="50" text-anchor="middle" font-size="6" fill="#666" font-family="monospace" class="svg-fade" style="animation-delay:.5s">134 skills</text>
-
-      <!-- bottom-right: holistic -->
-      <circle cx="620" cy="175" r="20" fill="#0d0d0d" stroke="#f7b731" stroke-width="1.5" class="svg-fade" style="animation-delay:.5s"/>
-      <text x="620" y="172" text-anchor="middle" font-size="7" fill="#f7b731" font-family="monospace" class="svg-fade" style="animation-delay:.6s">holistic</text>
-      <text x="620" y="181" text-anchor="middle" font-size="6" fill="#666" font-family="monospace" class="svg-fade" style="animation-delay:.6s">12 agents</text>
-
-      <!-- bottom: coaching -->
-      <circle cx="400" cy="195" r="18" fill="#0d0d0d" stroke="#ff6b9d" stroke-width="1.5" class="svg-fade" style="animation-delay:.6s"/>
-      <text x="400" y="192" text-anchor="middle" font-size="7" fill="#ff6b9d" font-family="monospace" class="svg-fade" style="animation-delay:.7s">coaching</text>
-      <text x="400" y="201" text-anchor="middle" font-size="6" fill="#666" font-family="monospace" class="svg-fade" style="animation-delay:.7s">11 agents</text>
-
-      <!-- micro satellite nodes (decorative) -->
-      <circle cx="110" cy="105" r="6" fill="#0d0d0d" stroke="#39ff14" stroke-width="1" opacity=".5" class="svg-pulse" style="animation-delay:.3s"/>
-      <circle cx="690" cy="105" r="6" fill="#0d0d0d" stroke="#f7b731" stroke-width="1" opacity=".5" class="svg-pulse" style="animation-delay:.6s"/>
-      <circle cx="300" cy="12" r="4" fill="#7c6af7" opacity=".4" class="svg-pulse" style="animation-delay:.9s"/>
-      <circle cx="500" cy="12" r="4" fill="#7c6af7" opacity=".4" class="svg-pulse" style="animation-delay:1.2s"/>
-    </svg>
-  </div>
 </div>
 </section>
 
@@ -750,6 +691,167 @@
 <script src="js/index.js"></script>
 
 <script>
+/* ── INDEX I18N ── */
+(function(){
+  const SUPPORTED = ['en','fr','es','de','pt','ja','zh','ko'];
+  const IDX_TRANSLATIONS = {
+    en: {
+      idx_story_kicker: '// the problem we\'re solving',
+      idx_story_h2: 'It\'s Monday morning.<br>New project. Blank repo.<br>Your AI assistant is <em>completely lost.</em>',
+      idx_story_body: 'It doesn\'t know your stack. It doesn\'t know your conventions. It doesn\'t know whether you\'re building a fintech startup or a sport analytics platform. Every session starts from zero. You repeat yourself. It hallucinates. You fix it. Repeat.',
+      idx_stl_pain: '// the pain',
+      idx_stl_pain_title: 'Session 1: "What stack are we using?"',
+      idx_stl_discovery: '// the discovery',
+      idx_stl_discovery_title: 'What if the AI had a briefing file?',
+      idx_stl_problem: '// the problem with that',
+      idx_stl_problem_title: 'Writing it from scratch takes days.',
+      idx_stl_solution: '// the solution',
+      idx_stl_solution_title: 'Finta does it in 5 minutes. For any project.',
+      idx_beyond_label: '<span>//</span> beyond code',
+      idx_beyond_h2: 'Not just for developers.',
+      idx_beyond_sub: 'Finta now ships three exclusive agent libraries for sport performance, football coaching, and holistic professional development — built with the same rigour as the technical catalog.',
+    },
+    fr: {
+      idx_story_kicker: '// le problème qu\'on résout',
+      idx_story_h2: 'Lundi matin.<br>Nouveau projet. Repo vide.<br>Ton assistant IA est <em>complètement perdu.</em>',
+      idx_story_body: 'Il ne connaît pas ta stack. Il ne connaît pas tes conventions. Il ne sait pas si tu construis une fintech ou une plateforme d\'analytics sportif. Chaque session repart de zéro. Tu te répètes. Il hallucine. Tu corriges. Recommence.',
+      idx_stl_pain: '// la douleur',
+      idx_stl_pain_title: 'Session 1 : « Quelle stack on utilise ? »',
+      idx_stl_discovery: '// la découverte',
+      idx_stl_discovery_title: 'Et si l\'IA avait un fichier de briefing ?',
+      idx_stl_problem: '// le problème',
+      idx_stl_problem_title: 'L\'écrire from scratch prend des jours.',
+      idx_stl_solution: '// la solution',
+      idx_stl_solution_title: 'Finta le fait en 5 minutes. Pour n\'importe quel projet.',
+      idx_beyond_label: '<span>//</span> au-delà du code',
+      idx_beyond_h2: 'Pas seulement pour les développeurs.',
+      idx_beyond_sub: 'Finta propose désormais trois bibliothèques d\'agents exclusives pour la performance sportive, le coaching football et le développement professionnel holistique — construites avec la même rigueur que le catalogue technique.',
+    },
+    es: {
+      idx_story_kicker: '// el problema que resolvemos',
+      idx_story_h2: 'Lunes por la mañana.<br>Nuevo proyecto. Repositorio vacío.<br>Tu asistente IA está <em>completamente perdido.</em>',
+      idx_story_body: 'No conoce tu stack. No conoce tus convenciones. No sabe si estás construyendo una fintech o una plataforma de análisis deportivo. Cada sesión empieza desde cero. Te repites. Alucina. Lo corriges. Repite.',
+      idx_stl_pain: '// el dolor',
+      idx_stl_pain_title: 'Sesión 1: «¿Qué stack usamos?»',
+      idx_stl_discovery: '// el descubrimiento',
+      idx_stl_discovery_title: '¿Y si la IA tuviera un archivo de briefing?',
+      idx_stl_problem: '// el problema',
+      idx_stl_problem_title: 'Escribirlo desde cero lleva días.',
+      idx_stl_solution: '// la solución',
+      idx_stl_solution_title: 'Finta lo hace en 5 minutos. Para cualquier proyecto.',
+      idx_beyond_label: '<span>//</span> más allá del código',
+      idx_beyond_h2: 'No solo para desarrolladores.',
+      idx_beyond_sub: 'Finta incluye tres bibliotecas de agentes exclusivas para rendimiento deportivo, coaching de fútbol y desarrollo profesional holístico.',
+    },
+    de: {
+      idx_story_kicker: '// das Problem, das wir lösen',
+      idx_story_h2: 'Montagmorgen.<br>Neues Projekt. Leeres Repo.<br>Dein KI-Assistent ist <em>völlig verloren.</em>',
+      idx_story_body: 'Er kennt deinen Stack nicht. Er kennt deine Konventionen nicht. Er weiß nicht, ob du ein Fintech oder eine Sport-Analytics-Plattform baust. Jede Sitzung beginnt bei null. Du wiederholst dich. Es halluziniert. Du korrigierst. Wiederholen.',
+      idx_stl_pain: '// der Schmerz',
+      idx_stl_pain_title: 'Session 1: „Welchen Stack verwenden wir?"',
+      idx_stl_discovery: '// die Entdeckung',
+      idx_stl_discovery_title: 'Was wenn die KI eine Briefing-Datei hätte?',
+      idx_stl_problem: '// das Problem damit',
+      idx_stl_problem_title: 'Es from scratch zu schreiben dauert Tage.',
+      idx_stl_solution: '// die Lösung',
+      idx_stl_solution_title: 'Finta erledigt das in 5 Minuten. Für jedes Projekt.',
+      idx_beyond_label: '<span>//</span> jenseits des Codes',
+      idx_beyond_h2: 'Nicht nur für Entwickler.',
+      idx_beyond_sub: 'Finta liefert jetzt drei exklusive Agenten-Bibliotheken für Sportleistung, Fußball-Coaching und ganzheitliche berufliche Entwicklung.',
+    },
+    pt: {
+      idx_story_kicker: '// o problema que resolvemos',
+      idx_beyond_label: '<span>//</span> além do código',
+      idx_beyond_h2: 'Não apenas para desenvolvedores.',
+    },
+    ja: {
+      idx_story_kicker: '// 私たちが解決する問題',
+      idx_beyond_label: '<span>//</span> コードを超えて',
+      idx_beyond_h2: '開発者だけではありません。',
+    },
+    zh: {
+      idx_story_kicker: '// 我们解决的问题',
+      idx_beyond_label: '<span>//</span> 超越代码',
+      idx_beyond_h2: '不仅仅面向开发者。',
+    },
+    ko: {
+      idx_story_kicker: '// 우리가 해결하는 문제',
+      idx_beyond_label: '<span>//</span> 코드를 넘어서',
+      idx_beyond_h2: '개발자만을 위한 것이 아닙니다.',
+    },
+  };
+
+  function applyIndexI18n(lang) {
+    const tr = IDX_TRANSLATIONS[lang] || IDX_TRANSLATIONS.en;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (tr[key] !== undefined) el.innerHTML = tr[key];
+      else if (IDX_TRANSLATIONS.en[key] !== undefined) el.innerHTML = IDX_TRANSLATIONS.en[key];
+    });
+  }
+
+  function detectIndexLang() {
+    const url = new URL(window.location.href);
+    const p = url.searchParams.get('lang');
+    if (p && SUPPORTED.includes(p)) return p;
+    const stored = localStorage.getItem('index-lang');
+    if (stored && SUPPORTED.includes(stored)) return stored;
+    const browser = (navigator.language || '').split('-')[0];
+    return SUPPORTED.includes(browser) ? browser : 'en';
+  }
+
+  // Expose pickLang and toggleLangMenu if not already defined
+  if (typeof window.pickLang !== 'function') {
+    const LANG_FLAGS_IDX = {en:'https://flagcdn.com/w40/gb.png',fr:'https://flagcdn.com/w40/fr.png',es:'https://flagcdn.com/w40/es.png',de:'https://flagcdn.com/w40/de.png',pt:'https://flagcdn.com/w40/pt.png',ja:'https://flagcdn.com/w40/jp.png',zh:'https://flagcdn.com/w40/cn.png',ko:'https://flagcdn.com/w40/kr.png'};
+    window.toggleLangMenu = function() {
+      const m = document.getElementById('lang-menu');
+      const t = document.getElementById('lang-trigger');
+      if (!m) return;
+      m.hidden = !m.hidden;
+      if (t) t.setAttribute('aria-expanded', String(!m.hidden));
+      if (!m.hidden) {
+        setTimeout(() => document.addEventListener('click', function h(e) {
+          const lf = document.getElementById('lang-float');
+          if (!lf || !lf.contains(e.target)) { m.hidden = true; if (t) t.setAttribute('aria-expanded','false'); }
+          else document.addEventListener('click', h, {once:true});
+        }, {once:true}), 0);
+      }
+    };
+    window.pickLang = function(lang) {
+      const m = document.getElementById('lang-menu');
+      if (m) m.hidden = true;
+      const t = document.getElementById('lang-trigger');
+      if (t) t.setAttribute('aria-expanded','false');
+      localStorage.setItem('index-lang', lang);
+      const flag = document.getElementById('lang-flag');
+      const code = document.getElementById('lang-code');
+      if (flag && LANG_FLAGS_IDX[lang]) { flag.src = LANG_FLAGS_IDX[lang]; flag.alt = lang.toUpperCase(); }
+      if (code) code.textContent = lang.toUpperCase();
+      document.querySelectorAll('.lang-opt').forEach(b => b.classList.toggle('act', b.dataset.lang === lang));
+      applyIndexI18n(lang);
+      const url = new URL(window.location.href);
+      url.searchParams.set('lang', lang);
+      history.replaceState(null, '', url.toString());
+    };
+  }
+
+  // Apply on load
+  document.addEventListener('DOMContentLoaded', function() {
+    const lang = detectIndexLang();
+    if (lang !== 'en') {
+      applyIndexI18n(lang);
+      const flag = document.getElementById('lang-flag');
+      const code = document.getElementById('lang-code');
+      const LANG_FLAGS_IDX = {en:'https://flagcdn.com/w40/gb.png',fr:'https://flagcdn.com/w40/fr.png',es:'https://flagcdn.com/w40/es.png',de:'https://flagcdn.com/w40/de.png',pt:'https://flagcdn.com/w40/pt.png',ja:'https://flagcdn.com/w40/jp.png',zh:'https://flagcdn.com/w40/cn.png',ko:'https://flagcdn.com/w40/kr.png'};
+      if (flag && LANG_FLAGS_IDX[lang]) { flag.src = LANG_FLAGS_IDX[lang]; flag.alt = lang.toUpperCase(); }
+      if (code) code.textContent = lang.toUpperCase();
+      document.querySelectorAll('.lang-opt').forEach(b => b.classList.toggle('act', b.dataset.lang === lang));
+    }
+  });
+})();
+</script>
+
+<script>
 /* ── TIMELINE DOTS INTERSECTION OBSERVER ── */
 (function() {
   const dots = document.querySelectorAll('.stl-dot');
@@ -798,5 +900,6 @@
   });
 })();
 </script>
+
 </body>
 </html>

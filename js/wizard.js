@@ -112,6 +112,7 @@ function cardTr(type, name, field) {
 function applyLocale(data, cardsData) {
   cardsData = cardsData || {};
   CARD_TR = { agents: cardsData.agents || {}, skills: cardsData.skills || {} };
+  if (!ORIG_QUESTIONS || !ORIG_LEVELS) return;
   QUESTIONS = JSON.parse(JSON.stringify(ORIG_QUESTIONS));
   LEVELS    = JSON.parse(JSON.stringify(ORIG_LEVELS));
   if (data.levels) {
@@ -499,6 +500,8 @@ function toggleSkill(id) {
 
   const c = document.getElementById('skill-count');
   if (c) c.textContent = t('skills_selected', {n: a.length});
+  refreshSidenavChecks();
+  saveSession();
 }
 
 function filterSkillRecCat(cat) {
@@ -710,6 +713,8 @@ function toggleAgent(id) {
   const c = document.getElementById('agent-count');
   if (c) c.textContent = t('agents_selected',{n:a.length});
 
+  refreshSidenavChecks();
+  saveSession();
   // Sync orchestration diagram live if one is open
   syncOrchDiagramWithAgents();
 }
@@ -743,6 +748,12 @@ function syncOrchDiagramWithAgents() {
 
   window._cy.layout(getCyLayout(o.type)).run();
   refreshDepList(orchId);
+  // Also refresh the roles list so newly added agents appear immediately
+  const rolesEl = document.querySelector(`#orch-item-${orchId} .orch-roles-section`);
+  if (rolesEl) {
+    const allAgents = (S.ans.agents_wanted || []).map(id => AGENTS_CATALOG.find(a => a.id === id)).filter(Boolean);
+    rolesEl.innerHTML = buildOrchRolesHtml(o, allAgents);
+  }
 }
 
 function filterRecCat(cat) {
@@ -1249,6 +1260,8 @@ function toggleCommand(id) {
   }
   const c = document.getElementById('cmd-count');
   if (c) c.textContent = t('commands_selected',{n:a.length});
+  refreshSidenavChecks();
+  saveSession();
 }
 
 function filterCmdSelCat(cat) {
@@ -2561,13 +2574,54 @@ function generateFiles(ans, level, agentContents = {}, skillContents = {}, comma
   F[`${cfg}/settings.json`] = JSON.stringify(settingsObj, null, 2);
   F[`${cfg}/.claudeignore`]  = ['node_modules/','.venv/','__pycache__/','dist/','build/','.next/','*.log','*.tmp','.DS_Store','.env','.env.local','coverage/'].concat(hasGo?['vendor/']:[], hasRust?['target/']:[]).join('\n');
 
+  // ── Resolve orchestrations early — needed by agents, rules/index, CLAUDE.md ─
+  const _orchsRaw = ans.orchestrations && ans.orchestrations.length
+    ? ans.orchestrations
+    : (ans.orchestration && ans.orchestration.type
+        ? [{ id:'orch-0', name:'Main Orchestration', type:ans.orchestration.type,
+             roles:ans.orchestration.roles||{}, notes:ans.orchestration.notes||{},
+             dependencies:[], diagramPng:ans.orchestration.diagramPng||null }]
+        : []);
+  const validOrchs = _orchsRaw.filter(o => o.type);
+
   // ── Agents (catalog-driven) ──────────────────────────────
+  // Pre-build per-agent orchestration context so it can be appended to each file
+  const agentOrchContext = {};  // agentId → string
+  if (validOrchs.length) {
+    const rLabels2 = { supervisor:'Supervisor', worker:'Worker', critic:'Critic', router:'Router', validator:'Validator', fallback:'Fallback' };
+    const oLabels2 = { sequential:'Sequential Chain', parallel:'Parallel Execution', hierarchical:'Hierarchical', router:'Router / Selector', debate:'Multi-Agent Debate', swarm:'Swarm', hitl:'Human-in-the-Loop', custom:'Custom Graph' };
+    validOrchs.forEach(o => {
+      const sl = orchSlug(o.name);
+      Object.entries(o.roles || {}).forEach(([agId, role]) => {
+        const note = (o.notes || {})[agId] || '';
+        const deps = (o.dependencies || []);
+        const incoming = deps.filter(d => d.to === agId).map(d => { const a = AGENTS_CATALOG.find(x => x.id === d.from); return a ? a.name : d.from; });
+        const outgoing = deps.filter(d => d.from === agId).map(d => { const a = AGENTS_CATALOG.find(x => x.id === d.to);   return a ? a.name : d.to;   });
+        const lines = [
+          ``,
+          `## Orchestration: ${o.name}`,
+          ``,
+          `- **Pattern:** ${oLabels2[o.type] || o.type}`,
+          `- **Role:** ${rLabels2[role] || role}`,
+          `- **Run:** \`/orchestrate ${sl}\``,
+          note ? `- **Task note:** ${note}` : null,
+          incoming.length ? `- **Receives from:** ${incoming.join(', ')}` : null,
+          outgoing.length ? `- **Sends to:** ${outgoing.join(', ')}` : null,
+          `- **Full spec:** \`docs/orchestrations/${sl}.md\``,
+        ].filter(l => l !== null).join('\n');
+        if (!agentOrchContext[agId]) agentOrchContext[agId] = '';
+        agentOrchContext[agId] += lines;
+      });
+    });
+  }
+
   agents.forEach(id => {
     const content = agentContents[id];
     if (!content) return;
     const agent = AGENTS_CATALOG.find(a => a.id === id);
     if (!agent) return;
-    F[`${cfg}/agents/${agent.name}.md`] = content;
+    const orchCtx = agentOrchContext[id] || '';
+    F[`${cfg}/agents/${agent.name}.md`] = content + orchCtx;
   });
 
   // ── Skills (catalog-driven) ──────────────────────────────
@@ -2777,10 +2831,11 @@ function generateFiles(ans, level, agentContents = {}, skillContents = {}, comma
   });
 
   const docsRefs = [
-    ['../docs/architecture.md',           'Project architecture, components, data flow'],
-    ['../docs/glossary.md',               'Business domain terms'],
-    ['../docs/decisions/ADR-001.md',      'Initial technical decisions'],
+    ['../docs/architecture.md',              'Project architecture, components, data flow'],
+    ['../docs/glossary.md',                  'Business domain terms'],
+    ['../docs/decisions/ADR-001.md',         'Initial technical decisions'],
     specs.length > 0 ? ['../docs/specs/README.md', 'Functional specs — READ FIRST'] : null,
+    validOrchs.length ? ['../docs/orchestrations/index.md', `Multi-agent orchestrations — ${validOrchs.length} orchestration${validOrchs.length > 1 ? 's' : ''} defined`] : null,
   ].filter(Boolean);
 
   const installedSkills = skills.filter(Boolean).map(id => {
@@ -2788,12 +2843,16 @@ function generateFiles(ans, level, agentContents = {}, skillContents = {}, comma
     return s ? [`../${cfg}/skills/${s.source}/${s.subpath || id.slice(s.source.length+1)}.md`, `${s.name} (${s.source})`] : null;
   }).filter(Boolean);
 
-  const installedCommands = commands.filter(Boolean).map(id => {
-    const c = COMMANDS_CATALOG.find(x => x.id === id);
-    if (!c) return null;
-    const safeName = (c.name || id.split('/').pop()).toLowerCase().replace(/[^\w\-]/g,'-');
-    return [`../${cfg}/commands/${safeName}.md`, `/${c.name} — ${c.desc || c.source}`];
-  }).filter(Boolean);
+  const installedCommands = [
+    ...commands.filter(Boolean).map(id => {
+      const c = COMMANDS_CATALOG.find(x => x.id === id);
+      if (!c) return null;
+      const safeName = (c.name || id.split('/').pop()).toLowerCase().replace(/[^\w\-]/g,'-');
+      return [`../${cfg}/commands/${safeName}.md`, `/${c.name} — ${c.desc || c.source}`];
+    }).filter(Boolean),
+    // Auto-generated orchestration command (always added when orchestrations exist)
+    ...(validOrchs.length ? [[`../${cfg}/commands/orchestrate.md`, `/orchestrate <name> — Run a named multi-agent orchestration (${validOrchs.map(o => orchSlug(o.name)).join(', ')})`]] : []),
+  ];
 
   F[`${cfg}/rules/index.md`] = [
     `# Rules Index — Dynamic Dispatch`,
@@ -2847,14 +2906,7 @@ function generateFiles(ans, level, agentContents = {}, skillContents = {}, comma
   ].join('\n');
 
   // ── docs/orchestrations/ ─────────────────────────────────
-  const orchsRaw = ans.orchestrations && ans.orchestrations.length
-    ? ans.orchestrations
-    : (ans.orchestration && ans.orchestration.type
-        ? [{ id:'orch-0', name:'Main Orchestration', type:ans.orchestration.type,
-             roles:ans.orchestration.roles||{}, notes:ans.orchestration.notes||{},
-             dependencies:[], diagramPng:ans.orchestration.diagramPng||null }]
-        : []);
-  const validOrchs = orchsRaw.filter(o => o.type);
+  // validOrchs already computed above (hoisted before agents block)
 
   if (validOrchs.length) {
     const oLabels = { sequential:'Sequential Chain', parallel:'Parallel Execution', hierarchical:'Hierarchical', router:'Router / Selector', debate:'Multi-Agent Debate', swarm:'Swarm', hitl:'Human-in-the-Loop', custom:'Custom Graph' };
@@ -2931,12 +2983,22 @@ function generateFiles(ans, level, agentContents = {}, skillContents = {}, comma
       }
     });
 
-    // Append orchestrations table to CLAUDE.md
+    // Append orchestrations section to CLAUDE.md
     const orchSection = [
       ``,`## Orchestrations`,``,
-      `| Name | Pattern | Command |`,
-      `|------|---------|---------|`,
-      ...validOrchs.map(o => `| ${o.name} | ${oLabels[o.type]||o.type} | \`/orchestrate ${orchSlug(o.name)}\` |`),
+      `This project defines ${validOrchs.length} multi-agent orchestration${validOrchs.length > 1 ? 's' : ''}.`,
+      `Full specs: \`docs/orchestrations/index.md\``,
+      `Run any orchestration with: \`/orchestrate <name>\``,
+      ``,
+      `| Name | Pattern | Agents | Command |`,
+      `|------|---------|--------|---------|`,
+      ...validOrchs.map(o => {
+        const agCnt = Object.keys(o.roles || {}).length;
+        return `| ${o.name} | ${oLabels[o.type]||o.type} | ${agCnt} | \`/orchestrate ${orchSlug(o.name)}\` |`;
+      }),
+      ``,
+      `> Each agent involved in an orchestration has its role, task note, and execution order`,
+      `> documented at the bottom of its agent file in \`${cfg}/agents/\`.`,
       ``
     ].join('\n');
     if (F[mainFile]) F[mainFile] += orchSection;
@@ -3100,15 +3162,64 @@ function updateSidenav() {
   const nav = document.createElement('div');
   nav.id = 'wiz-sidenav';
 
+  const SNAV_ICONS = {
+    profile:'◈', domain:'◎', subdomain:'⊕', stack:'⬡',
+    team:'◷', autonomy:'⬆', tdd_level:'✦', compliance:'⚑',
+    database:'▦', output_language:'◐', default:'▸'
+  };
+  function snavIcon(qid) {
+    const key = Object.keys(SNAV_ICONS).find(k => (qid||'').includes(k));
+    return SNAV_ICONS[key] || SNAV_ICONS.default;
+  }
+  function truncLabel(str, maxWords) {
+    const words = (str || '').split(/\s+/);
+    if (words.length <= maxWords) return str;
+    return words.slice(0, maxWords).join(' ') + '…';
+  }
+
+  const SNAV_SHORT = {
+    objectif:          'Purpose',
+    ai_tools:          'AI tools',
+    project_name:      'Project name',
+    domain:            'Domain',
+    subdomain:         'Subdomains',
+    team_context:      'Team',
+    stack:             'Tech stack',
+    autonomy:          'Autonomy',
+    frustrations:      'Frustrations',
+    specs:             'Specs',
+    package_manager:   'Package manager',
+    database:          'Database',
+    ci_cd:             'CI/CD',
+    commit_style:      'Commit style',
+    tdd_level:         'Testing',
+    test_coverage:     'Coverage',
+    hooks_wanted:      'Hooks',
+    agents_wanted:     'Agents',
+    orchestration_type:'Orchestration',
+    skills_wanted:     'Skills',
+    commands_wanted:   'Commands',
+    never_do:          'Never do',
+    frozen_files:      'Frozen files',
+    decisions_made:    'Decisions',
+    compliance:        'Compliance',
+    response_style:    'Response style',
+    output_language:   'Language',
+    model_routing:     'Model routing',
+    mcp_integrations:  'MCP',
+  };
+
   const items = qs.map((q, i) => {
     const ok  = isAnswered(q);
     const act = !S.boardMode && i === S.step;
     const handler = S.boardMode
       ? `scrollToSection('${q.id}')`
       : `goToStepIdx(${i})`;
+    const shortLabel = SNAV_SHORT[q.id] || truncLabel(q.label, 3);
     return `<div class="snav-item${act?' act':''}${ok?' done':''}" onclick="${handler}" data-qid="${q.id}" title="${esc(q.label)}">
       <span class="snav-num">[${String(i+1).padStart(2,'0')}]</span>
-      <span class="snav-label">${esc(q.label)}</span>
+      <span class="snav-icon">${snavIcon(q.id)}</span>
+      <span class="snav-label">${esc(shortLabel)}</span>
       ${ok ? '<span class="snav-ok">✓</span>' : ''}
     </div>`;
   }).join('');
@@ -3116,19 +3227,22 @@ function updateSidenav() {
   const answered = qs.filter(q => isAnswered(q)).length;
 
   nav.innerHTML = `
-<button class="snav-toggle" id="snav-toggle" onclick="toggleSidenav()" aria-label="Toggle navigation">☰</button>
 <div class="snav-inner" id="snav-inner">
+  <div class="snav-topbar">
+    <button class="snav-close" id="snav-toggle" onclick="toggleSidenav()" aria-label="Close navigation">✕</button>
+    <span class="snav-topbar-title"><span class="pfx">[nav]</span> ${answered}/${qs.length}</span>
+  </div>
   <div class="snav-profile" onclick="S.screen='level';render()" title="Change profile">
     <span class="pfx">[profile]</span>
     <span class="snav-prof-label">${S.level || 'select'}</span>
     <span class="snav-prof-arrow">↗</span>
   </div>
-  <div class="snav-header"><span class="pfx">[nav]</span> ${answered}/${qs.length}</div>
   <div class="snav-items">${items}</div>
   <div class="snav-export" onclick="S.screen='results';render()">
     <span>⚙</span><span>Export project</span>
   </div>
-</div>`;
+</div>
+<button class="snav-open-btn" id="snav-open-btn" onclick="toggleSidenav()" aria-label="Open navigation">☰</button>`;
 
   document.body.appendChild(nav);
 }
@@ -3177,7 +3291,7 @@ function refreshSidenavChecks() {
       okSpan.remove();
     }
   });
-  const hdr = nav.querySelector('.snav-header');
+  const hdr = nav.querySelector('.snav-topbar-title');
   if (hdr) hdr.innerHTML = `<span class="pfx">[nav]</span> ${answered}/${qs.length}`;
 }
 
@@ -3190,8 +3304,10 @@ function goToStepIdx(idx) {
 }
 
 function toggleSidenav() {
-  document.getElementById('snav-inner').classList.toggle('open');
-  document.getElementById('snav-toggle').classList.toggle('open');
+  const inner = document.getElementById('snav-inner');
+  const openBtn = document.getElementById('snav-open-btn');
+  const isOpen = inner.classList.toggle('open');
+  if (openBtn) openBtn.classList.toggle('hidden', isOpen);
 }
 
 function initSidenavObserver(qs) {
@@ -3276,7 +3392,7 @@ function render() {
   app.appendChild(win);
 
   const fn = { welcome:rWelcome, objectif:rObjectif, level:rLevel, questions:S.boardMode?rBoard:rQuestion, results:rResults }[S.screen] || rWelcome;
-  Promise.resolve(fn(c)).catch(console.error);
+  new Promise(resolve => resolve(fn(c))).catch(console.error);
 }
 
 function rWelcome(el) {
@@ -3419,9 +3535,9 @@ function buildQInp(q) {
   const ans = S.ans[q.id];
   let inp = '';
   if (q.type === 'text') {
-    inp = `<div class="input-wrap"><input type="text" placeholder="${q.ph||''}" value="${ans||''}" oninput="S.ans['${q.id}']=this.value;refreshSidenavChecks()"></div>`;
+    inp = `<div class="input-wrap"><input type="text" placeholder="${q.ph||''}" value="${ans||''}" oninput="S.ans['${q.id}']=this.value;refreshSidenavChecks();saveSession()"></div>`;
   } else if (q.type === 'textarea') {
-    inp = `<div class="input-wrap"><textarea placeholder="${q.ph||''}" oninput="S.ans['${q.id}']=this.value;refreshSidenavChecks()">${ans||''}</textarea></div>`;
+    inp = `<div class="input-wrap"><textarea placeholder="${q.ph||''}" oninput="S.ans['${q.id}']=this.value;refreshSidenavChecks();saveSession()">${ans||''}</textarea></div>`;
   } else if (q.type === 'single') {
     const otherSel = ans === '__other__';
     const otherTxt = (S.ans[q.id + '__other__'] || '').replace(/"/g, '&quot;');
@@ -3918,6 +4034,7 @@ function pickOne(id, v, btn) {
   const w = document.getElementById('other-wrap-' + id);
   if (w) w.style.display = 'none';
   refreshSidenavChecks();
+  saveSession();
 }
 function pickOneOther(id, btn) {
   S.ans[id] = '__other__';
@@ -3926,6 +4043,7 @@ function pickOneOther(id, btn) {
   const w = document.getElementById('other-wrap-' + id);
   if (w) { w.style.display = 'block'; w.querySelector('input').focus(); }
   refreshSidenavChecks();
+  saveSession();
 }
 function toggleM(id, v, btn) {
   if (!S.ans[id]) S.ans[id] = [];
@@ -3943,6 +4061,7 @@ function toggleM(id, v, btn) {
   }
   if (id === 'subdomain') S.ans.agents_wanted = undefined;
   refreshSidenavChecks();
+  saveSession();
 }
 function toggleSubdomain(dk, v, btn) {
   if (!S.ans.subdomains) S.ans.subdomains = {};
@@ -3951,6 +4070,8 @@ function toggleSubdomain(dk, v, btn) {
   if (i === -1) a.push(v); else a.splice(i, 1);
   btn.classList.toggle('sel');
   S.ans.agents_wanted = undefined;
+  refreshSidenavChecks();
+  saveSession();
 }
 function toggleMOther(id, btn) {
   if (!S.ans[id]) S.ans[id] = [];
@@ -4027,11 +4148,11 @@ function buildSpecsList(id) {
     <div class="spec-card">
       <div class="spec-hd">
         <input type="text" placeholder="${t('spec_title_ph')}" value="${(spec.title||'').replace(/"/g,'&quot;')}"
-               oninput="S.ans['${id}'][${i}].title=this.value">
+               oninput="S.ans['${id}'][${i}].title=this.value;onSpecInput()">
         <button class="spec-rm" onclick="removeSpec('${id}',${i})" title="${t('spec_delete')}"></button>
       </div>
       <textarea placeholder="${t('spec_desc_ph')}"
-                oninput="S.ans['${id}'][${i}].description=this.value"
+                oninput="S.ans['${id}'][${i}].description=this.value;onSpecInput()"
                 style="min-height:90px;margin-bottom:0">${spec.description||''}</textarea>
       <div class="spec-atts">
         ${(spec.attachments||[]).map((att,ai) => `
@@ -4053,15 +4174,21 @@ function rerenderSpecs(id) {
   if (w) w.innerHTML = buildSpecsList(id);
 }
 
+function onSpecInput() { refreshSidenavChecks(); saveSession(); }
+
 function addSpec(id) {
   if (!S.ans[id]) S.ans[id] = [];
   S.ans[id].push({ title: '', description: '', attachments: [] });
   rerenderSpecs(id);
+  refreshSidenavChecks();
+  saveSession();
 }
 
 function removeSpec(id, i) {
   S.ans[id].splice(i, 1);
   rerenderSpecs(id);
+  refreshSidenavChecks();
+  saveSession();
 }
 
 function removeAtt(id, si, ai) {

@@ -98,7 +98,7 @@
         "advanced": "생성된 프롬프트가 기존 구성 파일을 보존할지 덮어쓸지 결정합니다."
       },
       "opts": {
-        "new_project":      "새 프로젝트 — 처음부터 시작",
+        "new_project": "새 프로젝트 — 처음부터 시작",
         "improve_existing": "기존 설정 — 확장 / 개선"
       }
     },
@@ -458,6 +458,25 @@
     "foot_how": "사용 방법",
     "foot_agents": "에이전트",
     "foot_feat": "기능",
-    "foot_copy": "// 개발자를 위해 구축"
+    "foot_copy": "// 개발자를 위해 구축",
+    "project_label": "<span>//</span> 시작점을 선택하세요",
+    "project_title": "새 프로젝트 또는 기존 코드베이스?",
+    "project_sub": "Finta는 두 경우 모두 지원합니다. 위자드는 빈 저장소든 3년 된 모노레포든 상황에 맞게 출력을 조정합니다.",
+    "path_new_badge": "// 새 프로젝트",
+    "path_new_title": "빈 저장소 → 프로덕션 준비 완료 AI 설정",
+    "path_new_desc": "처음부터 시작하시나요? 완벽합니다. 기술 스택, 도메인, 팀 규모를 알려주세요. 13~29개 질문으로 에이전트, 규칙, 아키텍처 문서가 포함된 완전한 AI 설정을 얻을 수 있습니다.",
+    "path_new_step1": "13개 질문(Fast) 또는 최대 29개(Deep) 답변",
+    "path_new_step2": "스코어링 엔진이 스택에 맞는 에이전트를 선택",
+    "path_new_step3": "CLAUDE.md, agents/, rules/, docs/ 모두 생성",
+    "path_new_step4": "ZIP을 배치하고 프롬프트를 붙여넣어 개발 시작",
+    "path_new_cta": "> 새 프로젝트 시작",
+    "path_exist_badge": "// 기존 코드베이스",
+    "path_exist_title": "진행 중인 프로젝트 → 드디어 이해하는 AI",
+    "path_exist_desc": "이미 개발 중이신가요? 위자드는 기존 아키텍처에 맞는 설정을 생성합니다 — 일반적인 템플릿이 아닙니다. 구축 중인 내용과 현재 워크플로우를 설명해주세요.",
+    "path_exist_step1": "기존 기술 스택과 아키텍처 설명",
+    "path_exist_step2": "현재 문제점에 맞는 에이전트 선택",
+    "path_exist_step3": "설정은 프로젝트 위에 추가됨 (교체 아님)",
+    "path_exist_step4": "AI가 기존 규칙을 즉시 읽어들임",
+    "path_exist_cta": "> 기존 프로젝트 설정"
   }
 }

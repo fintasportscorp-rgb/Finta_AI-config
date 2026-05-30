@@ -98,7 +98,7 @@
         "advanced": "确定生成的提示词是保留还是覆盖现有配置文件。"
       },
       "opts": {
-        "new_project":      "新项目 — 从零开始",
+        "new_project": "新项目 — 从零开始",
         "improve_existing": "现有配置 — 扩展 / 改进"
       }
     },
@@ -458,6 +458,25 @@
     "foot_how": "使用方式",
     "foot_agents": "代理",
     "foot_feat": "功能",
-    "foot_copy": "// 为开发者而建"
+    "foot_copy": "// 为开发者而建",
+    "project_label": "<span>//</span> 您的起点",
+    "project_title": "新项目还是现有代码库？",
+    "project_sub": "Finta两者均适用。向导会根据您的情况调整输出——空白仓库或3年历史的Monorepo均可。",
+    "path_new_badge": "// 新项目",
+    "path_new_title": "空白仓库 → 生产就绪的AI配置",
+    "path_new_desc": "从零开始？完美。告诉向导您的技术栈、领域和团队规模。通过13-29个问题，您将获得完整的AI配置——智能体、规则、架构文档，一键部署到项目根目录。",
+    "path_new_step1": "回答13个问题（快速）或最多29个（深度模式）",
+    "path_new_step2": "评分引擎为您的技术栈挑选合适的智能体",
+    "path_new_step3": "生成CLAUDE.md、agents/、rules/、docs/——全部自动",
+    "path_new_step4": "解压ZIP，粘贴提示词，开始构建",
+    "path_new_cta": "> 开始新项目",
+    "path_exist_badge": "// 现有代码库",
+    "path_exist_title": "进行中的项目 → 终于理解您的AI",
+    "path_exist_desc": "已经在开发中？向导会生成适配您现有架构的配置——而非通用模板。描述您正在构建的内容、痛点和当前工作流程。",
+    "path_exist_step1": "描述您的现有技术栈和架构",
+    "path_exist_step2": "针对当前痛点选择智能体",
+    "path_exist_step3": "配置叠加在您的项目上，而非替换",
+    "path_exist_step4": "AI立即读取您的现有规范",
+    "path_exist_cta": "> 配置现有项目"
   }
 }

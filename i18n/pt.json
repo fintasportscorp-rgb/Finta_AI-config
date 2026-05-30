@@ -98,7 +98,7 @@
         "advanced": "Determina se o prompt gerado preserva ou sobrescreve os arquivos de configuração existentes."
       },
       "opts": {
-        "new_project":      "Novo projeto — começar do zero",
+        "new_project": "Novo projeto — começar do zero",
         "improve_existing": "Config existente — estender / melhorar"
       }
     },
@@ -458,6 +458,25 @@
     "foot_how": "Como funciona",
     "foot_agents": "Agentes",
     "foot_feat": "Recursos",
-    "foot_copy": "// construído para desenvolvedores"
+    "foot_copy": "// construído para desenvolvedores",
+    "project_label": "<span>//</span> seu ponto de partida",
+    "project_title": "Novo projeto ou base de código existente?",
+    "project_sub": "O Finta funciona para ambos. O wizard adapta a saída à sua situação — repositório vazio ou monorepo de 3 anos.",
+    "path_new_badge": "// novo projeto",
+    "path_new_title": "Repositório vazio → config IA pronta para produção",
+    "path_new_desc": "Começando do zero? Perfeito. Descreva sua stack, domínio e tamanho da equipe. Em 13–29 perguntas você terá uma configuração IA completa — agentes, regras, docs de arquitetura.",
+    "path_new_step1": "Responda 13 perguntas (Rápido) ou até 29 (Deep)",
+    "path_new_step2": "O motor de pontuação escolhe os agentes certos para sua stack",
+    "path_new_step3": "Obtenha CLAUDE.md, agents/, rules/, docs/ — tudo gerado",
+    "path_new_step4": "Extraia o ZIP, cole um prompt, comece a construir",
+    "path_new_cta": "> iniciar novo projeto",
+    "path_exist_badge": "// base de código existente",
+    "path_exist_title": "Projeto em andamento → IA que finalmente te entende",
+    "path_exist_desc": "Já no meio do desenvolvimento? O wizard gera uma config adequada à sua arquitetura existente — não um template genérico. Descreva o que está construindo e seus pontos de dor.",
+    "path_exist_step1": "Descreva sua stack e arquitetura existente",
+    "path_exist_step2": "Selecione agentes para seus pontos de dor ativos",
+    "path_exist_step3": "A config se sobrepõe ao seu projeto, não o substitui",
+    "path_exist_step4": "Sua IA lê suas convenções existentes imediatamente",
+    "path_exist_cta": "> configurar projeto existente"
   }
 }

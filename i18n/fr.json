@@ -98,7 +98,7 @@
         "advanced": "Détermine si le prompt généré préserve ou écrase les fichiers de configuration existants."
       },
       "opts": {
-        "new_project":      "Nouveau projet — partir de zéro",
+        "new_project": "Nouveau projet — partir de zéro",
         "improve_existing": "Config existante — étendre / améliorer"
       }
     },
@@ -125,21 +125,21 @@
         "advanced": "Chaque domaine impacte les règles de sécurité, les skills et les ADRs générés."
       },
       "opts": {
-        "apps":        "Apps & Interfaces utilisateurs",
-        "data":        "Systèmes de données & Automatisation",
-        "ai":          "Produits IA & Systèmes de connaissance",
-        "content":     "Création de contenu & Communication",
-        "business":    "Stratégie métier & Outils organisationnels",
-        "security":    "Sécurité, Qualité & Fiabilité",
-        "mleng":       "Ingénierie ML & Infrastructure",
-        "blockchain":  "Blockchain & Systèmes décentralisés",
-        "science":     "Calcul scientifique & Modélisation",
-        "immersive":   "Expériences immersives & Spatiales",
+        "apps": "Apps & Interfaces utilisateurs",
+        "data": "Systèmes de données & Automatisation",
+        "ai": "Produits IA & Systèmes de connaissance",
+        "content": "Création de contenu & Communication",
+        "business": "Stratégie métier & Outils organisationnels",
+        "security": "Sécurité, Qualité & Fiabilité",
+        "mleng": "Ingénierie ML & Infrastructure",
+        "blockchain": "Blockchain & Systèmes décentralisés",
+        "science": "Calcul scientifique & Modélisation",
+        "immersive": "Expériences immersives & Spatiales",
         "integration": "Intégration & Connectivité",
-        "embedded":    "Systèmes embarqués & Edge",
-        "media":       "Médias & Streaming",
-        "devtools":    "Outils développeur & Infrastructure",
-        "fintech":     "Fintech & Transactions réglementées"
+        "embedded": "Systèmes embarqués & Edge",
+        "media": "Médias & Streaming",
+        "devtools": "Outils développeur & Infrastructure",
+        "fintech": "Fintech & Transactions réglementées"
       }
     },
     "subdomain": {
@@ -465,6 +465,25 @@
     "foot_how": "Comment ça marche",
     "foot_agents": "Agents",
     "foot_feat": "Fonctionnalités",
-    "foot_copy": "// fait pour les développeurs"
+    "foot_copy": "// fait pour les développeurs",
+    "project_label": "<span>//</span> votre point de départ",
+    "project_title": "Nouveau projet ou base de code existante ?",
+    "project_sub": "Finta fonctionne pour les deux. Le wizard adapte sa sortie à votre situation — dépôt vide ou monorepo de 3 ans.",
+    "path_new_badge": "// nouveau projet",
+    "path_new_title": "Dépôt vide → config IA prête pour la production",
+    "path_new_desc": "Vous partez de zéro ? Parfait. Décrivez votre stack, votre domaine et la taille de l'équipe. En 13 à 29 questions, vous obtenez une configuration IA complète — agents, règles, docs d'architecture.",
+    "path_new_step1": "Répondez à 13 questions (Rapide) ou jusqu'à 29 (Deep)",
+    "path_new_step2": "Le moteur de scoring sélectionne les bons agents pour votre stack",
+    "path_new_step3": "Obtenez CLAUDE.md, agents/, rules/, docs/ — tout généré",
+    "path_new_step4": "Déposez le ZIP, collez un prompt, commencez à builder",
+    "path_new_cta": "> démarrer un nouveau projet",
+    "path_exist_badge": "// base de code existante",
+    "path_exist_title": "Projet en cours → IA qui vous comprend enfin",
+    "path_exist_desc": "Déjà en cours de développement ? Le wizard génère une config adaptée à votre architecture existante — pas un template générique. Décrivez ce que vous construisez, vos difficultés, votre workflow actuel.",
+    "path_exist_step1": "Décrivez votre stack et architecture existante",
+    "path_exist_step2": "Sélectionnez les agents pour vos points de douleur actuels",
+    "path_exist_step3": "La config s'ajoute à votre projet, sans le remplacer",
+    "path_exist_step4": "Votre IA lit vos conventions existantes immédiatement",
+    "path_exist_cta": "> configurer un projet existant"
   }
 }
