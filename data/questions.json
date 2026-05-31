@@ -70,7 +70,8 @@
         {"v": "baidu_comate",  "l": "Baidu Comate",     "i": "🔵", "d": "Baidu"},
         {"v": "codegeex",      "l": "CodeGeeX",         "i": "🤖", "d": "Zhipu AI · VSCode"},
         {"v": "kimi",          "l": "Kimi",             "i": "🌙", "d": "Moonshot AI"},
-        {"v": "marscode",      "l": "MarsCode",         "i": "🎯", "d": "ByteDance"}
+        {"v": "marscode",      "l": "MarsCode",         "i": "🎯", "d": "ByteDance"},
+        {"v": "mistral",       "l": "Vibe by Mistral",  "i": "🌀", "d": "Mistral AI"}
       ]
     },
 
@@ -114,7 +115,9 @@
         { "v": "media",       "l": "Media & Streaming Systems",                 "i": "🎬" },
         { "v": "devtools",    "l": "Developer Tools & Infrastructure",          "i": "🛠️" },
         { "v": "fintech",     "l": "Financial & Regulated Transaction Systems", "i": "💳" },
-        { "v": "coaching",    "l": "Coaching & Sport Management",               "i": "🏃" }
+        { "v": "football", "l": "Football Coaching & Club Management",        "i": "⚽" },
+        { "v": "sport",    "l": "Multi-Sport Science & Athletic Coaching",     "i": "🏅" },
+        { "v": "holistic", "l": "Personal Development & Wellbeing",           "i": "🌱" }
       ]
     },
 

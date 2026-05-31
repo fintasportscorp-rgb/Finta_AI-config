@@ -50,90 +50,137 @@ window.addEventListener('DOMContentLoaded', () => {
 
 // ─── NEURAL NETWORK VISUALIZATION ───
 const NN_CAT_COLORS = {
-  root:        '#7c6af7',  // purple — project root
-  dir:         '#22d3ee',  // cyan — directories
-  config:      '#39ff14',  // neon green — CLAUDE.md, CLAUDE.local.md
-  bootstrap:   '#f0a500',  // amber — bootstrap prompt
-  util:        '#6e768a',  // slate — .gitignore
-  agent_md:    '#818cf8',  // lavender — agent files
-  agent_more:  '#818cf8',  // lavender — placeholder (will use dashed style)
-  rule_md:     '#f59e0b',  // amber — rule files
-  command_md:  '#fb923c',  // orange — command files
-  doc_md:      '#fbbf24',  // gold — doc files
+  root:        '#7c6af7',  // purple      — project root
+  dir:         '#22d3ee',  // cyan        — directories
+  config:      '#ffb300',  // amber       — CLAUDE.md, settings.json
+  util:        '#6e768a',  // slate       — .gitignore, .claudeignore
+  rule_idx:    '#ffb300',  // amber       — rules/index.md (dispatch registry)
+  rule_md:     '#f59e0b',  // amber-dark  — rule files
+  agent_md:    '#818cf8',  // lavender    — agent files
+  agent_more:  '#818cf8',  // lavender    — placeholder (dashed)
+  skill_md:    '#a78bfa',  // light-purple— skill files
+  command_md:  '#fb923c',  // orange      — command files
+  doc_md:      '#fbbf24',  // gold        — doc files
+  adr_md:      '#e879f9',  // fuchsia     — ADR / decisions
+  bootstrap:   '#f0a500',  // deep-amber  — prompts/bootstrap-init.md
 };
 
 const NN_NODES_DATA = [
-  // ── Root ────────────────────────────────────────────────────────
-  { id:'root',         label:'my-project/',       cat:'root',       r:16, px:0.50, py:0.52, desc:'Your project root — drop the ZIP here' },
 
-  // ── Root-level files ─────────────────────────────────────────────
-  { id:'claude-md',    label:'CLAUDE.md',          cat:'config',     r:11, px:0.26, py:0.32, desc:'Master AI briefing — read every session automatically' },
-  { id:'claude-local', label:'CLAUDE.local.md',    cat:'config',     r: 7, px:0.16, py:0.50, desc:'Local overrides — never committed' },
-  { id:'bootstrap-md', label:'bootstrap-init.md',  cat:'bootstrap',  r: 8, px:0.22, py:0.70, desc:'One-shot AI enrichment prompt — paste once after install' },
-  { id:'gitignore',    label:'.gitignore',          cat:'util',       r: 5, px:0.34, py:0.77, desc:'Ignores CLAUDE.local.md and sensitive files' },
+  // ── Root — true center ────────────────────────────────────────────
+  { id:'root',         label:'my-project/',        cat:'root',       r:16, px:0.50, py:0.52, desc:'Project root — extract the ZIP here' },
 
-  // ── .claude/ directory ──────────────────────────────────────────
-  { id:'claude-dir',   label:'.claude/',            cat:'dir',        r:12, px:0.50, py:0.22, desc:'Claude Code configuration directory' },
+  // ── Left branch: root-level config files ──────────────────────────
+  //    Fan from upper-left to lower-left, filling the left edge
+  { id:'claude-md',    label:'CLAUDE.md',           cat:'config',     r:11, px:0.22, py:0.35, desc:'Master AI briefing — auto-loaded every session' },
+  { id:'claude-local', label:'CLAUDE.local.md',     cat:'config',     r: 7, px:0.14, py:0.52, desc:'Local context & session state — gitignored' },
+  { id:'gitignore',    label:'.gitignore',           cat:'util',       r: 5, px:0.22, py:0.70, desc:'Ignores CLAUDE.local.md, .env, secrets' },
 
-  // ── .claude/ subdirectories ──────────────────────────────────────
-  { id:'agents-dir',   label:'agents/',             cat:'dir',        r:10, px:0.30, py:0.10, desc:'Specialist agent markdown files' },
-  { id:'rules-dir',    label:'rules/',              cat:'dir',        r: 9, px:0.50, py:0.08, desc:'Quality, security & behavior rules' },
-  { id:'commands-dir', label:'commands/',           cat:'dir',        r: 9, px:0.70, py:0.10, desc:'Custom slash commands' },
+  // ── Bottom-left branch: prompts/ ──────────────────────────────────
+  { id:'prompts-dir',  label:'prompts/',            cat:'dir',        r: 8, px:0.40, py:0.82, desc:'AI enrichment prompts directory' },
+  { id:'bootstrap',    label:'bootstrap-init.md',   cat:'bootstrap',  r: 7, px:0.26, py:0.91, desc:'One-shot enrichment — paste once after install' },
 
-  // ── Agent files ──────────────────────────────────────────────────
-  { id:'ag-backend',   label:'backend-dev.md',     cat:'agent_md',   r: 6, px:0.12, py:0.16, desc:'Backend & API specialist agent' },
-  { id:'ag-frontend',  label:'frontend-dev.md',    cat:'agent_md',   r: 6, px:0.21, py:0.08, desc:'React / Vue / UI specialist agent' },
-  { id:'ag-security',  label:'security.md',        cat:'agent_md',   r: 6, px:0.30, py:0.03, desc:'Security & audit specialist agent' },
-  { id:'ag-more',      label:'+agents…',           cat:'agent_more', r: 5, px:0.41, py:0.06, desc:'All agents selected in the wizard' },
+  // ── Top branch: .claude/ hub ──────────────────────────────────────
+  { id:'claude-dir',   label:'.claude/',             cat:'dir',        r:12, px:0.50, py:0.24, desc:'Claude Code configuration directory' },
+  { id:'settings',     label:'settings.json',        cat:'config',     r: 5, px:0.34, py:0.14, desc:'Model, permissions & hooks config' },
+  { id:'claudeignore', label:'.claudeignore',         cat:'util',       r: 5, px:0.41, py:0.09, desc:'Ignores node_modules, dist, .venv…' },
 
-  // ── Rule files ───────────────────────────────────────────────────
-  { id:'rule-ts',      label:'typescript.md',      cat:'rule_md',    r: 6, px:0.44, py:0.16, desc:'TypeScript conventions & no-any rule' },
-  { id:'rule-sec',     label:'security.md',        cat:'rule_md',    r: 6, px:0.50, py:0.18, desc:'No hardcoded secrets, OWASP rules' },
-  { id:'rule-tdd',     label:'tdd.md',             cat:'rule_md',    r: 6, px:0.56, py:0.16, desc:'TDD workflow & coverage thresholds' },
+  // ── Top-center: rules/ — spread into upper strip ──────────────────
+  { id:'rules-dir',    label:'rules/',               cat:'dir',        r:10, px:0.50, py:0.11, desc:'All rule files — always-loaded + lazy via frontmatter' },
+  { id:'rule-index',   label:'index.md',             cat:'rule_idx',   r: 7, px:0.40, py:0.03, desc:'Dynamic dispatch registry — routes every rule' },
+  { id:'rule-qg',      label:'quality-gates.md',     cat:'rule_md',    r: 5, px:0.47, py:0.02, desc:'Quality metrics & absolute prohibitions — ALWAYS LOADED' },
+  { id:'rule-sec',     label:'security.md',          cat:'rule_md',    r: 5, px:0.54, py:0.03, desc:'OWASP top-10, no hardcoded secrets — ALWAYS LOADED' },
+  { id:'rule-tdd',     label:'tdd-workflow.md',      cat:'rule_md',    r: 5, px:0.58, py:0.08, desc:'RED→GREEN→VALIDATE cycle, coverage thresholds' },
+  { id:'rule-beh',     label:'behavior.md',          cat:'rule_md',    r: 5, px:0.60, py:0.15, desc:'Assistant behavior contract — ALWAYS LOADED' },
+  { id:'rule-ctx',     label:'context-budget.md',    cat:'rule_md',    r: 5, px:0.59, py:0.21, desc:'Token economy & dreaming protocol — ALWAYS LOADED' },
+  { id:'backend-dir',  label:'backend/',             cat:'dir',        r: 6, px:0.43, py:0.20, desc:'Backend sub-rules — lazy on api/** paths' },
+  { id:'rule-api',     label:'api.md',               cat:'rule_md',    r: 5, px:0.36, py:0.28, desc:'REST conventions, error format, CORS, rate-limiting' },
 
-  // ── Command files ────────────────────────────────────────────────
-  { id:'cmd-review',   label:'code-review.md',     cat:'command_md', r: 6, px:0.61, py:0.06, desc:'Slash command: /code-review' },
-  { id:'cmd-test',     label:'test.md',            cat:'command_md', r: 5, px:0.70, py:0.03, desc:'Slash command: /test' },
-  { id:'cmd-deploy',   label:'deploy.md',          cat:'command_md', r: 5, px:0.79, py:0.06, desc:'Slash command: /deploy' },
+  // ── Top-right: agents/ ────────────────────────────────────────────
+  { id:'agents-dir',   label:'agents/',              cat:'dir',        r:10, px:0.68, py:0.14, desc:'Specialist agent .md files' },
+  { id:'ag-backend',   label:'backend-dev.md',       cat:'agent_md',   r: 5, px:0.63, py:0.06, desc:'Backend & API specialist' },
+  { id:'ag-security',  label:'security-expert.md',   cat:'agent_md',   r: 5, px:0.70, py:0.04, desc:'Security audit & OWASP specialist' },
+  { id:'ag-tdd',       label:'tdd-expert.md',         cat:'agent_md',   r: 5, px:0.77, py:0.07, desc:'TDD, coverage & testing strategy' },
+  { id:'ag-more',      label:'+agents…',             cat:'agent_more', r: 5, px:0.83, py:0.14, desc:'All agents selected via wizard scoring engine' },
 
-  // ── docs/ directory ──────────────────────────────────────────────
-  { id:'docs-dir',     label:'docs/',              cat:'dir',        r:10, px:0.82, py:0.44, desc:'Project documentation output' },
+  // ── Right-upper: skills/ ──────────────────────────────────────────
+  { id:'skills-dir',   label:'skills/',              cat:'dir',        r: 8, px:0.74, py:0.28, desc:'Installed skill .md files — from catalog' },
+  { id:'skill-file',   label:'{source}/skill.md',    cat:'skill_md',   r: 5, px:0.85, py:0.22, desc:'Reusable skill — source + subpath (dashed)' },
 
-  // ── Doc files ────────────────────────────────────────────────────
-  { id:'doc-arch',     label:'architecture.md',   cat:'doc_md',     r: 7, px:0.94, py:0.31, desc:'System architecture & tech decisions' },
-  { id:'doc-glossary', label:'glossary.md',       cat:'doc_md',     r: 6, px:0.97, py:0.47, desc:'Domain terms and project glossary' },
-  { id:'doc-adr',      label:'adr/',              cat:'dir',        r: 6, px:0.94, py:0.63, desc:'Architecture Decision Records folder' },
+  // ── Right-center: commands/ ───────────────────────────────────────
+  { id:'commands-dir', label:'commands/',            cat:'dir',        r: 9, px:0.68, py:0.42, desc:'Custom slash command .md definitions' },
+  { id:'cmd-review',   label:'code-review.md',       cat:'command_md', r: 5, px:0.80, py:0.34, desc:'/code-review — full review with scoring' },
+  { id:'cmd-test',     label:'test.md',              cat:'command_md', r: 5, px:0.82, py:0.44, desc:'/test — run & analyze test suite' },
+  { id:'cmd-orch',     label:'orchestrate.md',       cat:'command_md', r: 5, px:0.78, py:0.53, desc:'/orchestrate — launch multi-agent workflow' },
+
+  // ── Right branch: docs/ ───────────────────────────────────────────
+  { id:'docs-dir',     label:'docs/',                cat:'dir',        r:10, px:0.82, py:0.62, desc:'Generated project documentation' },
+  { id:'doc-arch',     label:'architecture.md',      cat:'doc_md',     r: 6, px:0.93, py:0.52, desc:'System architecture, components & diagrams' },
+  { id:'doc-glossary', label:'glossary.md',          cat:'doc_md',     r: 5, px:0.96, py:0.63, desc:'Domain terms, acronyms & project glossary' },
+
+  // ── Bottom-right: docs sub-trees fill lower-right corner ──────────
+  { id:'decisions-dir',label:'decisions/',           cat:'dir',        r: 7, px:0.93, py:0.74, desc:'Architecture Decision Records folder' },
+  { id:'adr-001',      label:'ADR-001.md',           cat:'adr_md',     r: 5, px:0.97, py:0.85, desc:'ADR-001 — first architecture decision' },
+  { id:'adr-tpl',      label:'_template.md',         cat:'adr_md',     r: 4, px:0.88, py:0.87, desc:'ADR template for future decisions' },
+
+  { id:'specs-dir',    label:'specs/',               cat:'dir',        r: 6, px:0.80, py:0.78, desc:'Project specs & business rules — if defined' },
+  { id:'spec-file',    label:'{spec}/spec.md',       cat:'doc_md',     r: 4, px:0.80, py:0.90, desc:'Individual spec — title, rules, examples' },
+
+  { id:'orch-dir',     label:'orchestrations/',      cat:'dir',        r: 6, px:0.70, py:0.74, desc:'Multi-agent orchestration blueprints' },
+  { id:'orch-file',    label:'{name}.md',            cat:'doc_md',     r: 4, px:0.68, py:0.86, desc:'Orchestration spec — agents, roles, flow' },
+
 ];
 
 const NN_EDGES_DATA = [
-  // root → root-level items
+  // root → root-level files
   ['root', 'claude-md'],
   ['root', 'claude-local'],
-  ['root', 'bootstrap-md'],
   ['root', 'gitignore'],
+  ['root', 'prompts-dir'],
   ['root', 'claude-dir'],
   ['root', 'docs-dir'],
-  // .claude/ → subdirectories
-  ['claude-dir', 'agents-dir'],
+  // prompts/ → files
+  ['prompts-dir', 'bootstrap'],
+  // .claude/ → sub-dirs + config files
+  ['claude-dir', 'settings'],
+  ['claude-dir', 'claudeignore'],
   ['claude-dir', 'rules-dir'],
+  ['claude-dir', 'agents-dir'],
+  ['claude-dir', 'skills-dir'],
   ['claude-dir', 'commands-dir'],
+  // rules/ → files + sub-dir
+  ['rules-dir', 'rule-index'],
+  ['rules-dir', 'rule-qg'],
+  ['rules-dir', 'rule-sec'],
+  ['rules-dir', 'rule-beh'],
+  ['rules-dir', 'rule-ctx'],
+  ['rules-dir', 'rule-tdd'],
+  ['rules-dir', 'backend-dir'],
+  ['backend-dir', 'rule-api'],
   // agents/ → files
   ['agents-dir', 'ag-backend'],
-  ['agents-dir', 'ag-frontend'],
   ['agents-dir', 'ag-security'],
+  ['agents-dir', 'ag-tdd'],
   ['agents-dir', 'ag-more'],
-  // rules/ → files
-  ['rules-dir', 'rule-ts'],
-  ['rules-dir', 'rule-sec'],
-  ['rules-dir', 'rule-tdd'],
+  // skills/ → file
+  ['skills-dir', 'skill-file'],
   // commands/ → files
   ['commands-dir', 'cmd-review'],
   ['commands-dir', 'cmd-test'],
-  ['commands-dir', 'cmd-deploy'],
-  // docs/ → files
+  ['commands-dir', 'cmd-orch'],
+  // docs/ → files + sub-dirs
   ['docs-dir', 'doc-arch'],
   ['docs-dir', 'doc-glossary'],
-  ['docs-dir', 'doc-adr'],
+  ['docs-dir', 'decisions-dir'],
+  ['docs-dir', 'specs-dir'],
+  ['docs-dir', 'orch-dir'],
+  // decisions/ → ADR files
+  ['decisions-dir', 'adr-001'],
+  ['decisions-dir', 'adr-tpl'],
+  // specs/ → spec file
+  ['specs-dir', 'spec-file'],
+  // orchestrations/ → orch file
+  ['orch-dir', 'orch-file'],
 ];
 
 function initNeuralNet() {
@@ -266,7 +313,7 @@ function initNeuralNet() {
       const r = n.r * pulse * (isHov ? 1.28 : 1);
       const color = NN_CAT_COLORS[n.cat];
       const [cr, cg, cb] = hexRgb(color);
-      const isMissing = n.cat === 'missing' || n.cat === 'agent_more';
+      const isMissing = n.cat === 'missing' || n.cat === 'agent_more' || n.cat === 'skill_md';
 
       ctx.save();
 
@@ -319,7 +366,7 @@ function initNeuralNet() {
       ctx.restore();
 
       // Labels
-      const alwaysShow = n.cat === 'root' || n.cat === 'dir' || n.cat === 'config';
+      const alwaysShow = n.cat === 'root' || n.cat === 'dir' || n.cat === 'config' || n.cat === 'rule_idx' || n.cat === 'bootstrap';
       if (alwaysShow || isHov) {
         ctx.save();
         const fs = n.cat === 'root' ? 12 : 9;
@@ -566,18 +613,18 @@ function buildMarquee() {
         if (p.isGlyph) {
           ctx.save();
           ctx.font = `600 ${p.size}px 'JetBrains Mono', monospace`;
-          ctx.fillStyle = `rgba(57,255,20,${p.opacity})`;
+          ctx.fillStyle = `rgba(255,179,0,${p.opacity})`;
           ctx.fillText(p.char, p.x, p.y);
           ctx.restore();
         } else {
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(57,255,20,${p.opacity})`;
+          ctx.fillStyle = `rgba(255,179,0,${p.opacity})`;
           ctx.fill();
           if (p.size > 1.4 && p.opacity > 0.38) {
             ctx.beginPath();
             ctx.arc(p.x, p.y, p.size * 4.5, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(57,255,20,0.038)`;
+            ctx.fillStyle = `rgba(255,179,0,0.038)`;
             ctx.fill();
           }
         }
@@ -599,7 +646,7 @@ function buildMarquee() {
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = p.isAccent ? `rgba(124,106,247,${alpha})` : `rgba(57,255,20,${alpha})`;
+            ctx.strokeStyle = p.isAccent ? `rgba(124,106,247,${alpha})` : `rgba(255,179,0,${alpha})`;
             ctx.lineWidth = 0.55;
             ctx.stroke();
           }
@@ -609,12 +656,12 @@ function buildMarquee() {
         const r = p.isGlyph ? 4 : 2.5;
         ctx.beginPath();
         ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
-        ctx.fillStyle = p.isAccent ? `rgba(124,106,247,${pulse})` : `rgba(57,255,20,${pulse})`;
+        ctx.fillStyle = p.isAccent ? `rgba(124,106,247,${pulse})` : `rgba(255,179,0,${pulse})`;
         ctx.fill();
         // halo
         ctx.beginPath();
         ctx.arc(p.x, p.y, r * 5.5, 0, Math.PI * 2);
-        ctx.fillStyle = p.isAccent ? `rgba(124,106,247,0.028)` : `rgba(57,255,20,0.028)`;
+        ctx.fillStyle = p.isAccent ? `rgba(124,106,247,0.028)` : `rgba(255,179,0,0.028)`;
         ctx.fill();
 
       } else {
@@ -637,12 +684,12 @@ function buildMarquee() {
         const sz = p.isGlyph ? 1.5 : p.size;
         ctx.beginPath();
         ctx.arc(p.x, p.y, sz, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(57,255,20,${alpha})`;
+        ctx.fillStyle = `rgba(255,179,0,${alpha})`;
         ctx.fill();
         if (dist < 90) {
           ctx.beginPath();
           ctx.arc(p.x, p.y, sz * 6, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(57,255,20,0.025)`;
+          ctx.fillStyle = `rgba(255,179,0,0.025)`;
           ctx.fill();
         }
       }
@@ -652,8 +699,8 @@ function buildMarquee() {
     if (pMode === 2) {
       const pulse = 0.5 + Math.sin(ts * 0.003) * 0.5;
       const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 100 + pulse * 50);
-      grad.addColorStop(0, `rgba(57,255,20,${0.18 * pulse})`);
-      grad.addColorStop(0.45, `rgba(57,255,20,0.05)`);
+      grad.addColorStop(0, `rgba(255,179,0,${0.18 * pulse})`);
+      grad.addColorStop(0.45, `rgba(255,179,0,0.05)`);
       grad.addColorStop(1, 'transparent');
       ctx.fillStyle = grad;
       ctx.beginPath();
@@ -907,6 +954,8 @@ async function applyLang(lang) {
   const url = new URL(window.location.href);
   url.searchParams.set('lang', lang);
   history.replaceState(null, '', url.toString());
+  // Apply data-i18n attribute translations (story + beyond sections)
+  if (typeof window.applyIndexI18n === 'function') window.applyIndexI18n(lang);
 }
 
 async function switchLang(lang) {

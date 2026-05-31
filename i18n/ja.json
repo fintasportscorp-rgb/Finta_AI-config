@@ -74,7 +74,98 @@
     "welcome_prompt_line": "bootstrap-init.md — AIによるポストインストール強化",
     "welcome_run": "設定を開始",
     "run_setup_btn": "run-setup.sh",
-    "boot_prompt_tpl": "`{name}-ai-setup.zip`をこのプロジェクトのルートに解凍し（既存ファイルの上書きを要求された場合は許可）、`prompts/bootstrap-init.md`を読み込んで確認なしに各指示を実行してください。"
+    "boot_prompt_tpl": "`{name}-ai-setup.zip`をこのプロジェクトのルートに解凍し（既存ファイルの上書きを要求された場合は許可）、`prompts/bootstrap-init.md`を読み込んで確認なしに各指示を実行してください。",
+    "session_restored": "セッションが復元されました — 続きから再開できます。",
+    "start_fresh": "最初からやり直す",
+    "next_step_auto": "AIアシスタントは次のセッションで設定を自動的に読み込みます。",
+    "objectif_q": "この設定の目的は何ですか？",
+    "objectif_hint": "生成されたプロンプトの動作を調整します。[1] [2] を押して選択。",
+    "objectif_improve_warn": "[⚠] 生成されたプロンプトは既存の設定をリセットしません",
+    "qsel_title": "質問をカスタマイズ",
+    "qsel_explain": "質問をオン/オフにしてウィザードをカスタマイズ",
+    "show_selection": "▸ 選択を表示",
+    "hide_selection": "▴ 選択を非表示",
+    "preselect_for_me": "★ 自動選択",
+    "remove_all": "✕ すべて削除",
+    "board_mode": "ボード",
+    "step_by_step": "ステップ毎",
+    "board_hint": "{n}問 — 自由に回答し、準備ができたら生成",
+    "no_subdomains": "サブドメインが設定されていません。",
+    "no_questions_phase": "このフェーズに質問はありません。",
+    "audit_title": "選択サマリー",
+    "audit_selected": "{n}件選択",
+    "audit_auto": "自動",
+    "audit_manual": "手動",
+    "audit_none": "なし",
+    "export_project": "プロジェクトをエクスポート",
+    "qf_quality": "品質:",
+    "qf_all": "すべて",
+    "qf_provider": "提供元:",
+    "orch_new": "[+ 新規]",
+    "orch_no_orchs": "オーケストレーションなし — [+ 新規] をクリックして作成",
+    "orch_manager_hint": "このプロジェクトのマルチエージェントオーケストレーションを定義",
+    "orch_section_pattern": "パターン",
+    "orch_section_roles": "エージェントの役割",
+    "orch_section_deps": "依存関係",
+    "orch_select_agents_first": "役割を割り当てるには先にエージェントを選択してください。",
+    "orch_dep_rule": "A が終了してから B が開始する",
+    "orch_dep_build_hint": "図を作成してノードをクリックして接続を追加",
+    "orch_dep_none": "依存関係なし — 図を作成してノードをクリック",
+    "orch_dep_none_yet": "まだなし",
+    "orch_build": "⬡ 構築 / 更新",
+    "orch_relayout": "↺ 再レイアウト",
+    "orch_save_png": "📷 PNG保存",
+    "orch_diagram_hint": "ノードクリック → 役割と注記 · エッジクリック → リダイレクト/削除 · ドラッグ · スクロールでズーム",
+    "orch_collapse": "▲ 折りたたむ",
+    "orch_delete_btn": "✕ 削除",
+    "orch_edit": "編集",
+    "orch_name_ph": "オーケストレーション名…",
+    "orch_default_name": "オーケストレーション {n}",
+    "orch_no_agents_selected": "エージェント未選択 — エージェントステップでエージェントを追加してから構築/更新をクリック。",
+    "orch_no_agents_included": "エージェント未追加 — 上の + 追加 をクリックして図に追加。",
+    "orch_include": "+ 追加",
+    "orch_exclude": "⊘",
+    "orch_exclude_title": "このオーケストレーションから除外",
+    "orch_panel_role": "役割",
+    "orch_panel_note": "注記",
+    "orch_note_ph": "このエージェントのタスクを説明…",
+    "orch_panel_deps_from": "このエージェントからの依存関係",
+    "orch_dep_add_target": "→ ターゲットを追加…",
+    "orch_dep_add": "追加",
+    "orch_dep_apply": "適用",
+    "orch_dep_remove": "✕ 依存関係を削除",
+    "orch_panel_dep_title": "依存関係",
+    "orch_panel_redirect": "リダイレクト",
+    "orch_meta_agents": "{n}エージェント",
+    "orch_meta_deps": "{n}依存",
+    "orch_role_supervisor": "スーパーバイザー",
+    "orch_role_supervisor_desc": "他のエージェントにタスクを調整・委任する",
+    "orch_role_worker": "ワーカー",
+    "orch_role_worker_desc": "特定のサブタスクを自律的に実行する",
+    "orch_role_critic": "クリティック",
+    "orch_role_critic_desc": "他のエージェントの出力をレビューし評価する",
+    "orch_role_router": "ルーター",
+    "orch_role_router_desc": "適切なスペシャリストにリクエストを振り分ける",
+    "orch_role_validator": "バリデーター",
+    "orch_role_validator_desc": "結果が基準を満たすか確認してから渡す",
+    "orch_role_fallback": "フォールバック",
+    "orch_role_fallback_desc": "主エージェントが失敗したときエラーとエッジケースを処理する",
+    "orch_type_sequential": "シーケンシャルチェーン",
+    "orch_type_sequential_desc": "直列エージェント — 一方の出力が次の入力になる",
+    "orch_type_parallel": "並列実行",
+    "orch_type_parallel_desc": "エージェントが同時に実行され結果が集約される",
+    "orch_type_hierarchical": "階層型",
+    "orch_type_hierarchical_desc": "スーパーバイザーがワーカーエージェントを指揮・調整",
+    "orch_type_router": "ルーター / セレクター",
+    "orch_type_router_desc": "エージェントが次に処理するスペシャリストを動的に選択",
+    "orch_type_debate": "マルチエージェントディベート",
+    "orch_type_debate_desc": "エージェント同士が批評し合い最良の回答に収束",
+    "orch_type_swarm": "スウォーム",
+    "orch_type_swarm_desc": "自己組織化エージェントが動的にタスクを拾い上げる",
+    "orch_type_hitl": "ヒューマンインザループ",
+    "orch_type_hitl_desc": "定義されたチェックポイントでの人間による検証が必要",
+    "orch_type_custom": "カスタムグラフ",
+    "orch_type_custom_desc": "自由な接続 — 独自のトポロジーを設計"
   },
   "levels": {
     "fast": {
@@ -91,6 +182,9 @@
     }
   },
   "questions": {
+    "orchestration_type": {
+      "label": "エージェントオーケストレーション戦略"
+    },
     "objectif": {
       "label": "プロジェクトの目的",
       "hint": {
@@ -98,8 +192,14 @@
         "advanced": "生成されたプロンプトが既存の設定ファイルを保持するか上書きするかを決定します。"
       },
       "opts": {
-        "new_project": "新規プロジェクト — ゼロから始める",
-        "improve_existing": "既存の設定 — 拡張 / 改善"
+        "new_project": {
+          "l": "新規プロジェクト — ゼロから始める",
+          "d": "ゼロから始める — 全く新しいプロジェクト用の完全な設定を生成します。"
+        },
+        "improve_existing": {
+          "l": "既存の設定 — 拡張 / 改善",
+          "d": "既存のセットアップを拡張・改善します。プロンプトは現在のファイルを上書きしません。"
+        }
       }
     },
     "ai_tools": {
@@ -125,14 +225,24 @@
         "advanced": "セキュリティルール、スキル、生成されるADRに影響します。"
       },
       "opts": {
-        "saas": "SaaS / Webアプリ",
-        "content": "コンテンツ / SEO / RAG",
-        "fintech": "フィンテック / 決済",
-        "ecommerce": "Eコマース",
-        "internal": "社内ツール / B2B",
-        "mobile": "モバイルアプリ",
-        "data": "データ / ML / AI",
-        "infra": "インフラ / DevOps"
+        "apps": "アプリ & ユーザーインターフェース",
+        "data": "データシステム & プロセス自動化",
+        "ai": "AI製品 & ナレッジシステム",
+        "content": "コンテンツ制作 & コミュニケーション",
+        "business": "ビジネス戦略 & 組織ツール",
+        "security": "セキュリティ、品質 & 信頼性",
+        "mleng": "MLエンジニアリング & インフラ",
+        "blockchain": "分散型 & ブロックチェーンシステム",
+        "science": "科学計算 & モデリング",
+        "immersive": "没入型 & 空間体験",
+        "integration": "統合 & 接続システム",
+        "embedded": "組み込み & エッジコンピューティング",
+        "media": "メディア & ストリーミング",
+        "devtools": "開発者ツール & インフラ",
+        "fintech": "金融 & 規制取引システム",
+        "football": "フットボールコーチング＆クラブ経営",
+        "sport": "スポーツ科学＆マルチスポーツコーチング",
+        "holistic": "パーソナル開発＆ウェルビーイング"
       }
     },
     "subdomain": {
@@ -381,6 +491,377 @@
       }
     }
   },
+  "subdomains": {
+    "apps": {
+      "web_app": {
+        "l": "インタラクティブWebアプリケーション"
+      },
+      "server_api": {
+        "l": "サーバーサイドシステム＆API"
+      },
+      "mobile": {
+        "l": "モバイルアプリケーション"
+      },
+      "desktop": {
+        "l": "デスクトップアプリケーション"
+      },
+      "pwa": {
+        "l": "プログレッシブWebアプリ＆オフラインツール"
+      },
+      "extension": {
+        "l": "ブラウザ拡張機能＆アドオン"
+      },
+      "publishing": {
+        "l": "Webサイト＆デジタルパブリッシング"
+      },
+      "games": {
+        "l": "インタラクティブゲーム＆シミュレーション"
+      },
+      "design_system": {
+        "l": "デザインシステム＆コンポーネントライブラリ"
+      },
+      "admin_panel": {
+        "l": "管理パネル＆バックオフィスダッシュボード"
+      }
+    },
+    "data": {
+      "scraping": {
+        "l": "Webデータ収集＆抽出"
+      },
+      "etl": {
+        "l": "データ変換＆ETLパイプライン"
+      },
+      "quality": {
+        "l": "データ品質＆オブザーバビリティ"
+      },
+      "bigdata": {
+        "l": "バッチ処理＆ビッグデータワークフロー"
+      },
+      "database": {
+        "l": "データベース設計＆管理"
+      },
+      "cloud_infra": {
+        "l": "クラウドインフラ＆デプロイメント"
+      },
+      "orchestration": {
+        "l": "ワークフロースケジューリング＆オーケストレーション"
+      },
+      "automation": {
+        "l": "システム＆インフラ自動化"
+      }
+    },
+    "ai": {
+      "rag": {
+        "l": "知識検索＆RAGシステム"
+      },
+      "agents": {
+        "l": "自律エージェント＆ワークフロー"
+      },
+      "multimodal": {
+        "l": "マルチモーダルAIアプリケーション"
+      },
+      "prompt_eng": {
+        "l": "プロンプトエンジニアリングライブラリ＆フレームワーク"
+      },
+      "ai_eval": {
+        "l": "AI評価＆ベンチマーキング"
+      },
+      "gen_content": {
+        "l": "マルチフォーマットコンテンツ生成"
+      }
+    },
+    "content": {
+      "marketing": {
+        "l": "マーケティング＆情報コンテンツ"
+      },
+      "narrative": {
+        "l": "ストーリーテリング＆ナラティブデザイン"
+      },
+      "docs": {
+        "l": "技術＆教育ドキュメント"
+      },
+      "localization": {
+        "l": "翻訳＆ローカライゼーションシステム"
+      }
+    },
+    "business": {
+      "planning": {
+        "l": "データモデリング＆構造的計画"
+      },
+      "reports": {
+        "l": "分析レポート＆戦略文書"
+      },
+      "product": {
+        "l": "プロダクト計画＆要件定義"
+      },
+      "legal": {
+        "l": "法務・ポリシー＆コンプライアンス資料"
+      },
+      "education": {
+        "l": "教育＆トレーニング資料"
+      },
+      "collab": {
+        "l": "協働ワークフロー＆チームコーディネーション"
+      },
+      "crm_cdp": {
+        "l": "CRM＆顧客データプラットフォーム"
+      }
+    },
+    "security": {
+      "pentest": {
+        "l": "セキュリティ評価＆ペネトレーションテスト"
+      },
+      "secure_code": {
+        "l": "アプリケーションセキュリティ＆セキュアコーディング"
+      },
+      "qa_testing": {
+        "l": "テストフレームワーク＆QA自動化"
+      },
+      "perf_load": {
+        "l": "パフォーマンスエンジニアリング＆負荷テスト"
+      },
+      "policy_code": {
+        "l": "コンプライアンス・アズ・コード＆ポリシーエンジン"
+      },
+      "observability": {
+        "l": "オブザーバビリティ、インシデント対応＆SRE"
+      },
+      "dr_backup": {
+        "l": "障害復旧＆バックアップシステム"
+      }
+    },
+    "mleng": {
+      "predictive": {
+        "l": "予測モデリング＆パターン認識"
+      },
+      "training": {
+        "l": "モデルトレーニング＆データ準備"
+      },
+      "deployment": {
+        "l": "モデル最適化＆本番デプロイ"
+      },
+      "experiments": {
+        "l": "実験トラッキング＆評価"
+      },
+      "feature_store": {
+        "l": "フィーチャーストア＆MLデータインフラ"
+      },
+      "rl": {
+        "l": "強化学習システム"
+      }
+    },
+    "blockchain": {
+      "smart_contracts": {
+        "l": "スマートコントラクト＆分散アプリ"
+      },
+      "storage_id": {
+        "l": "分散ストレージ＆アイデンティティ"
+      },
+      "token_finance": {
+        "l": "トークンエコノミー＆金融ツール"
+      },
+      "bridges": {
+        "l": "クロスチェーンブリッジプロトコル"
+      },
+      "privacy_compute": {
+        "l": "プライバシー保護コンピューティング"
+      }
+    },
+    "science": {
+      "numerical": {
+        "l": "数値解析＆数学的モデリング"
+      },
+      "simulation": {
+        "l": "物理・工学・生物シミュレーション"
+      },
+      "hpc": {
+        "l": "高性能計算ワークフロー"
+      },
+      "complex_sys": {
+        "l": "複雑系＆エージェントベースモデリング"
+      },
+      "bioinformatics": {
+        "l": "バイオインフォマティクス＆ゲノミクスパイプライン"
+      },
+      "geospatial": {
+        "l": "地理空間＆GISシステム"
+      }
+    },
+    "immersive": {
+      "xr": {
+        "l": "VR・AR・MR（複合現実）"
+      },
+      "spatial_web": {
+        "l": "空間インターフェース＆3Dウェブ"
+      },
+      "digital_twins": {
+        "l": "デジタルツイン＆シミュレーション環境"
+      },
+      "multi_user_xr": {
+        "l": "マルチユーザー没入型プラットフォーム"
+      }
+    },
+    "integration": {
+      "api_gw": {
+        "l": "API設計、ゲートウェイ＆スキーマ管理"
+      },
+      "third_party": {
+        "l": "サードパーティ＆エンタープライズミドルウェア統合"
+      },
+      "event_driven": {
+        "l": "イベント駆動アーキテクチャ"
+      },
+      "workflow_orch": {
+        "l": "ワークフローオーケストレーションシステム"
+      },
+      "realtime_sync": {
+        "l": "リアルタイムメッセージング＆同期"
+      }
+    },
+    "embedded": {
+      "iot": {
+        "l": "IoTデバイスシステム"
+      },
+      "edge_ai": {
+        "l": "エッジAI＆ローカル推論"
+      },
+      "robotics": {
+        "l": "ロボティクス＆制御システム"
+      },
+      "sensors": {
+        "l": "センサー＆テレメトリネットワーク"
+      },
+      "firmware": {
+        "l": "産業自動化＆組み込みファームウェア"
+      },
+      "autonomous": {
+        "l": "自律物理システム"
+      },
+      "fpga": {
+        "l": "FPGA＆ハードウェア記述"
+      }
+    },
+    "media": {
+      "video_image": {
+        "l": "動画＆画像処理パイプライン"
+      },
+      "audio_speech": {
+        "l": "音声処理＆スピーチシステム"
+      },
+      "live_stream": {
+        "l": "ライブストリーミング＆リアルタイムメディアインフラ"
+      },
+      "gpu_render": {
+        "l": "GPUアクセラレーテッドレンダリングワークフロー"
+      },
+      "interactive_media": {
+        "l": "インタラクティブメディア配信プラットフォーム"
+      }
+    },
+    "devtools": {
+      "cli": {
+        "l": "コマンドラインツール＆シェル"
+      },
+      "sdk_lib": {
+        "l": "SDK＆クライアントライブラリ"
+      },
+      "build_systems": {
+        "l": "ビルドシステム＆コンパイラ"
+      },
+      "lang_server": {
+        "l": "言語サーバー＆IDE拡張機能"
+      },
+      "codegen": {
+        "l": "コード生成＆スキャフォールディングツール"
+      },
+      "pkg_mgr": {
+        "l": "パッケージマネージャー＆依存関係ツール"
+      }
+    },
+    "fintech": {
+      "payments": {
+        "l": "決済処理＆ゲートウェイシステム"
+      },
+      "banking_core": {
+        "l": "コアバンキング＆台帳システム"
+      },
+      "trading": {
+        "l": "トレーディング＆市場インフラ"
+      },
+      "insurance": {
+        "l": "保険＆アクチュアリープラットフォーム"
+      },
+      "reg_reporting": {
+        "l": "規制報告＆コンプライアンス自動化"
+      },
+      "fraud": {
+        "l": "不正検知＆リスク管理"
+      }
+    },
+    "football": {
+      "game_model": {
+        "l": "コーチング哲学＆ゲームモデル"
+      },
+      "physical_prep": {
+        "l": "フィジカル準備＆負荷管理"
+      },
+      "player_dev": {
+        "l": "選手育成＆バイオメカニクス"
+      },
+      "mental_culture": {
+        "l": "メンタルパフォーマンス＆チームカルチャー"
+      },
+      "football_analytics": {
+        "l": "パフォーマンス分析＆ビデオ分析"
+      },
+      "club_management": {
+        "l": "クラブ経営、倫理＆ガバナンス"
+      }
+    },
+    "sport": {
+      "athletic_dev": {
+        "l": "アスレチック開発＆コンディショニング"
+      },
+      "movement_science": {
+        "l": "運動科学＆バイオメカニクス"
+      },
+      "sport_psychology": {
+        "l": "スポーツ心理学＆メンタル準備"
+      },
+      "coaching_science": {
+        "l": "コーチング科学＆スキル習得"
+      },
+      "sport_analytics": {
+        "l": "スポーツテクノロジー＆パフォーマンス分析"
+      },
+      "sport_governance": {
+        "l": "スポーツ倫理、アンチドーピング＆ガバナンス"
+      }
+    },
+    "holistic": {
+      "productivity": {
+        "l": "生産性＆プロフェッショナルパフォーマンス"
+      },
+      "resilience_wellbeing": {
+        "l": "レジリエンス＆ウェルビーイング"
+      },
+      "leadership_influence": {
+        "l": "個人のリーダーシップ＆影響力"
+      },
+      "learning_growth": {
+        "l": "学習科学＆成長マインドセット"
+      },
+      "purpose_career": {
+        "l": "目的・価値観＆キャリア開発"
+      },
+      "relationships": {
+        "l": "専門的関係＆ソーシャルキャピタル"
+      },
+      "financial_intel": {
+        "l": "財務的知性＆富の心理学"
+      }
+    }
+  },
   "landing": {
     "meta_description": "5分以内にAI開発環境を設定。647のエージェント、1,611のスキル、128のコマンドからあなたのスタックに最適なものを選択。",
     "nav_how": "// 使い方",
@@ -402,7 +883,7 @@
     "slide1_sub": "あなたのプロジェクトのために厳選されたスペシャリストエージェント。あなたの標準、アーキテクチャ、思考スタイルを最初のセッション前から把握済み。",
     "slide2_eyebrow": "// ゼロからコントリビューターへ &lt; 5分",
     "slide2_line1": "5分後には、",
-    "slide2_line2": "AIが共同創業者になる。",
+    "slide2_line2": "AIがcopiloteになる。",
     "slide2_sub": "設定ファイルを置くだけ。あなたのアシスタントが汎用ツールからドメインエキスパートへ — 全ルール、全エージェントスペックを読み込み、初日から貢献開始。",
     "slide2_cta": "<span class=\"caret\">&gt;</span> ウィザードを起動",
     "stat_agents": "エージェント",

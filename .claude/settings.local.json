@@ -194,7 +194,8 @@
       "Bash(npx playwright *)",
       "Bash(npm list *)",
       "Bash(pip show *)",
-      "Bash(grep -E '\\\\.\\(html|css|js\\)$')"
+      "Bash(grep -E '\\\\.\\(html|css|js\\)$')",
+      "Bash(grep -E '\\\\.\\(html|js|json|css\\)$')"
     ],
     "additionalDirectories": [
       "c:\\Users\\Propriétaire\\Desktop\\CLAUDE",

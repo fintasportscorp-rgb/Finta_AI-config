@@ -74,7 +74,98 @@
     "welcome_prompt_line": "bootstrap-init.md — enriquecimento pós-instalação por IA",
     "welcome_run": "iniciar configuração",
     "run_setup_btn": "run-setup.sh",
-    "boot_prompt_tpl": "Descompacte `{name}-ai-setup.zip` na raiz deste projeto (sobrescreva os arquivos existentes se solicitado), depois leia `prompts/bootstrap-init.md` e execute cada instrução sem pedir confirmação."
+    "boot_prompt_tpl": "Descompacte `{name}-ai-setup.zip` na raiz deste projeto (sobrescreva os arquivos existentes se solicitado), depois leia `prompts/bootstrap-init.md` e execute cada instrução sem pedir confirmação.",
+    "session_restored": "Sessão restaurada — continue de onde parou.",
+    "start_fresh": "Começar do zero",
+    "next_step_auto": "Seu assistente de IA lê a configuração automaticamente na próxima sessão.",
+    "objectif_q": "Qual é o objetivo desta configuração?",
+    "objectif_hint": "Adapta o comportamento do prompt gerado. Pressione [1] [2] para selecionar.",
+    "objectif_improve_warn": "[⚠] O prompt gerado não vai redefinir a sua configuração existente",
+    "qsel_title": "Personalizar questionário",
+    "qsel_explain": "Ative/desative perguntas para adaptar o wizard às suas necessidades",
+    "show_selection": "▸ ver seleção",
+    "hide_selection": "▴ ocultar seleção",
+    "preselect_for_me": "★ pré-selecionar para mim",
+    "remove_all": "✕ remover tudo",
+    "board_mode": "painel",
+    "step_by_step": "passo a passo",
+    "board_hint": "{n} perguntas — preencha livremente, gere quando estiver pronto",
+    "no_subdomains": "Nenhum subdomínio configurado.",
+    "no_questions_phase": "Nenhuma pergunta nesta fase.",
+    "audit_title": "Resumo de seleção",
+    "audit_selected": "{n} selecionado(s)",
+    "audit_auto": "auto",
+    "audit_manual": "manual",
+    "audit_none": "nenhum",
+    "export_project": "Exportar projeto",
+    "qf_quality": "qualidade:",
+    "qf_all": "todos",
+    "qf_provider": "provedor:",
+    "orch_new": "[+ Novo]",
+    "orch_no_orchs": "Sem orquestrações — clique em [+ Novo] para criar uma.",
+    "orch_manager_hint": "Definir orquestrações multi-agente para este projeto",
+    "orch_section_pattern": "Padrão",
+    "orch_section_roles": "Papéis dos agentes",
+    "orch_section_deps": "Dependências",
+    "orch_select_agents_first": "Selecione agentes para atribuir papéis.",
+    "orch_dep_rule": "A deve terminar antes de B começar",
+    "orch_dep_build_hint": "Construa o diagrama e clique num nó para adicionar conexões",
+    "orch_dep_none": "Sem dependências — construa o diagrama e clique num nó",
+    "orch_dep_none_yet": "Nenhuma ainda",
+    "orch_build": "⬡ Construir / Atualizar",
+    "orch_relayout": "↺ Reorganizar",
+    "orch_save_png": "📷 Guardar PNG",
+    "orch_diagram_hint": "Clique nó → papel & nota · Clique aresta → redirecionar/remover · Arrastar · Roda para zoom",
+    "orch_collapse": "▲ Recolher",
+    "orch_delete_btn": "✕ Excluir",
+    "orch_edit": "Editar",
+    "orch_name_ph": "Nome da orquestração…",
+    "orch_default_name": "Orquestração {n}",
+    "orch_no_agents_selected": "Sem agentes selecionados — adicione agentes na etapa Agentes, depois clique em Construir / Atualizar.",
+    "orch_no_agents_included": "Sem agentes incluídos — clique em + Incluir para adicioná-los ao diagrama.",
+    "orch_include": "+ Incluir",
+    "orch_exclude": "⊘",
+    "orch_exclude_title": "Excluir desta orquestração",
+    "orch_panel_role": "Papel",
+    "orch_panel_note": "Nota",
+    "orch_note_ph": "Descreva a tarefa deste agente…",
+    "orch_panel_deps_from": "Dependências deste agente",
+    "orch_dep_add_target": "→ Adicionar destino…",
+    "orch_dep_add": "Adicionar",
+    "orch_dep_apply": "Aplicar",
+    "orch_dep_remove": "✕ Remover dependência",
+    "orch_panel_dep_title": "Dependência",
+    "orch_panel_redirect": "Redirecionar",
+    "orch_meta_agents": "{n} agente{s}",
+    "orch_meta_deps": "{n} dep.",
+    "orch_role_supervisor": "Supervisor",
+    "orch_role_supervisor_desc": "Orquestra e delega tarefas a outros agentes",
+    "orch_role_worker": "Trabalhador",
+    "orch_role_worker_desc": "Executa uma subtarefa específica de forma autónoma",
+    "orch_role_critic": "Crítico",
+    "orch_role_critic_desc": "Revisa e questiona os resultados de outros agentes",
+    "orch_role_router": "Roteador",
+    "orch_role_router_desc": "Encaminha a solicitação ao especialista certo",
+    "orch_role_validator": "Validador",
+    "orch_role_validator_desc": "Verifica se os resultados atendem aos critérios antes de prosseguir",
+    "orch_role_fallback": "Fallback",
+    "orch_role_fallback_desc": "Trata erros e casos extremos quando o agente principal falha",
+    "orch_type_sequential": "Cadeia sequencial",
+    "orch_type_sequential_desc": "Agentes em série — saída de um torna-se entrada do próximo",
+    "orch_type_parallel": "Execução paralela",
+    "orch_type_parallel_desc": "Agentes executam simultaneamente, resultados agregados no final",
+    "orch_type_hierarchical": "Hierárquico",
+    "orch_type_hierarchical_desc": "Supervisor dirige e coordena os agentes trabalhadores",
+    "orch_type_router": "Roteador / Seletor",
+    "orch_type_router_desc": "Um agente seleciona dinamicamente qual especialista age a seguir",
+    "orch_type_debate": "Debate multi-agente",
+    "orch_type_debate_desc": "Agentes criticam-se mutuamente convergindo para a melhor resposta",
+    "orch_type_swarm": "Enxame",
+    "orch_type_swarm_desc": "Agentes auto-organizados que pegam tarefas dinamicamente",
+    "orch_type_hitl": "Humano no ciclo",
+    "orch_type_hitl_desc": "Validação humana necessária em pontos de controlo definidos",
+    "orch_type_custom": "Grafo personalizado",
+    "orch_type_custom_desc": "Conexões livres — projete sua própria topologia"
   },
   "levels": {
     "fast": {
@@ -91,6 +182,9 @@
     }
   },
   "questions": {
+    "orchestration_type": {
+      "label": "Estratégia de orquestração de agentes"
+    },
     "objectif": {
       "label": "Propósito do projeto",
       "hint": {
@@ -98,8 +192,14 @@
         "advanced": "Determina se o prompt gerado preserva ou sobrescreve os arquivos de configuração existentes."
       },
       "opts": {
-        "new_project": "Novo projeto — começar do zero",
-        "improve_existing": "Config existente — estender / melhorar"
+        "new_project": {
+          "l": "Novo projeto — começar do zero",
+          "d": "Começar do zero — gera uma config completa para um projeto totalmente novo."
+        },
+        "improve_existing": {
+          "l": "Config existente — estender / melhorar",
+          "d": "Estender / melhorar um setup existente. O prompt nunca vai sobrescrever seus arquivos atuais."
+        }
       }
     },
     "ai_tools": {
@@ -125,14 +225,24 @@
         "advanced": "Impacta as regras de segurança, skills e ADRs gerados."
       },
       "opts": {
-        "saas": "SaaS / App web",
-        "content": "Conteúdo / SEO / RAG",
-        "fintech": "Fintech / Pagamentos",
-        "ecommerce": "E-commerce",
-        "internal": "Ferramenta interna / B2B",
-        "mobile": "Aplicativo móvel",
-        "data": "Data / ML / IA",
-        "infra": "Infra / DevOps"
+        "apps": "Apps & Interfaces de usuário",
+        "data": "Sistemas de dados & Automação",
+        "ai": "Produtos IA & Sistemas de conhecimento",
+        "content": "Criação de conteúdo & Comunicação",
+        "business": "Estratégia empresarial & Ferramentas organizacionais",
+        "security": "Segurança, Qualidade & Confiabilidade",
+        "mleng": "Engenharia ML & Infraestrutura",
+        "blockchain": "Sistemas descentralizados & Blockchain",
+        "science": "Computação científica & Modelagem",
+        "immersive": "Experiências imersivas & Espaciais",
+        "integration": "Integração & Conectividade",
+        "embedded": "Sistemas embarcados & Edge",
+        "media": "Mídia & Streaming",
+        "devtools": "Ferramentas de desenvolvimento & Infraestrutura",
+        "fintech": "Sistemas financeiros & Transações reguladas",
+        "football": "Coaching de Futebol & Gestão de Clube",
+        "sport": "Ciências do Esporte & Coaching Multi-Esporte",
+        "holistic": "Desenvolvimento Pessoal & Bem-estar"
       }
     },
     "subdomain": {
@@ -381,6 +491,377 @@
       }
     }
   },
+  "subdomains": {
+    "apps": {
+      "web_app": {
+        "l": "Aplicações Web Interativas"
+      },
+      "server_api": {
+        "l": "Sistemas & APIs do Lado Servidor"
+      },
+      "mobile": {
+        "l": "Aplicações Móveis"
+      },
+      "desktop": {
+        "l": "Aplicações de Desktop"
+      },
+      "pwa": {
+        "l": "Progressive Web Apps & Ferramentas Offline"
+      },
+      "extension": {
+        "l": "Extensões & Add-ons para Navegador"
+      },
+      "publishing": {
+        "l": "Sites Web & Publicação Digital"
+      },
+      "games": {
+        "l": "Jogos & Simulações Interativas"
+      },
+      "design_system": {
+        "l": "Sistemas de Design & Bibliotecas de Componentes"
+      },
+      "admin_panel": {
+        "l": "Painéis de Administração & Dashboards"
+      }
+    },
+    "data": {
+      "scraping": {
+        "l": "Coleta & Extração de Dados Web"
+      },
+      "etl": {
+        "l": "Pipelines ETL & Transformação de Dados"
+      },
+      "quality": {
+        "l": "Qualidade & Observabilidade de Dados"
+      },
+      "bigdata": {
+        "l": "Processamento em Lote & Big Data"
+      },
+      "database": {
+        "l": "Design & Gerenciamento de Banco de Dados"
+      },
+      "cloud_infra": {
+        "l": "Infraestrutura Cloud & Implantação"
+      },
+      "orchestration": {
+        "l": "Agendamento & Orquestração de Workflows"
+      },
+      "automation": {
+        "l": "Automação de Sistemas & Infraestrutura"
+      }
+    },
+    "ai": {
+      "rag": {
+        "l": "Recuperação de Conhecimento & Sistemas RAG"
+      },
+      "agents": {
+        "l": "Agentes Autônomos & Workflows"
+      },
+      "multimodal": {
+        "l": "Aplicações IA Multimodais"
+      },
+      "prompt_eng": {
+        "l": "Bibliotecas & Frameworks de Engenharia de Prompts"
+      },
+      "ai_eval": {
+        "l": "Avaliação & Benchmarking de IA"
+      },
+      "gen_content": {
+        "l": "Geração de Conteúdo Multi-Formato"
+      }
+    },
+    "content": {
+      "marketing": {
+        "l": "Conteúdo de Marketing & Informativo"
+      },
+      "narrative": {
+        "l": "Storytelling & Design Narrativo"
+      },
+      "docs": {
+        "l": "Documentação Técnica & Educacional"
+      },
+      "localization": {
+        "l": "Sistemas de Tradução & Localização"
+      }
+    },
+    "business": {
+      "planning": {
+        "l": "Modelagem de Dados & Planejamento Estruturado"
+      },
+      "reports": {
+        "l": "Relatórios de Análise & Documentos Estratégicos"
+      },
+      "product": {
+        "l": "Planejamento de Produto & Requisitos"
+      },
+      "legal": {
+        "l": "Materiais Jurídicos, de Política & Conformidade"
+      },
+      "education": {
+        "l": "Materiais de Educação & Treinamento"
+      },
+      "collab": {
+        "l": "Workflow Colaborativo & Coordenação de Equipe"
+      },
+      "crm_cdp": {
+        "l": "CRM & Plataformas de Dados de Clientes"
+      }
+    },
+    "security": {
+      "pentest": {
+        "l": "Avaliação de Segurança & Testes de Penetração"
+      },
+      "secure_code": {
+        "l": "Segurança de Aplicações & Codificação Segura"
+      },
+      "qa_testing": {
+        "l": "Frameworks de Testes & Automação QA"
+      },
+      "perf_load": {
+        "l": "Engenharia de Performance & Testes de Carga"
+      },
+      "policy_code": {
+        "l": "Compliance-as-Code & Motores de Política"
+      },
+      "observability": {
+        "l": "Observabilidade, Resposta a Incidentes & SRE"
+      },
+      "dr_backup": {
+        "l": "Recuperação de Desastres & Sistemas de Backup"
+      }
+    },
+    "mleng": {
+      "predictive": {
+        "l": "Modelagem Preditiva & Reconhecimento de Padrões"
+      },
+      "training": {
+        "l": "Treinamento de Modelos & Preparação de Dados"
+      },
+      "deployment": {
+        "l": "Otimização de Modelos & Implantação em Produção"
+      },
+      "experiments": {
+        "l": "Rastreamento de Experimentos & Avaliação"
+      },
+      "feature_store": {
+        "l": "Feature Stores & Infraestrutura ML"
+      },
+      "rl": {
+        "l": "Sistemas de Aprendizado por Reforço"
+      }
+    },
+    "blockchain": {
+      "smart_contracts": {
+        "l": "Contratos Inteligentes & Apps Descentralizadas"
+      },
+      "storage_id": {
+        "l": "Armazenamento Distribuído & Identidade"
+      },
+      "token_finance": {
+        "l": "Economias Tokenizadas & Ferramentas Financeiras"
+      },
+      "bridges": {
+        "l": "Protocolos de Bridge Cross-Chain"
+      },
+      "privacy_compute": {
+        "l": "Computação Preservando Privacidade"
+      }
+    },
+    "science": {
+      "numerical": {
+        "l": "Análise Numérica & Modelagem Matemática"
+      },
+      "simulation": {
+        "l": "Simulações Físicas, de Engenharia & Biológicas"
+      },
+      "hpc": {
+        "l": "Workflows de Computação de Alto Desempenho"
+      },
+      "complex_sys": {
+        "l": "Sistemas Complexos & Modelagem Baseada em Agentes"
+      },
+      "bioinformatics": {
+        "l": "Pipelines de Bioinformática & Genômica"
+      },
+      "geospatial": {
+        "l": "Sistemas Geoespaciais & SIG"
+      }
+    },
+    "immersive": {
+      "xr": {
+        "l": "Realidade Virtual, Aumentada & Mista"
+      },
+      "spatial_web": {
+        "l": "Interfaces Espaciais & Web 3D"
+      },
+      "digital_twins": {
+        "l": "Gêmeos Digitais & Ambientes Simulados"
+      },
+      "multi_user_xr": {
+        "l": "Plataformas Imersivas Multi-Usuário"
+      }
+    },
+    "integration": {
+      "api_gw": {
+        "l": "Design de API, Gateways & Gerenciamento de Esquemas"
+      },
+      "third_party": {
+        "l": "Integrações de Middleware de Terceiros & Empresariais"
+      },
+      "event_driven": {
+        "l": "Arquiteturas Orientadas a Eventos"
+      },
+      "workflow_orch": {
+        "l": "Sistemas de Orquestração de Workflows"
+      },
+      "realtime_sync": {
+        "l": "Mensageria em Tempo Real & Sincronização"
+      }
+    },
+    "embedded": {
+      "iot": {
+        "l": "Sistemas de Dispositivos IoT"
+      },
+      "edge_ai": {
+        "l": "IA de Borda & Inferência Local"
+      },
+      "robotics": {
+        "l": "Robótica & Sistemas de Controle"
+      },
+      "sensors": {
+        "l": "Redes de Sensores & Telemetria"
+      },
+      "firmware": {
+        "l": "Automação Industrial & Firmware Embarcado"
+      },
+      "autonomous": {
+        "l": "Sistemas Físicos Autônomos"
+      },
+      "fpga": {
+        "l": "FPGA & Descrição de Hardware"
+      }
+    },
+    "media": {
+      "video_image": {
+        "l": "Pipelines de Processamento de Vídeo & Imagem"
+      },
+      "audio_speech": {
+        "l": "Processamento de Áudio & Sistemas de Fala"
+      },
+      "live_stream": {
+        "l": "Transmissão ao Vivo & Infraestrutura de Mídia em Tempo Real"
+      },
+      "gpu_render": {
+        "l": "Workflows de Renderização Acelerada por GPU"
+      },
+      "interactive_media": {
+        "l": "Plataformas de Entrega de Mídia Interativa"
+      }
+    },
+    "devtools": {
+      "cli": {
+        "l": "Ferramentas de Linha de Comando & Shells"
+      },
+      "sdk_lib": {
+        "l": "SDKs & Bibliotecas Cliente"
+      },
+      "build_systems": {
+        "l": "Sistemas de Build & Compiladores"
+      },
+      "lang_server": {
+        "l": "Servidores de Linguagem & Extensões IDE"
+      },
+      "codegen": {
+        "l": "Geração de Código & Ferramentas de Scaffolding"
+      },
+      "pkg_mgr": {
+        "l": "Gerenciadores de Pacotes & Ferramentas de Dependências"
+      }
+    },
+    "fintech": {
+      "payments": {
+        "l": "Processamento de Pagamentos & Sistemas de Gateway"
+      },
+      "banking_core": {
+        "l": "Core Banking & Sistemas de Ledger"
+      },
+      "trading": {
+        "l": "Trading & Infraestrutura de Mercados"
+      },
+      "insurance": {
+        "l": "Plataformas de Seguros & Atuariais"
+      },
+      "reg_reporting": {
+        "l": "Relatórios Regulatórios & Automação de Conformidade"
+      },
+      "fraud": {
+        "l": "Detecção de Fraude & Gestão de Riscos"
+      }
+    },
+    "football": {
+      "game_model": {
+        "l": "Filosofia do Treinamento & Modelo de Jogo"
+      },
+      "physical_prep": {
+        "l": "Preparação Física & Gestão de Carga"
+      },
+      "player_dev": {
+        "l": "Desenvolvimento do Jogador & Biomecânica"
+      },
+      "mental_culture": {
+        "l": "Performance Mental & Cultura de Equipe"
+      },
+      "football_analytics": {
+        "l": "Análise de Desempenho & Vídeo"
+      },
+      "club_management": {
+        "l": "Gestão de Clube, Ética & Governança"
+      }
+    },
+    "sport": {
+      "athletic_dev": {
+        "l": "Desenvolvimento Atlético & Condicionamento"
+      },
+      "movement_science": {
+        "l": "Ciências do Movimento & Biomecânica"
+      },
+      "sport_psychology": {
+        "l": "Psicologia do Esporte & Preparação Mental"
+      },
+      "coaching_science": {
+        "l": "Ciências do Treinamento & Aquisição de Habilidades"
+      },
+      "sport_analytics": {
+        "l": "Tecnologia Esportiva & Análise de Desempenho"
+      },
+      "sport_governance": {
+        "l": "Ética Esportiva, Antidoping & Governança"
+      }
+    },
+    "holistic": {
+      "productivity": {
+        "l": "Produtividade & Performance Profissional"
+      },
+      "resilience_wellbeing": {
+        "l": "Resiliência & Bem-estar"
+      },
+      "leadership_influence": {
+        "l": "Liderança Pessoal & Influência"
+      },
+      "learning_growth": {
+        "l": "Ciências do Aprendizado & Mentalidade de Crescimento"
+      },
+      "purpose_career": {
+        "l": "Propósito, Valores & Desenvolvimento de Carreira"
+      },
+      "relationships": {
+        "l": "Relacionamentos Profissionais & Capital Social"
+      },
+      "financial_intel": {
+        "l": "Inteligência Financeira & Psicologia da Riqueza"
+      }
+    }
+  },
   "landing": {
     "meta_description": "Configure seu ambiente de desenvolvimento de IA em menos de 5 minutos. Escolha entre 647 agentes, 1.611 habilidades e 128 comandos para o seu stack.",
     "nav_how": "// como funciona",
@@ -402,7 +883,7 @@
     "slide1_sub": "Agentes especialistas selecionados para seu projeto. Pré-carregados com seus padrões, sua arquitetura, seu jeito de pensar — antes da primeira sessão.",
     "slide2_eyebrow": "// de zero a contribuidor em &lt; 5 min",
     "slide2_line1": "Em cinco minutos,",
-    "slide2_line2": "sua IA vira co-fundador.",
+    "slide2_line2": "sua IA vira copilote.",
     "slide2_sub": "Solte a config. Veja seu assistente ir de ferramenta genérica a especialista — lendo cada regra, cada spec de agente, entregando desde o dia zero.",
     "slide2_cta": "<span class=\"caret\">&gt;</span> iniciar assistente",
     "stat_agents": "Agentes",

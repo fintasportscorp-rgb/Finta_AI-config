@@ -74,7 +74,98 @@
     "welcome_prompt_line": "bootstrap-init.md — AI安装后强化",
     "welcome_run": "开始配置",
     "run_setup_btn": "run-setup.sh",
-    "boot_prompt_tpl": "将 `{name}-ai-setup.zip` 解压到此项目根目录（如需要则覆盖现有文件），然后读取 `prompts/bootstrap-init.md` 并执行每条指令，无需询问确认。"
+    "boot_prompt_tpl": "将 `{name}-ai-setup.zip` 解压到此项目根目录（如需要则覆盖现有文件），然后读取 `prompts/bootstrap-init.md` 并执行每条指令，无需询问确认。",
+    "session_restored": "会话已恢复 — 从上次中断的地方继续。",
+    "start_fresh": "重新开始",
+    "next_step_auto": "您的AI助手将在下次会话中自动读取配置。",
+    "objectif_q": "此配置的目标是什么？",
+    "objectif_hint": "调整生成提示词的行为。按 [1] [2] 选择。",
+    "objectif_improve_warn": "[⚠] 生成的提示词不会重置您的现有配置",
+    "qsel_title": "自定义问卷",
+    "qsel_explain": "开启/关闭问题以根据您的需求定制向导",
+    "show_selection": "▸ 显示选择",
+    "hide_selection": "▴ 隐藏选择",
+    "preselect_for_me": "★ 为我预选",
+    "remove_all": "✕ 全部移除",
+    "board_mode": "看板",
+    "step_by_step": "逐步",
+    "board_hint": "{n} 个问题 — 自由填写，准备好后生成",
+    "no_subdomains": "未配置子领域。",
+    "no_questions_phase": "此阶段没有问题。",
+    "audit_title": "选择摘要",
+    "audit_selected": "已选择 {n} 个",
+    "audit_auto": "自动",
+    "audit_manual": "手动",
+    "audit_none": "无",
+    "export_project": "导出项目",
+    "qf_quality": "质量：",
+    "qf_all": "全部",
+    "qf_provider": "提供商：",
+    "orch_new": "[+ 新建]",
+    "orch_no_orchs": "暂无编排 — 点击 [+ 新建] 创建一个。",
+    "orch_manager_hint": "为此项目定义多智能体编排",
+    "orch_section_pattern": "模式",
+    "orch_section_roles": "智能体角色",
+    "orch_section_deps": "依赖关系",
+    "orch_select_agents_first": "请先选择智能体以分配角色。",
+    "orch_dep_rule": "A 必须在 B 开始之前完成",
+    "orch_dep_build_hint": "构建图表后点击节点添加连接",
+    "orch_dep_none": "暂无依赖 — 构建图表后点击节点添加",
+    "orch_dep_none_yet": "暂无",
+    "orch_build": "⬡ 构建 / 刷新",
+    "orch_relayout": "↺ 重新布局",
+    "orch_save_png": "📷 保存PNG",
+    "orch_diagram_hint": "点击节点 → 角色与备注 · 点击边 → 重定向/删除 · 拖动 · 滚轮缩放",
+    "orch_collapse": "▲ 收起",
+    "orch_delete_btn": "✕ 删除",
+    "orch_edit": "编辑",
+    "orch_name_ph": "编排名称…",
+    "orch_default_name": "编排 {n}",
+    "orch_no_agents_selected": "未选择智能体 — 请在智能体步骤中添加，然后点击构建/刷新。",
+    "orch_no_agents_included": "未包含智能体 — 点击上方 + 包含 将其添加到图表。",
+    "orch_include": "+ 包含",
+    "orch_exclude": "⊘",
+    "orch_exclude_title": "从此编排中排除",
+    "orch_panel_role": "角色",
+    "orch_panel_note": "备注",
+    "orch_note_ph": "描述此智能体的任务…",
+    "orch_panel_deps_from": "此智能体的依赖关系",
+    "orch_dep_add_target": "→ 添加目标…",
+    "orch_dep_add": "添加",
+    "orch_dep_apply": "应用",
+    "orch_dep_remove": "✕ 删除依赖",
+    "orch_panel_dep_title": "依赖关系",
+    "orch_panel_redirect": "重定向",
+    "orch_meta_agents": "{n}个智能体",
+    "orch_meta_deps": "{n}个依赖",
+    "orch_role_supervisor": "主管",
+    "orch_role_supervisor_desc": "统筹协调并将任务委派给其他智能体",
+    "orch_role_worker": "执行者",
+    "orch_role_worker_desc": "自主执行特定子任务",
+    "orch_role_critic": "评审者",
+    "orch_role_critic_desc": "审查并质疑其他智能体的输出",
+    "orch_role_router": "路由器",
+    "orch_role_router_desc": "将请求分发给合适的专家",
+    "orch_role_validator": "验证者",
+    "orch_role_validator_desc": "在传递之前检查结果是否符合标准",
+    "orch_role_fallback": "备选",
+    "orch_role_fallback_desc": "当主智能体失败时处理错误和边缘情况",
+    "orch_type_sequential": "顺序链",
+    "orch_type_sequential_desc": "串行智能体 — 一个的输出成为下一个的输入",
+    "orch_type_parallel": "并行执行",
+    "orch_type_parallel_desc": "智能体同时运行，结果在最后聚合",
+    "orch_type_hierarchical": "层级式",
+    "orch_type_hierarchical_desc": "主管指导和协调工作智能体",
+    "orch_type_router": "路由器 / 选择器",
+    "orch_type_router_desc": "一个智能体动态选择下一个处理的专家",
+    "orch_type_debate": "多智能体辩论",
+    "orch_type_debate_desc": "智能体相互批评，收敛到最佳答案",
+    "orch_type_swarm": "群体",
+    "orch_type_swarm_desc": "自组织智能体动态接取任务",
+    "orch_type_hitl": "人在回路",
+    "orch_type_hitl_desc": "在定义的检查点需要人工验证",
+    "orch_type_custom": "自定义图",
+    "orch_type_custom_desc": "自由连接 — 设计您自己的拓扑"
   },
   "levels": {
     "fast": {
@@ -91,6 +182,9 @@
     }
   },
   "questions": {
+    "orchestration_type": {
+      "label": "智能体编排策略"
+    },
     "objectif": {
       "label": "项目目的",
       "hint": {
@@ -98,8 +192,14 @@
         "advanced": "确定生成的提示词是保留还是覆盖现有配置文件。"
       },
       "opts": {
-        "new_project": "新项目 — 从零开始",
-        "improve_existing": "现有配置 — 扩展 / 改进"
+        "new_project": {
+          "l": "新项目 — 从零开始",
+          "d": "从零开始 — 为全新项目生成完整配置。"
+        },
+        "improve_existing": {
+          "l": "现有配置 — 扩展 / 改进",
+          "d": "扩展/改进现有设置。提示词永远不会覆盖您的当前文件。"
+        }
       }
     },
     "ai_tools": {
@@ -125,14 +225,24 @@
         "advanced": "影响安全规则、技能和生成的ADR。"
       },
       "opts": {
-        "saas": "SaaS / Web应用",
-        "content": "内容 / SEO / RAG",
-        "fintech": "金融科技 / 支付",
-        "ecommerce": "电子商务",
-        "internal": "内部工具 / B2B",
-        "mobile": "移动应用",
-        "data": "数据 / ML / AI",
-        "infra": "基础设施 / DevOps"
+        "apps": "应用程序 & 用户界面",
+        "data": "数据系统 & 流程自动化",
+        "ai": "AI产品 & 知识系统",
+        "content": "内容创作 & 沟通",
+        "business": "商业战略 & 组织工具",
+        "security": "安全、质量 & 可靠性",
+        "mleng": "ML工程 & 基础设施",
+        "blockchain": "去中心化 & 区块链系统",
+        "science": "科学计算 & 建模",
+        "immersive": "沉浸式 & 空间体验",
+        "integration": "集成 & 连接系统",
+        "embedded": "嵌入式 & 边缘计算",
+        "media": "媒体 & 流媒体",
+        "devtools": "开发者工具 & 基础设施",
+        "fintech": "金融 & 监管交易系统",
+        "football": "足球教练与俱乐部管理",
+        "sport": "运动科学与多项目运动教练",
+        "holistic": "个人成长与身心健康"
       }
     },
     "subdomain": {
@@ -381,6 +491,377 @@
       }
     }
   },
+  "subdomains": {
+    "apps": {
+      "web_app": {
+        "l": "交互式Web应用"
+      },
+      "server_api": {
+        "l": "服务端系统与API"
+      },
+      "mobile": {
+        "l": "移动应用"
+      },
+      "desktop": {
+        "l": "桌面应用"
+      },
+      "pwa": {
+        "l": "渐进式Web应用与离线工具"
+      },
+      "extension": {
+        "l": "浏览器扩展与插件"
+      },
+      "publishing": {
+        "l": "网站与数字出版"
+      },
+      "games": {
+        "l": "互动游戏与模拟"
+      },
+      "design_system": {
+        "l": "设计系统与组件库"
+      },
+      "admin_panel": {
+        "l": "管理面板与后台仪表盘"
+      }
+    },
+    "data": {
+      "scraping": {
+        "l": "网络数据采集与提取"
+      },
+      "etl": {
+        "l": "数据转换与ETL管道"
+      },
+      "quality": {
+        "l": "数据质量与可观测性"
+      },
+      "bigdata": {
+        "l": "批处理与大数据工作流"
+      },
+      "database": {
+        "l": "数据库设计与管理"
+      },
+      "cloud_infra": {
+        "l": "云基础设施与部署"
+      },
+      "orchestration": {
+        "l": "工作流调度与编排"
+      },
+      "automation": {
+        "l": "系统与基础设施自动化"
+      }
+    },
+    "ai": {
+      "rag": {
+        "l": "知识检索与RAG系统"
+      },
+      "agents": {
+        "l": "自主智能体与工作流"
+      },
+      "multimodal": {
+        "l": "多模态AI应用"
+      },
+      "prompt_eng": {
+        "l": "提示工程库与框架"
+      },
+      "ai_eval": {
+        "l": "AI评估与基准测试"
+      },
+      "gen_content": {
+        "l": "多格式内容生成"
+      }
+    },
+    "content": {
+      "marketing": {
+        "l": "营销与信息内容"
+      },
+      "narrative": {
+        "l": "故事叙述与叙事设计"
+      },
+      "docs": {
+        "l": "技术与教学文档"
+      },
+      "localization": {
+        "l": "翻译与本地化系统"
+      }
+    },
+    "business": {
+      "planning": {
+        "l": "数据建模与结构化规划"
+      },
+      "reports": {
+        "l": "分析报告与战略文件"
+      },
+      "product": {
+        "l": "产品规划与需求管理"
+      },
+      "legal": {
+        "l": "法律、政策与合规材料"
+      },
+      "education": {
+        "l": "教育与培训材料"
+      },
+      "collab": {
+        "l": "协作工作流与团队协调"
+      },
+      "crm_cdp": {
+        "l": "CRM与客户数据平台"
+      }
+    },
+    "security": {
+      "pentest": {
+        "l": "安全评估与渗透测试"
+      },
+      "secure_code": {
+        "l": "应用安全与安全编码"
+      },
+      "qa_testing": {
+        "l": "测试框架与QA自动化"
+      },
+      "perf_load": {
+        "l": "性能工程与压力测试"
+      },
+      "policy_code": {
+        "l": "合规即代码与策略引擎"
+      },
+      "observability": {
+        "l": "可观测性、事件响应与SRE"
+      },
+      "dr_backup": {
+        "l": "灾难恢复与备份系统"
+      }
+    },
+    "mleng": {
+      "predictive": {
+        "l": "预测建模与模式识别"
+      },
+      "training": {
+        "l": "模型训练与数据准备"
+      },
+      "deployment": {
+        "l": "模型优化与生产部署"
+      },
+      "experiments": {
+        "l": "实验跟踪与评估"
+      },
+      "feature_store": {
+        "l": "特征存储与ML数据基础设施"
+      },
+      "rl": {
+        "l": "强化学习系统"
+      }
+    },
+    "blockchain": {
+      "smart_contracts": {
+        "l": "智能合约与去中心化应用"
+      },
+      "storage_id": {
+        "l": "分布式存储与身份"
+      },
+      "token_finance": {
+        "l": "通证经济与金融工具"
+      },
+      "bridges": {
+        "l": "跨链桥接协议"
+      },
+      "privacy_compute": {
+        "l": "隐私保护计算"
+      }
+    },
+    "science": {
+      "numerical": {
+        "l": "数值分析与数学建模"
+      },
+      "simulation": {
+        "l": "物理、工程与生物模拟"
+      },
+      "hpc": {
+        "l": "高性能计算工作流"
+      },
+      "complex_sys": {
+        "l": "复杂系统与多智能体建模"
+      },
+      "bioinformatics": {
+        "l": "生物信息学与基因组学管道"
+      },
+      "geospatial": {
+        "l": "地理空间与GIS系统"
+      }
+    },
+    "immersive": {
+      "xr": {
+        "l": "虚拟、增强与混合现实"
+      },
+      "spatial_web": {
+        "l": "空间界面与3D Web"
+      },
+      "digital_twins": {
+        "l": "数字孪生与模拟环境"
+      },
+      "multi_user_xr": {
+        "l": "多用户沉浸式平台"
+      }
+    },
+    "integration": {
+      "api_gw": {
+        "l": "API设计、网关与模式管理"
+      },
+      "third_party": {
+        "l": "第三方与企业中间件集成"
+      },
+      "event_driven": {
+        "l": "事件驱动架构"
+      },
+      "workflow_orch": {
+        "l": "工作流编排系统"
+      },
+      "realtime_sync": {
+        "l": "实时消息与同步"
+      }
+    },
+    "embedded": {
+      "iot": {
+        "l": "IoT设备系统"
+      },
+      "edge_ai": {
+        "l": "边缘AI与本地推理"
+      },
+      "robotics": {
+        "l": "机器人技术与控制系统"
+      },
+      "sensors": {
+        "l": "传感器与遥测网络"
+      },
+      "firmware": {
+        "l": "工业自动化与嵌入式固件"
+      },
+      "autonomous": {
+        "l": "自主物理系统"
+      },
+      "fpga": {
+        "l": "FPGA与硬件描述"
+      }
+    },
+    "media": {
+      "video_image": {
+        "l": "视频与图像处理管道"
+      },
+      "audio_speech": {
+        "l": "音频处理与语音系统"
+      },
+      "live_stream": {
+        "l": "直播与实时媒体基础设施"
+      },
+      "gpu_render": {
+        "l": "GPU加速渲染工作流"
+      },
+      "interactive_media": {
+        "l": "交互式媒体分发平台"
+      }
+    },
+    "devtools": {
+      "cli": {
+        "l": "命令行工具与Shell"
+      },
+      "sdk_lib": {
+        "l": "SDK与客户端库"
+      },
+      "build_systems": {
+        "l": "构建系统与编译器"
+      },
+      "lang_server": {
+        "l": "语言服务器与IDE扩展"
+      },
+      "codegen": {
+        "l": "代码生成与脚手架工具"
+      },
+      "pkg_mgr": {
+        "l": "包管理器与依赖工具"
+      }
+    },
+    "fintech": {
+      "payments": {
+        "l": "支付处理与网关系统"
+      },
+      "banking_core": {
+        "l": "核心银行与账本系统"
+      },
+      "trading": {
+        "l": "交易与市场基础设施"
+      },
+      "insurance": {
+        "l": "保险与精算平台"
+      },
+      "reg_reporting": {
+        "l": "监管报告与合规自动化"
+      },
+      "fraud": {
+        "l": "欺诈检测与风险管理"
+      }
+    },
+    "football": {
+      "game_model": {
+        "l": "教练哲学与比赛模型"
+      },
+      "physical_prep": {
+        "l": "体能准备与负荷管理"
+      },
+      "player_dev": {
+        "l": "球员发展与生物力学"
+      },
+      "mental_culture": {
+        "l": "心理表现与团队文化"
+      },
+      "football_analytics": {
+        "l": "表现分析与视频分析"
+      },
+      "club_management": {
+        "l": "俱乐部管理、伦理与治理"
+      }
+    },
+    "sport": {
+      "athletic_dev": {
+        "l": "运动员开发与体能训练"
+      },
+      "movement_science": {
+        "l": "运动科学与生物力学"
+      },
+      "sport_psychology": {
+        "l": "运动心理学与心理准备"
+      },
+      "coaching_science": {
+        "l": "教练科学与技能习得"
+      },
+      "sport_analytics": {
+        "l": "运动技术与绩效分析"
+      },
+      "sport_governance": {
+        "l": "体育伦理、反兴奋剂与治理"
+      }
+    },
+    "holistic": {
+      "productivity": {
+        "l": "生产力与职业表现"
+      },
+      "resilience_wellbeing": {
+        "l": "韧性与身心健康"
+      },
+      "leadership_influence": {
+        "l": "个人领导力与影响力"
+      },
+      "learning_growth": {
+        "l": "学习科学与成长型思维"
+      },
+      "purpose_career": {
+        "l": "人生目标、价值观与职业发展"
+      },
+      "relationships": {
+        "l": "职业关系与社会资本"
+      },
+      "financial_intel": {
+        "l": "财务智慧与财富心理学"
+      }
+    }
+  },
   "landing": {
     "meta_description": "在5分钟内配置您的AI开发环境。从647个代理、1,611个技能和128个命令中选择适合您技术栈的配置。",
     "nav_how": "// 使用方式",
@@ -402,7 +883,7 @@
     "slide1_sub": "为你的项目精心挑选的专家代理。预先加载你的标准、架构、思维方式——在第一次会话开始之前。",
     "slide2_eyebrow": "// 从零到贡献者只需 &lt; 5分钟",
     "slide2_line1": "五分钟后，",
-    "slide2_line2": "你的AI将成为联合创始人。",
+    "slide2_line2": "你的AI将成为你的copilote。",
     "slide2_sub": "放下配置文件。看着你的助手从通用工具变成领域专家——读取每条规则、每个代理规格，从第一天起就开始交付。",
     "slide2_cta": "<span class=\"caret\">&gt;</span> 启动向导",
     "stat_agents": "代理",

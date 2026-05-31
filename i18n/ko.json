@@ -74,7 +74,98 @@
     "welcome_prompt_line": "bootstrap-init.md — AI 설치 후 강화",
     "welcome_run": "설정 시작",
     "run_setup_btn": "run-setup.sh",
-    "boot_prompt_tpl": "이 프로젝트 루트에 `{name}-ai-setup.zip`을 압축 해제하고(기존 파일 덮어쓰기 허용), `prompts/bootstrap-init.md`를 읽어 확인 없이 모든 지시사항을 실행하세요."
+    "boot_prompt_tpl": "이 프로젝트 루트에 `{name}-ai-setup.zip`을 압축 해제하고(기존 파일 덮어쓰기 허용), `prompts/bootstrap-init.md`를 읽어 확인 없이 모든 지시사항을 실행하세요.",
+    "session_restored": "세션이 복원되었습니다 — 중단한 곳에서 계속합니다.",
+    "start_fresh": "처음부터 시작",
+    "next_step_auto": "AI 어시스턴트는 다음 세션에서 자동으로 구성을 읽습니다.",
+    "objectif_q": "이 구성의 목표는 무엇입니까?",
+    "objectif_hint": "생성된 프롬프트의 동작을 조정합니다. [1] [2]를 눌러 선택하세요.",
+    "objectif_improve_warn": "[⚠] 생성된 프롬프트는 기존 구성을 초기화하지 않습니다",
+    "qsel_title": "질문 사용자화",
+    "qsel_explain": "질문을 켜거나 꺼서 위저드를 필요에 맞게 조정하세요",
+    "show_selection": "▸ 선택 보기",
+    "hide_selection": "▴ 선택 숨기기",
+    "preselect_for_me": "★ 자동 선택",
+    "remove_all": "✕ 모두 제거",
+    "board_mode": "보드",
+    "step_by_step": "단계별",
+    "board_hint": "{n}개 질문 — 자유롭게 작성하고 준비되면 생성",
+    "no_subdomains": "구성된 서브도메인이 없습니다.",
+    "no_questions_phase": "이 단계에 질문이 없습니다.",
+    "audit_title": "선택 요약",
+    "audit_selected": "{n}개 선택됨",
+    "audit_auto": "자동",
+    "audit_manual": "수동",
+    "audit_none": "없음",
+    "export_project": "프로젝트 내보내기",
+    "qf_quality": "품질:",
+    "qf_all": "전체",
+    "qf_provider": "제공자:",
+    "orch_new": "[+ 새로 만들기]",
+    "orch_no_orchs": "오케스트레이션 없음 — [+ 새로 만들기]를 클릭하여 생성하세요.",
+    "orch_manager_hint": "이 프로젝트의 멀티 에이전트 오케스트레이션 정의",
+    "orch_section_pattern": "패턴",
+    "orch_section_roles": "에이전트 역할",
+    "orch_section_deps": "의존성",
+    "orch_select_agents_first": "역할을 할당하려면 먼저 에이전트를 선택하세요.",
+    "orch_dep_rule": "A가 완료된 후 B가 시작됩니다",
+    "orch_dep_build_hint": "다이어그램을 만든 후 노드를 클릭하여 연결 추가",
+    "orch_dep_none": "의존성 없음 — 다이어그램을 만들고 노드를 클릭하세요",
+    "orch_dep_none_yet": "아직 없음",
+    "orch_build": "⬡ 빌드 / 새로고침",
+    "orch_relayout": "↺ 재배치",
+    "orch_save_png": "📷 PNG 저장",
+    "orch_diagram_hint": "노드 클릭 → 역할 & 노트 · 엣지 클릭 → 리디렉션/삭제 · 드래그 · 스크롤로 줌",
+    "orch_collapse": "▲ 접기",
+    "orch_delete_btn": "✕ 삭제",
+    "orch_edit": "편집",
+    "orch_name_ph": "오케스트레이션 이름…",
+    "orch_default_name": "오케스트레이션 {n}",
+    "orch_no_agents_selected": "선택된 에이전트 없음 — 에이전트 단계에서 에이전트를 추가한 후 빌드/새로고침을 클릭하세요.",
+    "orch_no_agents_included": "포함된 에이전트 없음 — 위의 + 포함을 클릭하여 다이어그램에 추가하세요.",
+    "orch_include": "+ 포함",
+    "orch_exclude": "⊘",
+    "orch_exclude_title": "이 오케스트레이션에서 제외",
+    "orch_panel_role": "역할",
+    "orch_panel_note": "노트",
+    "orch_note_ph": "이 에이전트의 작업을 설명하세요…",
+    "orch_panel_deps_from": "이 에이전트의 의존성",
+    "orch_dep_add_target": "→ 대상 추가…",
+    "orch_dep_add": "추가",
+    "orch_dep_apply": "적용",
+    "orch_dep_remove": "✕ 의존성 제거",
+    "orch_panel_dep_title": "의존성",
+    "orch_panel_redirect": "리디렉션",
+    "orch_meta_agents": "{n}개 에이전트",
+    "orch_meta_deps": "{n}개 의존",
+    "orch_role_supervisor": "슈퍼바이저",
+    "orch_role_supervisor_desc": "다른 에이전트에게 작업을 조율하고 위임합니다",
+    "orch_role_worker": "워커",
+    "orch_role_worker_desc": "특정 하위 작업을 자율적으로 실행합니다",
+    "orch_role_critic": "크리틱",
+    "orch_role_critic_desc": "다른 에이전트의 출력을 검토하고 평가합니다",
+    "orch_role_router": "라우터",
+    "orch_role_router_desc": "요청을 적절한 전문가에게 라우팅합니다",
+    "orch_role_validator": "밸리데이터",
+    "orch_role_validator_desc": "결과가 기준을 충족하는지 확인 후 전달합니다",
+    "orch_role_fallback": "폴백",
+    "orch_role_fallback_desc": "기본 에이전트 실패 시 오류와 엣지 케이스를 처리합니다",
+    "orch_type_sequential": "순차 체인",
+    "orch_type_sequential_desc": "직렬 에이전트 — 한 에이전트의 출력이 다음의 입력이 됩니다",
+    "orch_type_parallel": "병렬 실행",
+    "orch_type_parallel_desc": "에이전트가 동시에 실행되고 결과가 집계됩니다",
+    "orch_type_hierarchical": "계층형",
+    "orch_type_hierarchical_desc": "슈퍼바이저가 워커 에이전트를 지휘하고 조율합니다",
+    "orch_type_router": "라우터 / 셀렉터",
+    "orch_type_router_desc": "에이전트가 다음에 처리할 전문가를 동적으로 선택합니다",
+    "orch_type_debate": "멀티 에이전트 토론",
+    "orch_type_debate_desc": "에이전트들이 서로 비판하며 최선의 답으로 수렴합니다",
+    "orch_type_swarm": "스웜",
+    "orch_type_swarm_desc": "자기 조직화 에이전트가 동적으로 작업을 수행합니다",
+    "orch_type_hitl": "휴먼 인 더 루프",
+    "orch_type_hitl_desc": "정의된 체크포인트에서 인간 검증이 필요합니다",
+    "orch_type_custom": "커스텀 그래프",
+    "orch_type_custom_desc": "자유로운 연결 — 자신만의 토폴로지 설계"
   },
   "levels": {
     "fast": {
@@ -91,6 +182,9 @@
     }
   },
   "questions": {
+    "orchestration_type": {
+      "label": "에이전트 오케스트레이션 전략"
+    },
     "objectif": {
       "label": "프로젝트 목적",
       "hint": {
@@ -98,8 +192,14 @@
         "advanced": "생성된 프롬프트가 기존 구성 파일을 보존할지 덮어쓸지 결정합니다."
       },
       "opts": {
-        "new_project": "새 프로젝트 — 처음부터 시작",
-        "improve_existing": "기존 설정 — 확장 / 개선"
+        "new_project": {
+          "l": "새 프로젝트 — 처음부터 시작",
+          "d": "처음부터 시작 — 완전히 새로운 프로젝트의 완전한 설정을 생성합니다."
+        },
+        "improve_existing": {
+          "l": "기존 설정 — 확장 / 개선",
+          "d": "기존 설정을 확장/개선합니다. 프롬프트는 현재 파일을 절대 덮어쓰지 않습니다."
+        }
       }
     },
     "ai_tools": {
@@ -125,14 +225,24 @@
         "advanced": "보안 규칙, 스킬, 생성되는 ADR에 영향을 미칩니다."
       },
       "opts": {
-        "saas": "SaaS / 웹 앱",
-        "content": "콘텐츠 / SEO / RAG",
-        "fintech": "핀테크 / 결제",
-        "ecommerce": "이커머스",
-        "internal": "내부 도구 / B2B",
-        "mobile": "모바일 앱",
-        "data": "데이터 / ML / AI",
-        "infra": "인프라 / DevOps"
+        "apps": "앱 & 사용자 인터페이스",
+        "data": "데이터 시스템 & 프로세스 자동화",
+        "ai": "AI 제품 & 지식 시스템",
+        "content": "콘텐츠 제작 & 커뮤니케이션",
+        "business": "비즈니스 전략 & 조직 도구",
+        "security": "보안, 품질 & 신뢰성",
+        "mleng": "ML 엔지니어링 & 인프라",
+        "blockchain": "탈중앙화 & 블록체인 시스템",
+        "science": "과학 컴퓨팅 & 모델링",
+        "immersive": "몰입형 & 공간 경험",
+        "integration": "통합 & 연결 시스템",
+        "embedded": "임베디드 & 엣지 컴퓨팅",
+        "media": "미디어 & 스트리밍",
+        "devtools": "개발자 도구 & 인프라",
+        "fintech": "금융 & 규제 거래 시스템",
+        "football": "풋볼 코칭 & 클럽 경영",
+        "sport": "스포츠 과학 & 멀티 스포츠 코칭",
+        "holistic": "개인 개발 & 웰빙"
       }
     },
     "subdomain": {
@@ -381,6 +491,377 @@
       }
     }
   },
+  "subdomains": {
+    "apps": {
+      "web_app": {
+        "l": "인터랙티브 웹 애플리케이션"
+      },
+      "server_api": {
+        "l": "서버 사이드 시스템 & API"
+      },
+      "mobile": {
+        "l": "모바일 애플리케이션"
+      },
+      "desktop": {
+        "l": "데스크톱 애플리케이션"
+      },
+      "pwa": {
+        "l": "프로그레시브 웹앱 & 오프라인 도구"
+      },
+      "extension": {
+        "l": "브라우저 확장 & 애드온"
+      },
+      "publishing": {
+        "l": "웹사이트 & 디지털 퍼블리싱"
+      },
+      "games": {
+        "l": "인터랙티브 게임 & 시뮬레이션"
+      },
+      "design_system": {
+        "l": "디자인 시스템 & 컴포넌트 라이브러리"
+      },
+      "admin_panel": {
+        "l": "관리 패널 & 백오피스 대시보드"
+      }
+    },
+    "data": {
+      "scraping": {
+        "l": "웹 데이터 수집 & 추출"
+      },
+      "etl": {
+        "l": "데이터 변환 & ETL 파이프라인"
+      },
+      "quality": {
+        "l": "데이터 품질 & 옵저버빌리티"
+      },
+      "bigdata": {
+        "l": "배치 처리 & 빅데이터 워크플로"
+      },
+      "database": {
+        "l": "데이터베이스 설계 & 관리"
+      },
+      "cloud_infra": {
+        "l": "클라우드 인프라 & 배포"
+      },
+      "orchestration": {
+        "l": "워크플로 스케줄링 & 오케스트레이션"
+      },
+      "automation": {
+        "l": "시스템 & 인프라 자동화"
+      }
+    },
+    "ai": {
+      "rag": {
+        "l": "지식 검색 & RAG 시스템"
+      },
+      "agents": {
+        "l": "자율 에이전트 & 워크플로"
+      },
+      "multimodal": {
+        "l": "멀티모달 AI 애플리케이션"
+      },
+      "prompt_eng": {
+        "l": "프롬프트 엔지니어링 라이브러리 & 프레임워크"
+      },
+      "ai_eval": {
+        "l": "AI 평가 & 벤치마킹"
+      },
+      "gen_content": {
+        "l": "멀티 포맷 콘텐츠 생성"
+      }
+    },
+    "content": {
+      "marketing": {
+        "l": "마케팅 & 정보성 콘텐츠"
+      },
+      "narrative": {
+        "l": "스토리텔링 & 내러티브 디자인"
+      },
+      "docs": {
+        "l": "기술 & 교육 문서화"
+      },
+      "localization": {
+        "l": "번역 & 현지화 시스템"
+      }
+    },
+    "business": {
+      "planning": {
+        "l": "데이터 모델링 & 구조적 계획"
+      },
+      "reports": {
+        "l": "분석 보고서 & 전략 문서"
+      },
+      "product": {
+        "l": "제품 기획 & 요구사항"
+      },
+      "legal": {
+        "l": "법무, 정책 & 컴플라이언스 자료"
+      },
+      "education": {
+        "l": "교육 & 훈련 자료"
+      },
+      "collab": {
+        "l": "협업 워크플로 & 팀 조율"
+      },
+      "crm_cdp": {
+        "l": "CRM & 고객 데이터 플랫폼"
+      }
+    },
+    "security": {
+      "pentest": {
+        "l": "보안 평가 & 침투 테스트"
+      },
+      "secure_code": {
+        "l": "애플리케이션 보안 & 시큐어 코딩"
+      },
+      "qa_testing": {
+        "l": "테스트 프레임워크 & QA 자동화"
+      },
+      "perf_load": {
+        "l": "성능 엔지니어링 & 부하 테스트"
+      },
+      "policy_code": {
+        "l": "Compliance-as-Code & 정책 엔진"
+      },
+      "observability": {
+        "l": "옵저버빌리티, 인시던트 대응 & SRE"
+      },
+      "dr_backup": {
+        "l": "재해 복구 & 백업 시스템"
+      }
+    },
+    "mleng": {
+      "predictive": {
+        "l": "예측 모델링 & 패턴 인식"
+      },
+      "training": {
+        "l": "모델 학습 & 데이터 준비"
+      },
+      "deployment": {
+        "l": "모델 최적화 & 프로덕션 배포"
+      },
+      "experiments": {
+        "l": "실험 추적 & 평가"
+      },
+      "feature_store": {
+        "l": "피처 스토어 & ML 데이터 인프라"
+      },
+      "rl": {
+        "l": "강화 학습 시스템"
+      }
+    },
+    "blockchain": {
+      "smart_contracts": {
+        "l": "스마트 컨트랙트 & 탈중앙화 앱"
+      },
+      "storage_id": {
+        "l": "분산 스토리지 & 신원 관리"
+      },
+      "token_finance": {
+        "l": "토큰 경제 & 금융 도구"
+      },
+      "bridges": {
+        "l": "크로스체인 브릿지 프로토콜"
+      },
+      "privacy_compute": {
+        "l": "프라이버시 보존 컴퓨팅"
+      }
+    },
+    "science": {
+      "numerical": {
+        "l": "수치 해석 & 수학적 모델링"
+      },
+      "simulation": {
+        "l": "물리, 공학 & 생물학 시뮬레이션"
+      },
+      "hpc": {
+        "l": "고성능 컴퓨팅 워크플로"
+      },
+      "complex_sys": {
+        "l": "복잡계 & 에이전트 기반 모델링"
+      },
+      "bioinformatics": {
+        "l": "바이오인포매틱스 & 유전체학 파이프라인"
+      },
+      "geospatial": {
+        "l": "지리공간 & GIS 시스템"
+      }
+    },
+    "immersive": {
+      "xr": {
+        "l": "가상, 증강 & 혼합 현실"
+      },
+      "spatial_web": {
+        "l": "공간 인터페이스 & 3D 웹"
+      },
+      "digital_twins": {
+        "l": "디지털 트윈 & 시뮬레이션 환경"
+      },
+      "multi_user_xr": {
+        "l": "멀티 유저 몰입형 플랫폼"
+      }
+    },
+    "integration": {
+      "api_gw": {
+        "l": "API 설계, 게이트웨이 & 스키마 관리"
+      },
+      "third_party": {
+        "l": "서드파티 & 엔터프라이즈 미들웨어 통합"
+      },
+      "event_driven": {
+        "l": "이벤트 기반 아키텍처"
+      },
+      "workflow_orch": {
+        "l": "워크플로 오케스트레이션 시스템"
+      },
+      "realtime_sync": {
+        "l": "실시간 메시징 & 동기화"
+      }
+    },
+    "embedded": {
+      "iot": {
+        "l": "IoT 디바이스 시스템"
+      },
+      "edge_ai": {
+        "l": "엣지 AI & 로컬 추론"
+      },
+      "robotics": {
+        "l": "로보틱스 & 제어 시스템"
+      },
+      "sensors": {
+        "l": "센서 & 텔레메트리 네트워크"
+      },
+      "firmware": {
+        "l": "산업 자동화 & 임베디드 펌웨어"
+      },
+      "autonomous": {
+        "l": "자율 물리 시스템"
+      },
+      "fpga": {
+        "l": "FPGA & 하드웨어 기술"
+      }
+    },
+    "media": {
+      "video_image": {
+        "l": "영상 & 이미지 처리 파이프라인"
+      },
+      "audio_speech": {
+        "l": "오디오 처리 & 음성 시스템"
+      },
+      "live_stream": {
+        "l": "라이브 스트리밍 & 실시간 미디어 인프라"
+      },
+      "gpu_render": {
+        "l": "GPU 가속 렌더링 워크플로"
+      },
+      "interactive_media": {
+        "l": "인터랙티브 미디어 전달 플랫폼"
+      }
+    },
+    "devtools": {
+      "cli": {
+        "l": "커맨드라인 도구 & 셸"
+      },
+      "sdk_lib": {
+        "l": "SDK & 클라이언트 라이브러리"
+      },
+      "build_systems": {
+        "l": "빌드 시스템 & 컴파일러"
+      },
+      "lang_server": {
+        "l": "언어 서버 & IDE 확장"
+      },
+      "codegen": {
+        "l": "코드 생성 & 스캐폴딩 도구"
+      },
+      "pkg_mgr": {
+        "l": "패키지 매니저 & 의존성 도구"
+      }
+    },
+    "fintech": {
+      "payments": {
+        "l": "결제 처리 & 게이트웨이 시스템"
+      },
+      "banking_core": {
+        "l": "코어 뱅킹 & 원장 시스템"
+      },
+      "trading": {
+        "l": "트레이딩 & 시장 인프라"
+      },
+      "insurance": {
+        "l": "보험 & 보험수리 플랫폼"
+      },
+      "reg_reporting": {
+        "l": "규제 보고 & 컴플라이언스 자동화"
+      },
+      "fraud": {
+        "l": "사기 탐지 & 리스크 관리"
+      }
+    },
+    "football": {
+      "game_model": {
+        "l": "코칭 철학 & 게임 모델"
+      },
+      "physical_prep": {
+        "l": "피지컬 준비 & 부하 관리"
+      },
+      "player_dev": {
+        "l": "선수 개발 & 생체역학"
+      },
+      "mental_culture": {
+        "l": "멘탈 퍼포먼스 & 팀 문화"
+      },
+      "football_analytics": {
+        "l": "퍼포먼스 분석 & 비디오 분석"
+      },
+      "club_management": {
+        "l": "클럽 경영, 윤리 & 거버넌스"
+      }
+    },
+    "sport": {
+      "athletic_dev": {
+        "l": "운동 능력 개발 & 컨디셔닝"
+      },
+      "movement_science": {
+        "l": "운동 과학 & 생체역학"
+      },
+      "sport_psychology": {
+        "l": "스포츠 심리학 & 정신 준비"
+      },
+      "coaching_science": {
+        "l": "코칭 과학 & 기술 습득"
+      },
+      "sport_analytics": {
+        "l": "스포츠 기술 & 퍼포먼스 분석"
+      },
+      "sport_governance": {
+        "l": "스포츠 윤리, 도핑 방지 & 거버넌스"
+      }
+    },
+    "holistic": {
+      "productivity": {
+        "l": "생산성 & 전문적 성과"
+      },
+      "resilience_wellbeing": {
+        "l": "회복탄력성 & 웰빙"
+      },
+      "leadership_influence": {
+        "l": "개인 리더십 & 영향력"
+      },
+      "learning_growth": {
+        "l": "학습 과학 & 성장 마인드셋"
+      },
+      "purpose_career": {
+        "l": "목적, 가치관 & 커리어 개발"
+      },
+      "relationships": {
+        "l": "전문적 관계 & 사회 자본"
+      },
+      "financial_intel": {
+        "l": "재무 지능 & 자산 심리학"
+      }
+    }
+  },
   "landing": {
     "meta_description": "5분 안에 AI 개발 환경을 설정하세요. 647개의 에이전트, 1,611개의 기술, 128개의 명령어 중에서 당신의 스택에 맞는 것을 선택하세요.",
     "nav_how": "// 사용 방법",
@@ -402,7 +883,7 @@
     "slide1_sub": "당신의 프로젝트를 위해 선별된 전문 에이전트. 당신의 표준, 아키텍처, 사고방식을 첫 번째 세션 전부터 미리 로드합니다.",
     "slide2_eyebrow": "// 제로에서 기여자까지 &lt; 5분",
     "slide2_line1": "5분 후,",
-    "slide2_line2": "당신의 AI가 공동 창업자가 됩니다.",
+    "slide2_line2": "당신의 AI가 copilote가 됩니다.",
     "slide2_sub": "설정을 드롭하세요. 어시스턴트가 범용 도구에서 도메인 전문가로 변모하는 것을 지켜보세요 — 모든 규칙, 모든 에이전트 스펙을 읽고, 첫날부터 기여합니다.",
     "slide2_cta": "<span class=\"caret\">&gt;</span> 위저드 시작",
     "stat_agents": "에이전트",

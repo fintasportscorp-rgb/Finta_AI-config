@@ -16,6 +16,9 @@
       "media":       "Media & Streaming Systems",
       "devtools":    "Developer Tools & Infrastructure",
       "fintech":     "Financial & Regulated Transactions",
+      "football":  "Football Coaching & Club Management",
+      "sport":     "Multi-Sport Science & Coaching",
+      "holistic":  "Personal Development & Wellbeing",
       "other":       "Other"
     },
     "teamContext": {
@@ -396,6 +399,31 @@
       {"v":"reg_reporting", "l":"Regulatory Reporting & Compliance Automation", "i":"📋","h":"KYC, AML, SOX, Basel III, automated regulatory reporting"},
       {"v":"fraud",         "l":"Fraud Detection & Risk Management",            "i":"🚨","h":"Real-time scoring, ML fraud models, velocity checks, chargeback"}
     ],
+    "football": [
+      {"v": "game_model",          "l": "Coaching Philosophy & Game Model",         "i": "🎯", "h": "Tactical principles, morphocycle, positional/relational play, periodisation structure"},
+      {"v": "physical_prep",       "l": "Physical Preparation & Load Management",   "i": "💪", "h": "GPS/wearable metrics, ACWR, periodisation, recovery protocols, HRV"},
+      {"v": "player_dev",          "l": "Player Development & Biomechanics",        "i": "🏃", "h": "Sprint mechanics, FV profile, skill acquisition, motor learning, neuroscience"},
+      {"v": "mental_culture",      "l": "Mental Performance & Team Culture",        "i": "🧠", "h": "Pre-match psychology, IZOF, psychological safety, distributed leadership"},
+      {"v": "football_analytics",  "l": "Performance Analytics & Video Analysis",   "i": "📊", "h": "xG, xT, PPDA, GPS tracking, Wyscout, Hudl, Nacsport, AI tactical tools"},
+      {"v": "club_management",     "l": "Club Management, Ethics & Governance",     "i": "🏟️", "h": "Decision science, FFP compliance, transfers, nudge architecture, anti-corruption"}
+    ],
+    "sport": [
+      {"v": "athletic_dev",        "l": "Athletic Development & Conditioning",      "i": "💪", "h": "Multi-sport periodisation, load monitoring, ACWR, conditioning, recovery science"},
+      {"v": "movement_science",    "l": "Movement Science & Biomechanics",          "i": "⚡", "h": "Multi-sport biomechanics, FV profiles, FMS/SFMA, movement screening, injury prevention"},
+      {"v": "sport_psychology",    "l": "Sport Psychology & Mental Preparation",    "i": "🧠", "h": "Multi-sport mental prep, individual vs team sport, IZOF, stress inoculation"},
+      {"v": "coaching_science",    "l": "Coaching Science & Skill Acquisition",     "i": "🎯", "h": "Ecological dynamics, constraints-led approach, multi-sport motor learning, RLD"},
+      {"v": "sport_analytics",     "l": "Sport Technology & Performance Analytics", "i": "📊", "h": "Multi-sport GPS, video analysis, performance monitoring, AI, data platforms"},
+      {"v": "sport_governance",    "l": "Sport Ethics, Anti-Doping & Governance",   "i": "⚖️", "h": "WADA, Paralympic inclusion, youth welfare, anti-doping, TUE, sport organisations"}
+    ],
+    "holistic": [
+      {"v": "productivity",        "l": "Productivity & Professional Performance",  "i": "🚀", "h": "Deep work, flow state, GTD, energy management, cognitive load, time-blocking"},
+      {"v": "resilience_wellbeing","l": "Resilience & Wellbeing",                   "i": "💚", "h": "Professional resilience, burnout prevention, lifestyle medicine, PERMA, ACT"},
+      {"v": "leadership_influence","l": "Personal Leadership & Influence",          "i": "👑", "h": "Personal leadership, communication, strategic influence, emotional intelligence"},
+      {"v": "learning_growth",     "l": "Learning Science & Growth Mindset",        "i": "📚", "h": "Deliberate practice, spaced repetition, growth mindset, metacognition"},
+      {"v": "purpose_career",      "l": "Purpose, Values & Career Development",     "i": "🧭", "h": "Career strategy, Ikigai, values clarification, meaning-making, transitions"},
+      {"v": "relationships",       "l": "Relationships & Social Capital",           "i": "🤝", "h": "Strategic networking, social capital, trust-building, weak ties, Granovetter"},
+      {"v": "financial_intel",     "l": "Financial Intelligence & Wealth Psychology","i": "💰", "h": "Personal finance, behavioural finance, wealth psychology, money mindset"}
+    ],
     "other": []
   },
 
@@ -474,7 +502,9 @@
       { "when": {"domain": "ai"},          "names": ["ai-engineer","langchain-expert","machine-learning-engineer"], "w": 9 },
       { "when": {"domain": "content"},     "names": ["content-writer","seo-specialist"], "w": 6 },
       { "when": {"domain": "business"},    "names": ["code-reviewer","architect-reviewer"], "w": 6 },
-      { "when": {"domain": "coaching"},    "names": ["decision-science-coach","coaching-philosophy","mental-preparation-coach","team-culture-leadership","physical-preparation-coach","sport-neuroscience-coach","skill-acquisition-coach","complex-systems-coach","biomechanics-movement-coach","ethics-behavioral-economics","sport-technology-analytics"], "w": 10 },
+      { "when": {"domain": "football"}, "names": ["decision-science-coach","coaching-philosophy","mental-preparation-coach","team-culture-leadership","physical-preparation-coach","sport-neuroscience-coach","skill-acquisition-coach","complex-systems-coach","biomechanics-movement-coach","ethics-behavioral-economics","sport-technology-analytics"], "w": 10 },
+      { "when": {"domain": "sport"},    "names": ["sport-biomechanics-coach","sport-physical-preparation-coach","sport-mental-preparation-coach","coaching-philosophy-sport","sport-complex-systems-coach","sport-decision-science-coach","sport-ethics-behavioral-economics","sport-technology-analytics-coach","sport-neuroscience-coach","sport-skill-acquisition-coach","sport-team-culture-leadership"], "w": 10 },
+      { "when": {"domain": "holistic"}, "names": ["behavioral-change-coach","career-development-coach","communication-influence-coach","emotional-intelligence-coach","financial-intelligence-coach","learning-mindset-coach","personal-leadership-coach","productivity-performance-coach","professional-resilience-coach","purpose-values-coach","relationships-networking-coach","wellbeing-lifestyle-coach"], "w": 10 },
       { "when": {"domain": "security"},    "names": ["security-auditor","compliance-auditor","pentest-expert"], "w": 10 },
       { "when": {"domain": "mleng"},       "names": ["machine-learning-engineer","mlops-engineer","pytorch-expert"], "w": 9 },
       { "when": {"domain": "blockchain"},  "names": ["security-auditor","compliance-auditor"], "w": 9 },

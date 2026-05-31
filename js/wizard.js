@@ -79,13 +79,66 @@ const DEFAULT_T = {
   welcome_docs:'architecture · glossary · ADRs',
   welcome_prompt_line:'bootstrap-init.md — AI post-install enrichment',
   welcome_run:'run setup', run_setup_btn:'run-setup.sh',
-  boot_prompt_tpl:"unzip {name}-ai-setup.zip"
+  boot_prompt_tpl:"unzip {name}-ai-setup.zip",
+  // Orchestration
+  orch_new:'[+ New]',
+  orch_no_orchs:'No orchestrations yet — click [+ New] to create one.',
+  orch_section_pattern:'Pattern',
+  orch_section_roles:'Agent roles',
+  orch_section_deps:'Dependencies',
+  orch_select_agents_first:'Select agents first to assign roles.',
+  orch_dep_rule:'A → B = A must finish before B starts',
+  orch_dep_build_hint:'Build the diagram then click a node to add connections',
+  orch_dep_none:'No dependencies yet — build the diagram and click a node to add',
+  orch_dep_none_yet:'None yet',
+  orch_build:'⬡ Build / Refresh',
+  orch_relayout:'↺ Re-layout',
+  orch_save_png:'📷 Save PNG',
+  orch_diagram_hint:'Click node → role & note · Click edge → redirect/delete · Drag · Scroll to zoom',
+  orch_collapse:'▲ Collapse',
+  orch_delete_btn:'✕ Delete',
+  orch_edit:'Edit',
+  orch_name_ph:'Orchestration name…',
+  orch_default_name:'Orchestration {n}',
+  orch_no_agents_selected:'No agents selected — add agents from the Agents step first, then click Build / Refresh.',
+  orch_no_agents_included:'No agents included yet — click + Include above to add agents to the diagram.',
+  orch_include:'+ Include',
+  orch_exclude:'⊘',
+  orch_exclude_title:'Exclude from this orchestration',
+  orch_panel_role:'Role',
+  orch_panel_note:'Note',
+  orch_note_ph:"Describe this agent's task…",
+  orch_panel_deps_from:'Dependencies from this agent',
+  orch_dep_add_target:'→ Add target…',
+  orch_dep_add:'Add',
+  orch_dep_apply:'Apply',
+  orch_dep_remove:'✕ Remove dependency',
+  orch_panel_dep_title:'Dependency',
+  orch_panel_redirect:'Redirect',
+  orch_meta_agents:'{n} agent{s}',
+  orch_meta_deps:'{n} dep{s}',
+  orch_role_supervisor:'Supervisor',    orch_role_supervisor_desc:'Orchestrates and delegates tasks to other agents',
+  orch_role_worker:'Worker',            orch_role_worker_desc:'Executes a specific sub-task autonomously',
+  orch_role_critic:'Critic',            orch_role_critic_desc:'Reviews and challenges outputs from other agents',
+  orch_role_router:'Router',            orch_role_router_desc:'Dispatches the request to the right specialist',
+  orch_role_validator:'Validator',      orch_role_validator_desc:'Checks outputs meet criteria before passing them on',
+  orch_role_fallback:'Fallback',        orch_role_fallback_desc:'Handles errors or edge cases when the primary agent fails',
+  orch_type_sequential:'Sequential Chain',    orch_type_sequential_desc:'Agents in series — output of one becomes input of next',
+  orch_type_parallel:'Parallel Execution',   orch_type_parallel_desc:'Agents run simultaneously, results aggregated at the end',
+  orch_type_hierarchical:'Hierarchical',     orch_type_hierarchical_desc:'Supervisor directs and coordinates Worker agents',
+  orch_type_router:'Router / Selector',      orch_type_router_desc:'One agent dynamically selects which specialist handles next',
+  orch_type_debate:'Multi-Agent Debate',     orch_type_debate_desc:'Agents critique each other, converging on best answer',
+  orch_type_swarm:'Swarm',                   orch_type_swarm_desc:'Self-organizing agents dynamically pick up tasks',
+  orch_type_hitl:'Human-in-the-Loop',        orch_type_hitl_desc:'Human validation required at defined checkpoints',
+  orch_type_custom:'Custom Graph',           orch_type_custom_desc:'Free-form connections — design your own topology',
+  orch_manager_hint:'Define multi-agent orchestrations for this project'
 };
 
 let T = Object.assign({}, DEFAULT_T);
 let LANG = DEFAULT_LANG;
 let ORIG_QUESTIONS = null;
 let ORIG_LEVELS = null;
+let ORIG_SUBDOMAINS = null;
 
 function t(key, vars) {
   let s = T[key] !== undefined ? T[key] : (DEFAULT_T[key] !== undefined ? DEFAULT_T[key] : key);
@@ -115,6 +168,17 @@ function applyLocale(data, cardsData) {
   if (!ORIG_QUESTIONS || !ORIG_LEVELS) return;
   QUESTIONS = JSON.parse(JSON.stringify(ORIG_QUESTIONS));
   LEVELS    = JSON.parse(JSON.stringify(ORIG_LEVELS));
+  if (ORIG_SUBDOMAINS && ARBO) ARBO.subdomains = JSON.parse(JSON.stringify(ORIG_SUBDOMAINS));
+  if (data.subdomains && ARBO) {
+    Object.entries(data.subdomains).forEach(([dk, opts]) => {
+      const domain = ARBO.subdomains[dk]; if (!domain) return;
+      Object.entries(opts).forEach(([v, tr]) => {
+        const opt = domain.find(o => o.v === v); if (!opt) return;
+        if (tr.l) opt.l = tr.l;
+        if (tr.h) opt.h = tr.h;
+      });
+    });
+  }
   if (data.levels) {
     LEVELS.forEach(l => {
       const tr = data.levels[l.v]; if (!tr) return;
@@ -127,7 +191,11 @@ function applyLocale(data, cardsData) {
       if (tr.label) q.label = tr.label;
       if (tr.ph)    q.ph    = tr.ph;
       if (tr.hint)  Object.assign(q.hint || (q.hint = {}), tr.hint);
-      if (tr.opts && q.opts) q.opts.forEach(o => { if (tr.opts[o.v]) o.l = tr.opts[o.v]; });
+      if (tr.opts && q.opts) q.opts.forEach(o => {
+        const tr_o = tr.opts[o.v]; if (!tr_o) return;
+        if (typeof tr_o === 'string') { o.l = tr_o; }
+        else { if (tr_o.l) o.l = tr_o.l; if (tr_o.d) o.d = tr_o.d; }
+      });
     });
   }
   T = Object.assign({}, DEFAULT_T, data.ui || {});
@@ -148,7 +216,7 @@ async function switchLang(lang) {
     applyLocale(data, {});
   } catch (_) { applyLocale({}, {}); }
   updateLangFloat();
-  autoFillOutputLanguage();
+  S.ans.output_language = LANG_OUTPUT_MAP[lang] || '';
   render();
 }
 
@@ -183,12 +251,13 @@ async function init() {
     ORIG_LEVELS    = qData.levels;
     ORIG_QUESTIONS = qData.questions;
     ARBO           = arboData;
+    ORIG_SUBDOMAINS = JSON.parse(JSON.stringify(arboData.subdomains));
     AGENTS_CATALOG = catData.agents || [];
     SKILLS_CATALOG = skillsData.skills || [];
     COMMANDS_CATALOG = commandsData.commands || [];
     applyLocale(locData, {});
     loadSession();
-    autoFillOutputLanguage();
+    S.ans.output_language = LANG_OUTPUT_MAP[LANG] || '';
     render();
   } catch (e) {
     showError();
@@ -361,7 +430,8 @@ function computeSkillRecommendations(ans) {
     if (domain === 'media')       { scoreByKw('ffmpeg', 7); scoreByKw('video', 6); scoreByKw('streaming', 6); scoreByKw('webrtc', 5); }
     if (domain === 'devtools')    { scoreByKw('cli', 7); scoreByKw('sdk', 6); scoreByKw('compiler', 5); scoreByKw('lsp', 5); }
     if (domain === 'fintech')     { scoreByCat('security', 7); scoreByKw('stripe', 6); scoreByKw('payment', 6); scoreByKw('compliance', 5); }
-    if (domain === 'sport')      { scoreByCat('sport', 10); scoreByKw('football', 8); scoreByKw('athlete', 7); scoreByKw('coaching', 7); scoreByKw('performance', 5); scoreByKw('training', 5); }
+    if (domain === 'football')   { scoreByCat('coaching', 10); scoreByKw('football', 9); scoreByKw('tactical', 7); scoreByKw('game-model', 6); scoreByKw('morphocycle', 5); scoreByKw('xg', 5); }
+    if (domain === 'sport')      { scoreByCat('sport', 10); scoreByKw('athlete', 8); scoreByKw('biomechanics', 7); scoreByKw('conditioning', 6); scoreByKw('performance', 5); scoreByKw('training', 5); }
     if (domain === 'holistic')   { scoreByCat('holistic', 10); scoreByKw('career', 8); scoreByKw('wellbeing', 7); scoreByKw('burnout', 7); scoreByKw('purpose', 6); scoreByKw('productivity', 6); scoreByKw('leadership', 5); }
   }
 
@@ -415,6 +485,28 @@ function computeSkillRecommendations(ans) {
   if (sub.includes('fpga'))           { scoreByKw('vhdl', 8); scoreByKw('verilog', 7); scoreByKw('fpga', 6); }
   // devtools subdomains
   if (sub.includes('cli'))            { scoreByKw('oclif', 7); scoreByKw('cobra', 6); scoreByKw('cli', 5); }
+  // football subdomains
+  if (sub.includes('game_model'))         { scoreByCat('coaching', 7); scoreByKw('tactical', 6); scoreByKw('game-model', 6); scoreByKw('morphocycle', 5); }
+  if (sub.includes('physical_prep'))      { scoreByKw('load', 7); scoreByKw('gps', 6); scoreByKw('periodisation', 5); scoreByKw('conditioning', 5); }
+  if (sub.includes('player_dev'))         { scoreByKw('biomechanics', 7); scoreByKw('skill-acquisition', 6); scoreByKw('motor', 5); scoreByKw('sprint', 5); }
+  if (sub.includes('mental_culture'))     { scoreByKw('mental', 7); scoreByKw('psychology', 6); scoreByKw('culture', 5); scoreByKw('leadership', 5); }
+  if (sub.includes('football_analytics')) { scoreByKw('analytics', 7); scoreByKw('xg', 6); scoreByKw('video', 5); scoreByKw('tracking', 5); }
+  if (sub.includes('club_management'))    { scoreByKw('decision', 7); scoreByKw('governance', 6); scoreByKw('compliance', 5); scoreByKw('ethics', 5); }
+  // sport subdomains
+  if (sub.includes('athletic_dev'))       { scoreByKw('conditioning', 7); scoreByKw('periodisation', 6); scoreByKw('load', 5); scoreByKw('recovery', 5); }
+  if (sub.includes('movement_science'))   { scoreByKw('biomechanics', 7); scoreByKw('movement', 6); scoreByKw('screening', 5); }
+  if (sub.includes('sport_psychology'))   { scoreByKw('psychology', 7); scoreByKw('mental', 6); scoreByKw('resilience', 5); }
+  if (sub.includes('coaching_science'))   { scoreByKw('skill-acquisition', 7); scoreByKw('ecological', 6); scoreByKw('constraints', 5); }
+  if (sub.includes('sport_analytics'))    { scoreByKw('analytics', 7); scoreByKw('gps', 6); scoreByKw('performance', 5); }
+  if (sub.includes('sport_governance'))   { scoreByKw('ethics', 7); scoreByKw('doping', 6); scoreByKw('governance', 5); }
+  // holistic subdomains
+  if (sub.includes('productivity'))          { scoreByKw('productivity', 7); scoreByKw('deep-work', 6); scoreByKw('flow', 5); }
+  if (sub.includes('resilience_wellbeing'))  { scoreByKw('resilience', 7); scoreByKw('wellbeing', 6); scoreByKw('burnout', 5); }
+  if (sub.includes('leadership_influence'))  { scoreByKw('leadership', 7); scoreByKw('communication', 6); scoreByKw('influence', 5); }
+  if (sub.includes('learning_growth'))       { scoreByKw('learning', 7); scoreByKw('mindset', 6); scoreByKw('practice', 5); }
+  if (sub.includes('purpose_career'))        { scoreByKw('purpose', 7); scoreByKw('career', 6); scoreByKw('values', 5); }
+  if (sub.includes('relationships'))         { scoreByKw('networking', 7); scoreByKw('relationships', 6); scoreByKw('social', 5); }
+  if (sub.includes('financial_intel'))       { scoreByKw('financial', 7); scoreByKw('wealth', 6); scoreByKw('money', 5); }
   if (sub.includes('sdk_lib'))        { scoreByKw('sdk', 7); scoreByKw('semver', 5); scoreByKw('npm', 5); }
   if (sub.includes('lang_server'))    { scoreByKw('lsp', 8); scoreByKw('treesitter', 6); scoreByKw('vscode', 5); }
 
@@ -621,12 +713,12 @@ function renderSkillPicker(q, ans, level) {
   return `
     <div class="presel-bar">
       <span class="ap-hint" style="margin-bottom:0;flex-shrink:0">${t('skills_hint')}</span>
-      <div style="display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;flex-shrink:0">
+      <div class="presel-bar-btns">
         <a href="${BOOK_LM_URL}" target="_blank" rel="noopener" class="booklm-btn">📘 Our Book LM</a>
         <span class="ap-count" id="skill-count">${t('skills_selected',{n:selected.size})}</span>
-        <button class="btn bs" id="presel-toggle-skill" style="font-size:.7rem;padding:.18rem .5rem" onclick="togglePreselPanel('skill')">▸ show selection</button>
-        <button class="btn bp" style="font-size:.7rem;padding:.18rem .5rem" onclick="resetSkillsToDefault()">★ preselect for me</button>
-        <button class="btn bs" style="font-size:.7rem;padding:.18rem .5rem" onclick="clearAllSkills()">✕ remove all</button>
+        <button class="btn bs" id="presel-toggle-skill" style="font-size:.7rem;padding:.18rem .5rem" onclick="togglePreselPanel('skill')">${t('show_selection')}</button>
+        <button class="btn bp" style="font-size:.7rem;padding:.18rem .5rem" onclick="resetSkillsToDefault()">${t('preselect_for_me')}</button>
+        <button class="btn bs" style="font-size:.7rem;padding:.18rem .5rem" onclick="clearAllSkills()">${t('remove_all')}</button>
       </div>
     </div>
     <div id="presel-panel-skill" style="display:none">
@@ -660,12 +752,12 @@ function renderAgentPicker(q, ans, level) {
   return `
     <div class="presel-bar">
       <span class="ap-hint" style="margin-bottom:0;flex-shrink:0">${t('agents_hint')}</span>
-      <div style="display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;flex-shrink:0">
+      <div class="presel-bar-btns">
         <a href="${BOOK_LM_URL}" target="_blank" rel="noopener" class="booklm-btn">📘 Our Book LM</a>
         <span class="ap-count" id="agent-count">${t('agents_selected',{n:selected.size})}</span>
-        <button class="btn bs" id="presel-toggle-agent" style="font-size:.7rem;padding:.18rem .5rem" onclick="togglePreselPanel('agent')">▸ show selection</button>
-        <button class="btn bp" style="font-size:.7rem;padding:.18rem .5rem" onclick="resetAgentsToDefault()">★ preselect for me</button>
-        <button class="btn bs" style="font-size:.7rem;padding:.18rem .5rem" onclick="clearAllAgents()">✕ remove all</button>
+        <button class="btn bs" id="presel-toggle-agent" style="font-size:.7rem;padding:.18rem .5rem" onclick="togglePreselPanel('agent')">${t('show_selection')}</button>
+        <button class="btn bp" style="font-size:.7rem;padding:.18rem .5rem" onclick="resetAgentsToDefault()">${t('preselect_for_me')}</button>
+        <button class="btn bs" style="font-size:.7rem;padding:.18rem .5rem" onclick="clearAllAgents()">${t('remove_all')}</button>
       </div>
     </div>
     <div id="presel-panel-agent" style="display:none">
@@ -720,39 +812,52 @@ function toggleAgent(id) {
 }
 
 function syncOrchDiagramWithAgents() {
-  if (!window._cy || !window._currentOrchId) return;
-  const orchId = window._currentOrchId;
-  const o      = getOrchestrations().find(o => o.id === orchId);
+  // Find the active orchestration id: prefer Cy-active one, then the editing one
+  const orchId = window._currentOrchId || window._editingOrchId;
+  if (!orchId) return;
+  const o = getOrchestrations().find(o => o.id === orchId);
   if (!o) return;
-  const agents    = (S.ans.agents_wanted || []).map(id => AGENTS_CATALOG.find(a => a.id === id)).filter(Boolean);
-  const agentIds  = new Set(agents.map(a => a.id));
 
-  // Remove nodes for deselected agents (also removes connected edges in Cytoscape)
-  window._cy.nodes().forEach(node => {
-    if (!agentIds.has(node.id())) {
-      if (o.dependencies) o.dependencies = o.dependencies.filter(d => d.from !== node.id() && d.to !== node.id());
-      node.remove();
+  const agents   = (S.ans.agents_wanted || []).map(id => AGENTS_CATALOG.find(a => a.id === id)).filter(Boolean);
+  const agentIds = new Set(agents.map(a => a.id));
+
+  // Keep o.roles in sync; new agents start excluded by default
+  if (!o.roles) o.roles = {};
+  if (!o.excluded) o.excluded = [];
+  agents.forEach(a => {
+    if (!o.roles[a.id]) {
+      o.roles[a.id] = 'worker';
+      if (!o.excluded.includes(a.id)) o.excluded.push(a.id);
     }
   });
 
-  // Add nodes for newly selected agents (skip excluded)
-  const excl2 = orchExcluded(o);
-  agents.filter(a => !excl2.has(a.id)).forEach(a => {
-    if (!window._cy.getElementById(a.id).length) {
-      if (!o.roles) o.roles = {};
-      if (!o.roles[a.id]) o.roles[a.id] = 'worker';
-      const c = CY_ROLE_COLORS[o.roles[a.id]] || CY_ROLE_COLORS.worker;
-      window._cy.add({ group:'nodes', data:{ id:a.id, label:(a.name||a.id).slice(0,15), role:o.roles[a.id], bg:c.bg, text:c.text }});
-    }
-  });
+  if (window._cy && window._currentOrchId === orchId) {
+    // ── Cytoscape is live: do an incremental graph update ──────────────────
+    window._cy.nodes().forEach(node => {
+      if (!agentIds.has(node.id())) {
+        if (o.dependencies) o.dependencies = o.dependencies.filter(d => d.from !== node.id() && d.to !== node.id());
+        node.remove();
+      }
+    });
+    const excl2 = orchExcluded(o);
+    agents.filter(a => !excl2.has(a.id)).forEach(a => {
+      if (!window._cy.getElementById(a.id).length) {
+        const c = CY_ROLE_COLORS[o.roles[a.id]] || CY_ROLE_COLORS.worker;
+        window._cy.add({ group:'nodes', data:{ id:a.id, label:(a.name||a.id).slice(0,15), role:o.roles[a.id], bg:c.bg, text:c.text }});
+      }
+    });
+    window._cy.layout(getCyLayout(o.type)).run();
+    refreshDepList(orchId);
 
-  window._cy.layout(getCyLayout(o.type)).run();
-  refreshDepList(orchId);
-  // Also refresh the roles list so newly added agents appear immediately
-  const rolesEl = document.querySelector(`#orch-item-${orchId} .orch-roles-section`);
-  if (rolesEl) {
-    const allAgents = (S.ans.agents_wanted || []).map(id => AGENTS_CATALOG.find(a => a.id === id)).filter(Boolean);
-    rolesEl.innerHTML = buildOrchRolesHtml(o, allAgents);
+    // Refresh the roles list only
+    const rolesEl = document.querySelector(`#orch-item-${orchId} .orch-roles-section`);
+    if (rolesEl) rolesEl.innerHTML = buildOrchRolesHtml(o, agents);
+  } else {
+    // ── No Cy instance yet: fully re-render the orchestration section ───────
+    // This guarantees roles + diagram reflect the current agent list
+    // (destroys any stale Cy state first so refreshOrchPicker starts clean)
+    if (window._cy) { try { window._cy.destroy(); } catch(_) {} window._cy = null; window._currentOrchId = null; }
+    refreshOrchPicker();
   }
 }
 
@@ -804,7 +909,7 @@ function togglePreselPanel(type) {
   if (!panel) return;
   const isOpen = panel.style.display !== 'none';
   panel.style.display = isOpen ? 'none' : '';
-  if (btn) btn.textContent = isOpen ? '▸ show selection' : '▴ hide selection';
+  if (btn) btn.textContent = isOpen ? t('show_selection') : t('hide_selection');
 }
 
 function setAgentQFilter(minQ, btn) {
@@ -834,9 +939,11 @@ function clearAllAgents() {
   const panel = document.getElementById('presel-panel-agent');
   const tog   = document.getElementById('presel-toggle-agent');
   if (panel) panel.style.display = 'none';
-  if (tog)   tog.textContent = '▸ show selection';
+  if (tog)   tog.textContent = t('show_selection');
   const cnt = document.getElementById('agent-count');
   if (cnt) cnt.textContent = t('agents_selected', {n: 0});
+  syncOrchDiagramWithAgents();
+  refreshSidenavChecks(); saveSession();
 }
 function resetAgentsToDefault() {
   const recs  = computeAgentRecommendations(S.ans);
@@ -846,7 +953,9 @@ function resetAgentsToDefault() {
   const panel = document.getElementById('presel-panel-agent');
   const btn   = document.getElementById('presel-toggle-agent');
   if (panel) { panel.style.display = ''; }
-  if (btn)   { btn.textContent = '▴ hide selection'; }
+  if (btn)   { btn.textContent = t('hide_selection'); }
+  syncOrchDiagramWithAgents();
+  refreshSidenavChecks(); saveSession();
 }
 function clearAllSkills() {
   S.ans.skills_wanted = [];
@@ -856,9 +965,10 @@ function clearAllSkills() {
   const panel = document.getElementById('presel-panel-skill');
   const tog   = document.getElementById('presel-toggle-skill');
   if (panel) panel.style.display = 'none';
-  if (tog)   tog.textContent = '▸ show selection';
+  if (tog)   tog.textContent = t('show_selection');
   const cnt = document.getElementById('skill-count');
   if (cnt) cnt.textContent = t('skills_selected', {n: 0});
+  refreshSidenavChecks(); saveSession();
 }
 function clearAllCommands() {
   S.ans.commands_wanted = [];
@@ -868,9 +978,10 @@ function clearAllCommands() {
   const panel = document.getElementById('presel-panel-command');
   const tog   = document.getElementById('presel-toggle-command');
   if (panel) panel.style.display = 'none';
-  if (tog)   tog.textContent = '▸ show selection';
+  if (tog)   tog.textContent = t('show_selection');
   const cnt = document.getElementById('cmd-count');
   if (cnt) cnt.textContent = t('commands_selected', {n: 0});
+  refreshSidenavChecks(); saveSession();
 }
 // ── Presel quick-search ──────────────────────────────────────────────────────
 function searchPresel(type, query) {
@@ -922,7 +1033,7 @@ function addFromSearch(type, id) {
     const tog   = document.getElementById('presel-toggle-' + type);
     if (panel && panel.style.display === 'none') {
       panel.style.display = '';
-      if (tog) tog.textContent = '▴ hide selection';
+      if (tog) tog.textContent = t('hide_selection');
     }
   }
 
@@ -943,7 +1054,8 @@ function resetCommandsToDefault() {
   const panel = document.getElementById('presel-panel-command');
   const btn   = document.getElementById('presel-toggle-command');
   if (panel) panel.style.display = '';
-  if (btn)   btn.textContent = '▴ hide selection';
+  if (btn)   btn.textContent = t('hide_selection');
+  refreshSidenavChecks(); saveSession();
 }
 function resetSkillsToDefault() {
   const recs     = computeSkillRecommendations(S.ans);
@@ -953,7 +1065,8 @@ function resetSkillsToDefault() {
   const panel = document.getElementById('presel-panel-skill');
   const btn   = document.getElementById('presel-toggle-skill');
   if (panel) { panel.style.display = ''; }
-  if (btn)   { btn.textContent = '▴ hide selection'; }
+  if (btn)   { btn.textContent = t('hide_selection'); }
+  refreshSidenavChecks(); saveSession();
 }
 
 function qfBarHtml(type) {
@@ -968,13 +1081,13 @@ function qfBarHtml(type) {
     return `<button class="qf-btn qf-src qf-src-${tier}" title="${counts[src]} items" onclick="toggleSourceFilter('${type}','${src}',this)">${src}</button>`;
   }).join('');
   return `<div class="qf-bar">
-    <span class="qf-label">quality:</span>
-    <button class="qf-btn qf-q act" onclick="${qfn}(0,this)">all</button>
+    <span class="qf-label">${t('qf_quality')}</span>
+    <button class="qf-btn qf-q act" onclick="${qfn}(0,this)">${t('qf_all')}</button>
     <button class="qf-btn qf-q"     onclick="${qfn}(50,this)">★★★+</button>
     <button class="qf-btn qf-q"     onclick="${qfn}(65,this)">★★★★+</button>
     <button class="qf-btn qf-q"     onclick="${qfn}(80,this)">★★★★★</button>
     <span class="qf-sep">|</span>
-    <span class="qf-label">provider:</span>
+    <span class="qf-label">${t('qf_provider')}</span>
     ${provBtns}
   </div>`;
 }
@@ -1174,6 +1287,9 @@ function computeCommandRecommendations(ans) {
     if (domain === 'media')       { scoreByKw('encode', 5); scoreByKw('stream', 5); scoreByKw('render', 4); }
     if (domain === 'devtools')    { scoreByKw('build', 6); scoreByKw('publish', 5); scoreByKw('release', 5); }
     if (domain === 'fintech')     { scoreByCat('security', 6); scoreByKw('compliance', 6); scoreByKw('audit', 5); }
+    if (domain === 'football')   { scoreByKw('analysis', 5); scoreByKw('performance', 4); scoreByKw('coaching', 4); }
+    if (domain === 'sport')      { scoreByKw('analysis', 5); scoreByKw('performance', 4); scoreByKw('training', 4); }
+    if (domain === 'holistic')   { scoreByKw('productivity', 5); scoreByKw('review', 4); scoreByKw('goal', 4); }
   }
 
   // TDD → testing commands
@@ -1372,12 +1488,12 @@ function renderCommandPicker(q, ans, level) {
   return `
     <div class="presel-bar">
       <span class="ap-hint" style="margin-bottom:0;flex-shrink:0">${t('commands_hint')}</span>
-      <div style="display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;flex-shrink:0">
+      <div class="presel-bar-btns">
         <a href="${BOOK_LM_URL}" target="_blank" rel="noopener" class="booklm-btn">📘 Our Book LM</a>
         <span class="ap-count" id="cmd-count">${t('commands_selected',{n:selected.size})}</span>
-        <button class="btn bs" id="presel-toggle-command" style="font-size:.7rem;padding:.18rem .5rem" onclick="togglePreselPanel('command')">▸ show selection</button>
-        <button class="btn bp" style="font-size:.7rem;padding:.18rem .5rem" onclick="resetCommandsToDefault()">★ preselect for me</button>
-        <button class="btn bs" style="font-size:.7rem;padding:.18rem .5rem" onclick="clearAllCommands()">✕ remove all</button>
+        <button class="btn bs" id="presel-toggle-command" style="font-size:.7rem;padding:.18rem .5rem" onclick="togglePreselPanel('command')">${t('show_selection')}</button>
+        <button class="btn bp" style="font-size:.7rem;padding:.18rem .5rem" onclick="resetCommandsToDefault()">${t('preselect_for_me')}</button>
+        <button class="btn bs" style="font-size:.7rem;padding:.18rem .5rem" onclick="clearAllCommands()">${t('remove_all')}</button>
       </div>
     </div>
     <div id="presel-panel-command" style="display:none">
@@ -1505,12 +1621,23 @@ function buildOrchDiagram2(orchId) {
   const o = getOrchestrations().find(o => o.id === orchId);
   if (!o) return;
   const agents = (S.ans.agents_wanted || []).map(id => AGENTS_CATALOG.find(a => a.id === id)).filter(Boolean);
-  if (!agents.length) return;
+  if (!agents.length) {
+    cont.innerHTML = `<div style="padding:1rem;color:var(--mut);font-size:.78rem"><span class="pfx">[--]</span> ${t('orch_no_agents_selected')}</div>`;
+    return;
+  }
+  const excl0 = orchExcluded(o);
+  const includedAgents = agents.filter(a => !excl0.has(a.id));
+  if (!includedAgents.length) {
+    cont.innerHTML = `<div style="padding:1rem;color:var(--mut);font-size:.78rem"><span class="pfx">[--]</span> ${t('orch_no_agents_included')}</div>`;
+    return;
+  }
 
   window._currentOrchId = orchId;
   const wrap = document.getElementById('orch-diagram-wrap');
   if (wrap) wrap.style.display = '';
   cont.style.display = '';
+
+  cont.innerHTML = ''; // clear any previous placeholder message before Cytoscape mounts
 
   const excl  = orchExcluded(o);
   const nodes = agents.filter(a => !excl.has(a.id)).map(a => {
@@ -1588,13 +1715,16 @@ function toggleOrchExclude(orchId, agentId) {
     }
   } else {
     o.excluded.splice(idx, 1);
-    // Re-add to diagram
     if (window._cy && window._currentOrchId === orchId) {
+      // Cytoscape is live — add node incrementally
       const role = (o.roles || {})[agentId] || 'worker';
       const c = CY_ROLE_COLORS[role] || CY_ROLE_COLORS.worker;
       const agent = AGENTS_CATALOG.find(a => a.id === agentId);
       window._cy.add({ group:'nodes', data:{ id:agentId, label:(agent?.name||agentId).slice(0,15), role, bg:c.bg, text:c.text }});
       rebuildCyEdges(orchId);
+    } else if (o.type) {
+      // Cytoscape not yet built — build it now that an agent is included
+      setTimeout(() => buildOrchDiagram2(orchId), 80);
     }
   }
   refreshDepList(orchId);
@@ -1632,7 +1762,7 @@ function showOrchAgentPanel(orchId, agentId) {
   const roleBtns = ORCH_ROLES.map(r =>
     `<button class="orch-role-btn${role===r.v?' sel':''}"
       style="${role===r.v?`border-color:${r.c};color:${r.c}`:''}"
-      onclick="setOrchRole2('${orchId}','${agentId}','${r.v}')">${r.l}</button>`
+      onclick="setOrchRole2('${orchId}','${agentId}','${r.v}')">${t('orch_role_'+r.v)}</button>`
   ).join('');
 
   const toOpts = agents.filter(a => a.id !== agentId)
@@ -1644,22 +1774,22 @@ function showOrchAgentPanel(orchId, agentId) {
       <button class="orch-panel-close" onclick="closeOrchPanel()">✕</button>
     </div>
     <div class="orch-panel-section">
-      <div class="orch-panel-label">Role</div>
+      <div class="orch-panel-label">${t('orch_panel_role')}</div>
       <div class="orch-role-btns" style="flex-wrap:wrap">${roleBtns}</div>
     </div>
     <div class="orch-panel-section">
-      <div class="orch-panel-label">Note</div>
-      <textarea class="orch-note-textarea" placeholder="Describe this agent's task…"
+      <div class="orch-panel-label">${t('orch_panel_note')}</div>
+      <textarea class="orch-note-textarea" placeholder="${t('orch_note_ph')}"
         oninput="setOrchNote('${orchId}','${agentId}',this.value)">${esc(note)}</textarea>
     </div>
     <div class="orch-panel-section">
       <button class="btn bs" style="font-size:.68rem;width:100%;text-align:left;color:var(--mut)"
         onclick="toggleOrchExclude('${orchId}','${agentId}');closeOrchPanel()">
-        ⊘ Exclude from this orchestration
+        ${t('orch_exclude')} ${t('orch_exclude_title')}
       </button>
     </div>
     ${toOpts ? `<div class="orch-panel-section">
-      <div class="orch-panel-label">Dependencies from this agent</div>
+      <div class="orch-panel-label">${t('orch_panel_deps_from')}</div>
       <div id="panel-dep-list-${agentId}" style="margin-bottom:.5rem">
         ${(o.dependencies||[]).filter(d=>d.from===agentId).map(dep => {
           const depIdx = (o.dependencies||[]).findIndex(d=>d.from===dep.from&&d.to===dep.to);
@@ -1668,11 +1798,11 @@ function showOrchAgentPanel(orchId, agentId) {
             <span style="color:var(--grn3)">→ ${esc(toA?.name||dep.to)}</span>
             <button class="orch-dep-del" onclick="removeDepFromPanel('${orchId}',${depIdx},'${agentId}')" title="Remove">✕</button>
           </div>`;
-        }).join('') || '<span style="font-size:.7rem;color:var(--mut)">None yet</span>'}
+        }).join('') || `<span style="font-size:.7rem;color:var(--mut)">${t('orch_dep_none_yet')}</span>`}
       </div>
       <div style="display:flex;gap:.4rem;align-items:center;flex-wrap:wrap">
-        <select id="panel-dep-to-${agentId}" class="orch-dep-sel"><option value="">→ Add target…</option>${toOpts}</select>
-        <button class="btn bs" style="font-size:.65rem;padding:.15rem .45rem" onclick="addDepFromPanel('${orchId}','${agentId}')">Add</button>
+        <select id="panel-dep-to-${agentId}" class="orch-dep-sel"><option value="">${t('orch_dep_add_target')}</option>${toOpts}</select>
+        <button class="btn bs" style="font-size:.65rem;padding:.15rem .45rem" onclick="addDepFromPanel('${orchId}','${agentId}')">${t('orch_dep_add')}</button>
       </div>
     </div>` : ''}`;
   panel.style.display = '';
@@ -1690,21 +1820,21 @@ function showOrchEdgePanel(orchId, from, to) {
 
   panel.innerHTML = `
     <div class="orch-panel-hd">
-      <span class="orch-panel-title">Dependency</span>
+      <span class="orch-panel-title">${t('orch_panel_dep_title')}</span>
       <button class="orch-panel-close" onclick="closeOrchPanel()">✕</button>
     </div>
     <div class="orch-panel-section">
-      <div class="orch-panel-label">Redirect</div>
+      <div class="orch-panel-label">${t('orch_panel_redirect')}</div>
       <div style="display:flex;gap:.4rem;align-items:center;flex-wrap:wrap">
         <select id="redir-from-${orchId}" class="orch-dep-sel">${srcOpts}</select>
         <span style="color:var(--mut)">→</span>
         <select id="redir-to-${orchId}" class="orch-dep-sel">${tgtOpts}</select>
-        <button class="btn bs" style="font-size:.65rem;padding:.15rem .45rem" onclick="redirectDep('${orchId}',${depIdx})">Apply</button>
+        <button class="btn bs" style="font-size:.65rem;padding:.15rem .45rem" onclick="redirectDep('${orchId}',${depIdx})">${t('orch_dep_apply')}</button>
       </div>
     </div>
     <div class="orch-panel-section">
       <button class="btn bs" style="font-size:.68rem;color:var(--red)"
-        onclick="removeDep('${orchId}',${depIdx});closeOrchPanel()">✕ Remove dependency</button>
+        onclick="removeDep('${orchId}',${depIdx});closeOrchPanel()">${t('orch_dep_remove')}</button>
     </div>`;
   panel.style.display = '';
 }
@@ -1721,22 +1851,21 @@ function buildOrchRolesHtml(o, agents) {
     const isExcl = excl.has(a.id);
     if (isExcl) {
       return `<div class="orch-agent-row orch-agent-excluded">
-        <span class="orch-agent-name" style="opacity:.35;text-decoration:line-through">${esc(a.name||a.id)}</span>
-        <span style="font-size:.65rem;color:var(--mut);margin-left:.3rem">excluded</span>
-        <button class="orch-excl-btn" style="margin-left:auto;color:var(--grn2)"
-          onclick="toggleOrchExclude('${o.id}','${a.id}')" title="Include in orchestration">+ Include</button>
+        <span class="orch-agent-name" style="opacity:.4;text-decoration:line-through">${esc(a.name||a.id)}</span>
+        <button class="orch-incl-btn"
+          onclick="toggleOrchExclude('${o.id}','${a.id}')" title="${t('orch_include')}">${t('orch_include')}</button>
       </div>`;
     }
     const role = (o.roles||{})[a.id] || 'worker';
     const roleBtns = ORCH_ROLES.map(r =>
       `<button class="orch-role-btn${role===r.v?' sel':''}"
         style="${role===r.v?`border-color:${r.c};color:${r.c}`:''}"
-        onclick="setOrchRole2('${o.id}','${a.id}','${r.v}')">${r.l}</button>`
+        onclick="setOrchRole2('${o.id}','${a.id}','${r.v}')">${t('orch_role_'+r.v)}</button>`
     ).join('');
     return `<div class="orch-agent-row">
       <span class="orch-agent-name">${esc(a.name||a.id)}</span>
       <div class="orch-role-btns">${roleBtns}</div>
-      <button class="orch-excl-btn" onclick="toggleOrchExclude('${o.id}','${a.id}')" title="Exclude from this orchestration">⊘</button>
+      <button class="orch-excl-btn" onclick="toggleOrchExclude('${o.id}','${a.id}')" title="${t('orch_exclude_title')}">${t('orch_exclude')}</button>
     </div>`;
   }).join('');
 }
@@ -1746,12 +1875,12 @@ function renderOrchEditSection(o, agents) {
   const typeCards = ORCH_TYPES.map(tp => `
     <div class="orch-card${o.type===tp.v?' sel':''}" onclick="setOrchType('${o.id}','${tp.v}')">
       <span class="orch-icon">${tp.i}</span>
-      <div><div class="orch-name">${tp.l}</div><div class="orch-desc">${tp.d}</div></div>
+      <div><div class="orch-name">${t('orch_type_'+tp.v)}</div><div class="orch-desc">${t('orch_type_'+tp.v+'_desc')}</div></div>
     </div>`).join('');
 
   const rolesHtml = agents.length
     ? buildOrchRolesHtml(o, agents)
-    : `<div class="tl dim" style="padding:.4rem 0"><span class="pfx">[--]</span> Select agents first to assign roles.</div>`;
+    : `<div class="tl dim" style="padding:.4rem 0"><span class="pfx">[--]</span> ${t('orch_select_agents_first')}</div>`;
 
   const depListHtml = (o.dependencies||[]).map((dep,i) => {
     const fromA = agents.find(a => a.id===dep.from);
@@ -1762,32 +1891,45 @@ function renderOrchEditSection(o, agents) {
       <span class="orch-dep-to">${esc(toA?.name||dep.to)}</span>
       <button class="orch-dep-del" onclick="removeDep('${o.id}',${i})" title="Remove">✕</button>
     </div>`;
-  }).join('') || `<span style="font-size:.72rem;color:var(--mut)">No dependencies yet — build the diagram and click a node to add</span>`;
+  }).join('') || `<span style="font-size:.72rem;color:var(--mut)">${t('orch_dep_none')}</span>`;
 
-  const diagramHtml = o.type && agents.length ? `
+  const diagramHtml = o.type ? `
     <div class="orch-diagram-wrap" id="orch-diagram-wrap" style="position:relative">
       <div class="orch-diagram-container" id="orch-diagram"></div>
       <div id="orch-agent-panel" class="orch-agent-panel" style="display:none"></div>
     </div>
     <div class="orch-diagram-toolbar">
-      <button class="btn bs" onclick="buildOrchDiagram2('${o.id}')" style="font-size:.7rem;padding:.22rem .6rem">⬡ Build / Refresh</button>
-      <button class="btn bs" id="orch-relayout-btn" style="display:none;font-size:.7rem;padding:.22rem .6rem" onclick="relayoutDiagram()">↺ Re-layout</button>
-      <button class="btn bs" id="orch-save-png-btn" style="display:none;font-size:.7rem;padding:.22rem .6rem" onclick="saveDiagramPng()">📷 Save PNG</button>
-      <span class="orch-diagram-hint">Click node → role & note · Click edge → redirect/delete · Drag · Scroll to zoom</span>
+      <button class="btn bs" onclick="buildOrchDiagram2('${o.id}')" style="font-size:.7rem;padding:.22rem .6rem">${t('orch_build')}</button>
+      <button class="btn bs" id="orch-relayout-btn" style="display:none;font-size:.7rem;padding:.22rem .6rem" onclick="relayoutDiagram()">${t('orch_relayout')}</button>
+      <button class="btn bs" id="orch-save-png-btn" style="display:none;font-size:.7rem;padding:.22rem .6rem" onclick="saveDiagramPng()">${t('orch_save_png')}</button>
+      <span class="orch-diagram-hint">${t('orch_diagram_hint')}</span>
     </div>` : '';
 
   return `<div class="orch-list-item orch-editing" id="orch-item-${o.id}">
     <div class="orch-edit-hd">
-      <input class="orch-name-input" value="${esc(o.name)}" placeholder="Orchestration name…"
+      <input class="orch-name-input" value="${esc(o.name)}" placeholder="${t('orch_name_ph')}"
         oninput="updateOrchName('${o.id}',this.value)">
-      <button class="btn bs" style="font-size:.68rem;padding:.18rem .5rem" onclick="closeOrchEdit()">▲ Collapse</button>
-      <button class="btn bs" style="font-size:.68rem;padding:.18rem .5rem;color:var(--red)" onclick="deleteOrch('${o.id}')">✕ Delete</button>
+      <button class="btn bs" style="font-size:.68rem;padding:.18rem .5rem" onclick="closeOrchEdit()">${t('orch_collapse')}</button>
+      <button class="btn bs" style="font-size:.68rem;padding:.18rem .5rem;color:var(--red)" onclick="deleteOrch('${o.id}')">${t('orch_delete_btn')}</button>
     </div>
-    <div class="tl dim" style="margin:.7rem 0 .4rem"><span class="pfx">[--]</span> Pattern</div>
+    <div class="tl dim" style="margin:.7rem 0 .4rem"><span class="pfx">[--]</span> ${t('orch_section_pattern')}</div>
     <div class="orch-grid">${typeCards}</div>
-    <div class="tl dim" style="margin:.9rem 0 .4rem"><span class="pfx">[--]</span> Agent roles</div>
+    <div class="tl dim" style="margin:.9rem 0 .4rem"><span class="pfx">[--]</span> ${t('orch_section_roles')}</div>
+    <div class="orch-role-legend">
+      <div class="orch-legend-row"><span class="orch-legend-role" style="color:#f0a500">${t('orch_role_supervisor')}</span><span class="orch-legend-desc">${t('orch_role_supervisor_desc')}</span></div>
+      <div class="orch-legend-row"><span class="orch-legend-role" style="color:#50fa7b">${t('orch_role_worker')}</span><span class="orch-legend-desc">${t('orch_role_worker_desc')}</span></div>
+      <div class="orch-legend-row"><span class="orch-legend-role" style="color:#bd93f9">${t('orch_role_critic')}</span><span class="orch-legend-desc">${t('orch_role_critic_desc')}</span></div>
+      <div class="orch-legend-row"><span class="orch-legend-role" style="color:#8be9fd">${t('orch_role_router')}</span><span class="orch-legend-desc">${t('orch_role_router_desc')}</span></div>
+      <div class="orch-legend-row"><span class="orch-legend-role" style="color:#98e4a5">${t('orch_role_validator')}</span><span class="orch-legend-desc">${t('orch_role_validator_desc')}</span></div>
+      <div class="orch-legend-row"><span class="orch-legend-role" style="color:#6e768a">${t('orch_role_fallback')}</span><span class="orch-legend-desc">${t('orch_role_fallback_desc')}</span></div>
+    </div>
     <div class="orch-roles-section">${rolesHtml}</div>
-    <div class="tl dim" style="margin:.9rem 0 .4rem"><span class="pfx">[--]</span> Dependencies (A → B = A must finish before B starts)</div>
+    <div class="tl dim" style="margin:.9rem 0 .2rem"><span class="pfx">[--]</span> ${t('orch_section_deps')}</div>
+    <div class="orch-dep-help">
+      <span class="orch-dep-help-rule"><span style="color:var(--grn2)">A → B</span> = ${t('orch_dep_rule')}</span>
+      <span class="orch-dep-help-sep">·</span>
+      <span class="orch-dep-help-rule">${t('orch_dep_build_hint')}</span>
+    </div>
     <div class="orch-dep-list" id="dep-list-${o.id}">${depListHtml}</div>
     ${diagramHtml}
   </div>`;
@@ -1799,19 +1941,17 @@ function renderOrchestrationPicker(q, ans, level) {
   const agents = (ans.agents_wanted || []).map(id => AGENTS_CATALOG.find(a => a.id === id)).filter(Boolean);
   const editId = window._editingOrchId || null;
 
-  const orchLabels = { sequential:'Sequential Chain', parallel:'Parallel', hierarchical:'Hierarchical', router:'Router', debate:'Debate', swarm:'Swarm', hitl:'Human-in-the-Loop', custom:'Custom' };
-
   const list = orchs.map(o => {
     if (o.id === editId) return renderOrchEditSection(o, agents);
-    const typeLabel = orchLabels[o.type] || o.type || '—';
+    const typeLabel = o.type ? t('orch_type_'+o.type) : '—';
     const depCount  = (o.dependencies||[]).length;
-    const agCount   = Object.keys(o.roles||{}).length || 0;
+    const inclCount = Object.keys(o.roles||{}).filter(id => !(o.excluded||[]).includes(id)).length;
     return `<div class="orch-list-item" id="orch-item-${o.id}">
       <div class="orch-list-hd">
         <span class="orch-list-name">${esc(o.name)}</span>
-        <span class="orch-list-meta">${typeLabel} · ${agCount} agents · ${depCount} dep${depCount!==1?'s':''}</span>
+        <span class="orch-list-meta">${typeLabel} · ${t('orch_meta_agents',{n:inclCount,s:inclCount!==1?'s':''})} · ${t('orch_meta_deps',{n:depCount,s:depCount!==1?'s':''})}</span>
         <div class="orch-list-actions">
-          <button class="btn bs" style="font-size:.68rem;padding:.18rem .5rem" onclick="startEditOrch('${o.id}')">Edit</button>
+          <button class="btn bs" style="font-size:.68rem;padding:.18rem .5rem" onclick="startEditOrch('${o.id}')">${t('orch_edit')}</button>
           <button class="btn bs" style="font-size:.68rem;padding:.18rem .5rem;color:var(--red)" onclick="deleteOrch('${o.id}')">✕</button>
         </div>
       </div>
@@ -1819,14 +1959,14 @@ function renderOrchestrationPicker(q, ans, level) {
   }).join('');
 
   const emptyMsg = orchs.length === 0
-    ? `<div class="tl dim" style="padding:.5rem 0"><span class="pfx">[--]</span> No orchestrations yet — click [+ New] to create one.</div>` : '';
+    ? `<div class="tl dim" style="padding:.5rem 0"><span class="pfx">[--]</span> ${t('orch_no_orchs')}</div>` : '';
 
   return `<div class="orch-manager" id="orch-picker-wrap">
     <div class="orch-manager-hd">
-      <span class="ap-hint" style="margin-bottom:0">Define multi-agent orchestrations for this project</span>
+      <span class="ap-hint" style="margin-bottom:0">${t('orch_manager_hint')}</span>
       <div style="display:flex;gap:.4rem;align-items:center">
         <a href="${BOOK_LM_URL}" target="_blank" rel="noopener" class="booklm-btn">📘 Book LM</a>
-        <button class="btn bp" style="font-size:.72rem;padding:.25rem .7rem" onclick="addOrch()">+ New orchestration</button>
+        <button class="btn bp" style="font-size:.72rem;padding:.25rem .7rem" onclick="addOrch()">${t('orch_new')}</button>
       </div>
     </div>
     <div id="orch-list">${emptyMsg}${list}</div>
@@ -1837,15 +1977,16 @@ function renderOrchestrationPicker(q, ans, level) {
 window._editingOrchId = null;
 
 function addOrch() {
-  const orchs  = getOrchestrations();
-  const agents = S.ans.agents_wanted || [];
+  const orchs    = getOrchestrations();
+  const agentIds = S.ans.agents_wanted || [];
   const o = {
     id: newOrchId(),
-    name: `Orchestration ${orchs.length + 1}`,
+    name: t('orch_default_name', {n: orchs.length + 1}),
     type: null, roles: {}, notes: {}, dependencies: [],
-    diagramGraph: null, diagramPng: null
+    diagramGraph: null, diagramPng: null,
+    excluded: [...agentIds]   // all agents excluded by default — user includes deliberately
   };
-  agents.forEach((id, i) => { o.roles[id] = i === 0 ? 'supervisor' : 'worker'; });
+  agentIds.forEach(id => { o.roles[id] = 'worker'; });
   orchs.push(o);
   window._editingOrchId = o.id;
   refreshOrchPicker();
@@ -1887,10 +2028,7 @@ function setOrchType(orchId, type) {
   const o = getOrchestrations().find(o => o.id === orchId);
   if (!o) return;
   o.type = type;
-  if (!o.dependencies || !o.dependencies.length) {
-    const agents = (S.ans.agents_wanted || []).map(id => AGENTS_CATALOG.find(a => a.id === id)).filter(Boolean);
-    o.dependencies = autoFillDeps(type, agents, o.roles || {});
-  }
+  if (!o.dependencies) o.dependencies = [];
   if (window._cy) { try { window._cy.destroy(); } catch(_) {} window._cy = null; }
   refreshOrchPicker();
   setTimeout(() => buildOrchDiagram2(orchId), 120);
@@ -1975,7 +2113,7 @@ function refreshDepList(orchId) {
       <span class="orch-dep-to">${esc(toA?.name||dep.to)}</span>
       <button class="orch-dep-del" onclick="removeDep('${orchId}',${i})" title="Remove">✕</button>
     </div>`;
-  }).join('') || `<span style="font-size:.72rem;color:var(--mut)">No dependencies yet</span>`;
+  }).join('') || `<span style="font-size:.72rem;color:var(--mut)">${t('orch_dep_none')}</span>`;
 }
 
 function refreshOrchPicker() {
@@ -1993,6 +2131,8 @@ function refreshOrchPicker() {
       if (window._editingOrchId) setTimeout(() => buildOrchDiagram2(window._editingOrchId), 120);
     }
   }
+  refreshSidenavChecks();
+  saveSession();
 }
 
 // Legacy aliases kept for any remaining references
@@ -2137,19 +2277,19 @@ function rQuestionSelector() {
       <span class="qsel-qlabel">${q.label}</span>
       ${isLocked ? '<span class="qsel-req">[req]</span>' : ''}
     </div>`;
-  }).join('') || `<div class="tl dim" style="padding:.5rem 0"><span class="pfx">[--]</span> No questions in this phase.</div>`;
+  }).join('') || `<div class="tl dim" style="padding:.5rem 0"><span class="pfx">[--]</span> ${t('no_questions_phase')}</div>`;
 
   const total = S.selectedQs.size;
   return `<div class="qsel-panel">
   <div class="qsel-toggle-btn" onclick="toggleQselPanel()">
     <span class="qsel-toggle-icon">⚙</span>
-    <span class="qsel-toggle-label">Modifier le questionnaire</span>
+    <span class="qsel-toggle-label">${t('qsel_title')}</span>
     <span style="flex:1"></span>
     <span class="qsel-header-count">${total} q</span>
     <span id="qsel-tog-arrow" class="qsel-tog-arrow">${_qselOpen ? '▲' : '▼'}</span>
   </div>
   <div id="qsel-body" style="display:${_qselOpen ? '' : 'none'}">
-    <div class="qsel-explain"><span class="pfx">[--]</span> Activez/désactivez les questions pour personnaliser le wizard selon vos besoins</div>
+    <div class="qsel-explain"><span class="pfx">[--]</span> ${t('qsel_explain')}</div>
     <div class="qsel-tabs">${tabs}</div>
     <div class="qsel-list">${items}</div>
   </div>
@@ -3215,7 +3355,7 @@ function updateSidenav() {
     const handler = S.boardMode
       ? `scrollToSection('${q.id}')`
       : `goToStepIdx(${i})`;
-    const shortLabel = SNAV_SHORT[q.id] || truncLabel(q.label, 3);
+    const shortLabel = truncLabel(q.label, 3) || SNAV_SHORT[q.id];
     return `<div class="snav-item${act?' act':''}${ok?' done':''}" onclick="${handler}" data-qid="${q.id}" title="${esc(q.label)}">
       <span class="snav-num">[${String(i+1).padStart(2,'0')}]</span>
       <span class="snav-icon">${snavIcon(q.id)}</span>
@@ -3239,7 +3379,7 @@ function updateSidenav() {
   </div>
   <div class="snav-items">${items}</div>
   <div class="snav-export" onclick="S.screen='results';render()">
-    <span>⚙</span><span>Export project</span>
+    <span>⚙</span><span>${t('export_project')}</span>
   </div>
 </div>
 <button class="snav-open-btn" id="snav-open-btn" onclick="toggleSidenav()" aria-label="Open navigation">☰</button>`;
@@ -3304,10 +3444,24 @@ function goToStepIdx(idx) {
 }
 
 function toggleSidenav() {
-  const inner = document.getElementById('snav-inner');
+  const inner   = document.getElementById('snav-inner');
   const openBtn = document.getElementById('snav-open-btn');
-  const isOpen = inner.classList.toggle('open');
+  const isOpen  = inner.classList.toggle('open');
   if (openBtn) openBtn.classList.toggle('hidden', isOpen);
+
+  // Backdrop lives on body (outside the sidenav stacking context) so z-index works correctly
+  let backdrop = document.getElementById('snav-backdrop');
+  if (isOpen) {
+    if (!backdrop) {
+      backdrop = document.createElement('div');
+      backdrop.id = 'snav-backdrop';
+      backdrop.addEventListener('click', toggleSidenav);
+      document.body.appendChild(backdrop);
+    }
+    backdrop.classList.add('open');
+  } else if (backdrop) {
+    backdrop.classList.remove('open');
+  }
 }
 
 function initSidenavObserver(qs) {
@@ -3344,6 +3498,7 @@ function render() {
   // Remove sidenav from previous render
   const prevNav = document.getElementById('wiz-sidenav');
   if (prevNav) prevNav.remove();
+  app.classList.toggle('no-snav', S.screen !== 'questions');
   app.innerHTML = '';
 
   // Build terminal window wrapper
@@ -3437,33 +3592,27 @@ function rWelcome(el) {
 }
 
 function rObjectif(el) {
-  const v = S.ans.objectif;
+  const v  = S.ans.objectif;
+  const oQ = QUESTIONS.find(q => q.id === 'objectif');
+  const opts = oQ ? oQ.opts : [];
   el.innerHTML = `
 <div>
   <div class="tl cmd" style="margin-bottom:.8rem"><span class="pfx">$</span> init --configure</div>
-  <div style="font-size:.87rem;color:var(--txt);margin-bottom:.2rem">Quel est l'objectif de cette configuration ?</div>
-  <div class="tl dim" style="margin-bottom:1.2rem"><span class="pfx">[--]</span> Adapte le comportement du prompt généré. Appuyez sur [1] [2] pour sélectionner.</div>
+  <div style="font-size:.87rem;color:var(--txt);margin-bottom:.2rem">${t('objectif_q')}</div>
+  <div class="tl dim" style="margin-bottom:1.2rem"><span class="pfx">[--]</span> ${t('objectif_hint')}</div>
 
   <div class="lgrid">
-    <div class="lcard${v==='new_project'?' sel':''}" onclick="pickObjectif('new_project')">
+    ${opts.map((o, i) => `
+    <div class="lcard${v===o.v?' sel':''}" onclick="pickObjectif('${o.v}')">
       <div style="display:flex;align-items:baseline;gap:.65rem;width:100%">
-        <span style="color:var(--mut);font-size:.7rem;flex-shrink:0;letter-spacing:.02em">[1]</span>
+        <span style="color:var(--mut);font-size:.7rem;flex-shrink:0;letter-spacing:.02em">[${i+1}]</span>
         <div style="flex:1">
-          <div class="ln">🚀 Nouveau projet</div>
-          <div class="ld">Partir de zéro — générer une configuration complète pour un projet neuf</div>
+          <div class="ln">${o.i ? o.i + ' ' : ''}${o.l}</div>
+          ${o.d ? `<div class="ld">${o.d}</div>` : ''}
+          ${o.v === 'improve_existing' ? `<div style="margin-top:.35rem;font-size:.7rem;color:var(--amb)">${t('objectif_improve_warn')}</div>` : ''}
         </div>
       </div>
-    </div>
-    <div class="lcard${v==='improve_existing'?' sel':''}" onclick="pickObjectif('improve_existing')">
-      <div style="display:flex;align-items:baseline;gap:.65rem;width:100%">
-        <span style="color:var(--mut);font-size:.7rem;flex-shrink:0;letter-spacing:.02em">[2]</span>
-        <div style="flex:1">
-          <div class="ln">🔧 Configuration existante</div>
-          <div class="ld">Améliorer / étendre un setup déjà en place</div>
-          <div style="margin-top:.35rem;font-size:.7rem;color:var(--amb)">[⚠] Le prompt généré ne réinitialisera pas ta configuration existante</div>
-        </div>
-      </div>
-    </div>
+    </div>`).join('')}
   </div>
 
   <div class="nav">
@@ -3586,7 +3735,7 @@ function buildQInp(q) {
         var sdHeader = '<div style="display:flex;align-items:center;gap:.55rem;margin-bottom:.55rem;padding-bottom:.4rem;border-bottom:1px solid rgba(255,255,255,.07)">'
           + '<span style="font-size:.7rem;color:var(--mut);letter-spacing:.03em">[domain]</span>'
           + '<span style="font-size:.87rem;font-weight:600;color:var(--acl)">' + domainLabel + '</span>'
-          + (selCount ? '<span style="font-size:.68rem;color:var(--grn2);margin-left:auto">' + selCount + ' selected</span>' : '')
+          + (selCount ? '<span style="font-size:.68rem;color:var(--grn2);margin-left:auto">' + t('audit_selected',{n:selCount}) + '</span>' : '')
           + '</div>';
         var sdGrid = '';
         if (domainOpts.length) {
@@ -3603,7 +3752,7 @@ function buildQInp(q) {
           }
           sdGrid = '<div class="opts" style="grid-template-columns:repeat(auto-fill,minmax(195px,1fr))">' + sdBtns + '</div>';
         } else {
-          sdGrid = '<div class="tl dim" style="font-size:.78rem"><span class="pfx">[--]</span> No subdomains configured.</div>';
+          sdGrid = '<div class="tl dim" style="font-size:.78rem"><span class="pfx">[--]</span> ' + t('no_subdomains') + '</div>';
         }
         sdSections += '<div style="margin-bottom:1.6rem">' + sdHeader + sdGrid + '</div>';
       }
@@ -3642,7 +3791,7 @@ function rQuestion(el) {
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.65rem">
     <div class="tl cmd" style="margin-bottom:0"><span class="pfx">$</span> ${t('question_n',{step:S.step+1,total:qs.length})}</div>
     <div style="display:flex;align-items:center;gap:.6rem">
-      <button class="btn bs" style="font-size:.7rem;padding:.2rem .55rem" onclick="toggleBoardMode()">board</button>
+      <button class="btn bs" style="font-size:.7rem;padding:.2rem .55rem" onclick="toggleBoardMode()">${t('board_mode')}</button>
       <span style="font-size:.65rem;color:${phaseColor};font-family:inherit">${phaseLabel}</span>
     </div>
   </div>
@@ -3659,6 +3808,12 @@ function rQuestion(el) {
   </div>
 </div>`;
   updateSidenav();
+
+  // Auto-build orchestration diagram when navigating to the orch step with agents already selected
+  if (q.type === 'orchestration_picker' && window._editingOrchId) {
+    const _o = getOrchestrations().find(o => o.id === window._editingOrchId);
+    if (_o && _o.type) setTimeout(() => buildOrchDiagram2(window._editingOrchId), 120);
+  }
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -3687,8 +3842,8 @@ function rBoard(el) {
 <div class="board-wrap">
   <div class="board-mode-bar">
     <span class="pfx">[board]</span>
-    <span style="font-size:.74rem;color:var(--mut)">${qs.length} questions — fill freely, generate when ready</span>
-    <button class="btn bs" style="font-size:.7rem;padding:.2rem .55rem;margin-left:auto" onclick="toggleBoardMode()">step-by-step</button>
+    <span style="font-size:.74rem;color:var(--mut)">${t('board_hint',{n:qs.length})}</span>
+    <button class="btn bs" style="font-size:.7rem;padding:.2rem .55rem;margin-left:auto" onclick="toggleBoardMode()">${t('step_by_step')}</button>
   </div>
   ${sections}
   <div class="board-actions">
@@ -3697,6 +3852,12 @@ function rBoard(el) {
 </div>`;
   updateSidenav();
   initSidenavObserver(qs);
+
+  // Auto-rebuild diagram after board re-render if an orch is in edit mode with a type set
+  if (window._editingOrchId) {
+    const _o = getOrchestrations().find(o => o.id === window._editingOrchId);
+    if (_o && _o.type) setTimeout(() => buildOrchDiagram2(window._editingOrchId), 120);
+  }
 }
 async function rResults(el) {
   // Show generation log animation while loading
@@ -3931,15 +4092,15 @@ function buildAuditBox() {
   const triggerText = triggers.length ? triggers.slice(0, 6).join(' · ') : '—';
 
   const agentVal = agentsWanted.length
-    ? `${agentsWanted.length} selected`
-      + (agentsRec ? ` <span class="audit-tag rec">${agentsRec} auto</span>` : '')
-      + (agentsMan ? ` <span class="audit-tag man">${agentsMan} manual</span>` : '')
-    : `<span style="color:var(--mut)">none</span>`;
+    ? `${t('audit_selected',{n:agentsWanted.length})}`
+      + (agentsRec ? ` <span class="audit-tag rec">${agentsRec} ${t('audit_auto')}</span>` : '')
+      + (agentsMan ? ` <span class="audit-tag man">${agentsMan} ${t('audit_manual')}</span>` : '')
+    : `<span style="color:var(--mut)">${t('audit_none')}</span>`;
 
   return `<div class="audit-box">
   <div class="audit-hd" onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('.audit-tog').classList.toggle('open')">
     <span class="pfx" style="color:var(--acl)">[audit]</span>
-    <span class="audit-title">Selection summary</span>
+    <span class="audit-title">${t('audit_title')}</span>
     <div class="audit-chips">
       ${agentsWanted.length   ? `<span class="audit-chip">${agentsWanted.length} agents</span>`    : ''}
       ${skillsWanted.length   ? `<span class="audit-chip">${skillsWanted.length} skills</span>`    : ''}
@@ -3949,8 +4110,8 @@ function buildAuditBox() {
   </div>
   <div class="audit-body">
     <div class="audit-row"><span class="audit-lbl">Agents</span><span class="audit-val">${agentVal}</span></div>
-    <div class="audit-row"><span class="audit-lbl">Skills</span><span class="audit-val">${skillsWanted.length ? skillsWanted.length + ' selected' : '<span style="color:var(--mut)">none</span>'}</span></div>
-    <div class="audit-row"><span class="audit-lbl">Commands</span><span class="audit-val">${commandsWanted.length ? commandsWanted.length + ' selected' : '<span style="color:var(--mut)">none</span>'}</span></div>
+    <div class="audit-row"><span class="audit-lbl">Skills</span><span class="audit-val">${skillsWanted.length ? t('audit_selected',{n:skillsWanted.length}) : '<span style="color:var(--mut)">' + t('audit_none') + '</span>'}</span></div>
+    <div class="audit-row"><span class="audit-lbl">Commands</span><span class="audit-val">${commandsWanted.length ? t('audit_selected',{n:commandsWanted.length}) : '<span style="color:var(--mut)">' + t('audit_none') + '</span>'}</span></div>
     <div class="audit-row"><span class="audit-lbl">Driven by</span><span class="audit-val" style="color:var(--grn3)">${esc(triggerText)}</span></div>
   </div>
 </div>`;
@@ -4025,6 +4186,18 @@ function startQs()   { if (!S.level) return; S.screen='questions'; S.step=0; ren
 function nextStep()  { const n=activeQs().length; if (S.step<n-1){ S.step++; render(); } else { S.screen='results'; render(); } }
 function prevStep()  { if (S.step>0){ S.step--; render(); } else { S.screen='level'; render(); } }
 function pickOne(id, v, btn) {
+  // Clicking the already-selected option deselects it
+  if (S.ans[id] === v) {
+    delete S.ans[id];
+    btn.classList.remove('sel');
+    if (id === 'domain') { S.ans.subdomain = []; S.ans.agents_wanted = undefined; }
+    if (id === 'subdomain') S.ans.agents_wanted = undefined;
+    const w = document.getElementById('other-wrap-' + id);
+    if (w) w.style.display = 'none';
+    refreshSidenavChecks();
+    saveSession();
+    return;
+  }
   S.ans[id] = v;
   // Reset agent recommendations when domain changes
   if (id === 'domain') { S.ans.subdomain = []; S.ans.agents_wanted = undefined; }

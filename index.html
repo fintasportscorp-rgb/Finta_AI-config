@@ -27,140 +27,332 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/index.css">
+
 <style>
-/* ── NEW SECTIONS ───────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   AMBER CRT PALETTE — design tokens
+   ─────────────────────────────────────────────────────────
+   --bg:   #0c0900   warm near-black
+   --sur:  #110b00   surface / card
+   --sur2: #180e00   surface 2
+   --brd:  #3d2200   border
+   --amb:  #ffb300   amber primary
+   --amb2: #ffd166   amber light
+   --amb3: #cc9940   amber mid
+   --txt:  #ffe0a0   main text (warm cream)
+   --mut:  #7a5500   muted / dim
+   --acc:  #7c6af7   purple accent
+   --acl:  #a89af8   purple light
+   --org:  #e05a00   deep orange
+   --red:  #ff5555   error red
+   ═══════════════════════════════════════════════════════════ */
 
-/* Project path section */
-.paths-section{padding:80px clamp(16px,5vw,64px);max-width:1200px;margin:0 auto}
-.paths-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:56px}
-@media(max-width:768px){.paths-grid{grid-template-columns:1fr}}
-.path-card{
-  border:1px solid var(--brd, #222);
-  border-radius:8px;
-  padding:40px 36px;
-  background:var(--sur, #0d0d0d);
-  position:relative;
-  overflow:hidden;
-  transition:border-color .25s,transform .25s;
-  cursor:pointer;
-}
-.path-card:hover{border-color:var(--acl, #7c6af7);transform:translateY(-3px)}
-.path-card.new-proj{border-color:rgba(57,255,20,.25)}
-.path-card.new-proj:hover{border-color:rgba(57,255,20,.7)}
-.path-card.exist-proj{border-color:rgba(124,106,247,.25)}
-.path-badge{
-  display:inline-flex;align-items:center;gap:.4rem;
-  font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;
-  padding:.25rem .6rem;border-radius:3px;margin-bottom:1.5rem;
-  font-weight:600;
-}
-.badge-new{background:rgba(57,255,20,.1);color:#39ff14;border:1px solid rgba(57,255,20,.3)}
-.badge-exist{background:rgba(124,106,247,.1);color:#9d8ff7;border:1px solid rgba(124,106,247,.3)}
-.path-title{font-size:1.4rem;font-weight:700;margin-bottom:.75rem;letter-spacing:-.01em}
-.path-desc{font-size:.87rem;color:#888;line-height:1.65;margin-bottom:2rem}
-.path-steps{list-style:none;padding:0;margin:0 0 2rem 0;display:flex;flex-direction:column;gap:.5rem}
-.path-steps li{font-size:.78rem;color:#aaa;display:flex;align-items:flex-start;gap:.6rem}
-.path-steps li::before{content:'→';color:#555;flex-shrink:0;margin-top:.05em}
-.path-steps li strong{color:#ddd}
-.path-link{
-  display:inline-flex;align-items:center;gap:.5rem;
-  font-size:.8rem;font-weight:600;text-decoration:none;
-  padding:.55rem 1.1rem;border-radius:4px;
-  transition:background .15s;
-  font-family:inherit;
-}
-.path-link-new{background:rgba(57,255,20,.1);color:#39ff14;border:1px solid rgba(57,255,20,.3)}
-.path-link-new:hover{background:rgba(57,255,20,.2)}
-.path-link-exist{background:rgba(124,106,247,.12);color:#9d8ff7;border:1px solid rgba(124,106,247,.4)}
-.path-link-exist:hover{background:rgba(124,106,247,.22)}
-
-/* path animated SVG */
-.path-svg-wrap{position:relative;height:90px;margin-bottom:2rem;overflow:visible}
-
-/* Story section */
-.story-section{
-  padding:120px 48px;
-  background:linear-gradient(180deg,transparent 0%,rgba(124,106,247,.03) 50%,transparent 100%);
-  position:relative;overflow:hidden;
-}
-.story-inner{max-width:960px;margin:0 auto}
-.story-kicker{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:#7c6af7;margin-bottom:1rem}
-.story-headline{font-size:clamp(1.8rem,4vw,3rem);font-weight:700;line-height:1.15;letter-spacing:-.02em;margin-bottom:1.2rem}
-.story-headline em{font-style:normal;color:#39ff14}
-.story-body{font-size:1rem;color:#888;line-height:1.8;max-width:640px}
-.story-timeline{margin-top:64px;display:flex;flex-direction:column;gap:0}
-.stl-item{display:flex;gap:32px;position:relative}
-.stl-item+.stl-item{margin-top:0}
-.stl-left{display:flex;flex-direction:column;align-items:center;width:48px;flex-shrink:0}
-.stl-dot{
-  width:12px;height:12px;border-radius:50%;flex-shrink:0;
-  border:2px solid #7c6af7;background:#0d0d0d;
-  position:relative;z-index:2;margin-top:4px;
-  transition:background .3s,border-color .3s;
-}
-.stl-dot.active{background:#7c6af7;box-shadow:0 0 12px rgba(124,106,247,.6)}
-.stl-dot.done{background:#39ff14;border-color:#39ff14;box-shadow:0 0 10px rgba(57,255,20,.5)}
-.stl-line{flex:1;width:2px;background:linear-gradient(180deg,rgba(124,106,247,.4) 0%,rgba(124,106,247,.08) 100%);margin-top:2px}
-.stl-content{padding-bottom:48px;flex:1}
-.stl-label{font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:#555;margin-bottom:.4rem}
-.stl-title{font-size:1.05rem;font-weight:600;margin-bottom:.5rem;color:#e0e0e0}
-.stl-desc{font-size:.84rem;color:#777;line-height:1.6}
-.stl-code{
-  display:inline-block;margin-top:.7rem;
-  background:rgba(124,106,247,.08);border:1px solid rgba(124,106,247,.2);
-  border-radius:4px;padding:.3rem .7rem;font-size:.75rem;color:#9d8ff7;
+:root {
+  --bg:   #0c0900;
+  --sur:  #110b00;
+  --sur2: #180e00;
+  --brd:  #3d2200;
+  --amb:  #ffb300;
+  --amb2: #ffd166;
+  --amb3: #cc9940;
+  --txt:  #ffe0a0;
+  --mut:  #7a5500;
+  --acc:  #7c6af7;
+  --acl:  #a89af8;
+  --org:  #e05a00;
+  --red:  #ff5555;
+  --glow:    0 0 20px rgba(255,179,0,.4), 0 0 40px rgba(255,179,0,.15);
+  --glow-sm: 0 0 10px rgba(255,179,0,.3);
 }
 
-/* Beyond code section */
-.beyond-section{padding:80px clamp(16px,5vw,64px);max-width:1200px;margin:0 auto}
-.beyond-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px}
-@media(max-width:900px){.beyond-grid{grid-template-columns:1fr}}
-.beyond-card{
-  border:1px solid var(--brd,#222);border-radius:8px;padding:32px 28px;
-  background:var(--sur,#0d0d0d);position:relative;overflow:hidden;
-}
-.beyond-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  border-radius:8px 8px 0 0;
-}
-.beyond-card.sport::before{background:linear-gradient(90deg,#39ff14,#00e5ff)}
-.beyond-card.coaching::before{background:linear-gradient(90deg,#f7b731,#ff6b35)}
-.beyond-card.holistic::before{background:linear-gradient(90deg,#7c6af7,#ff6b9d)}
-.beyond-icon{font-size:1.8rem;margin-bottom:1rem}
-.beyond-tag{font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;padding:.2rem .5rem;border-radius:2px;margin-bottom:1rem;display:inline-block}
-.tag-sport{background:rgba(57,255,20,.08);color:#39ff14;border:1px solid rgba(57,255,20,.2)}
-.tag-coaching{background:rgba(247,183,49,.08);color:#f7b731;border:1px solid rgba(247,183,49,.2)}
-.tag-holistic{background:rgba(124,106,247,.08);color:#9d8ff7;border:1px solid rgba(124,106,247,.2)}
-.beyond-title{font-size:1.1rem;font-weight:600;margin-bottom:.6rem}
-.beyond-desc{font-size:.82rem;color:#777;line-height:1.6;margin-bottom:1.2rem}
-.beyond-agents{display:flex;flex-wrap:wrap;gap:.35rem}
-.ba-chip{font-size:.62rem;background:rgba(255,255,255,.04);border:1px solid #2a2a2a;border-radius:2px;padding:.18rem .45rem;color:#666}
+/* ─── TERMINAL DOTS (amber-native) ─── */
+.dot-red    { background: #ff5555; }
+.dot-yellow { background: #f0a500; }
+.dot-amber  { background: #ffd166; }   /* replaces dot-green */
 
-/* SVG animations */
-@keyframes dashIn{from{stroke-dashoffset:300}to{stroke-dashoffset:0}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
-@keyframes flow{from{stroke-dashoffset:40}to{stroke-dashoffset:0}}
-@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
-@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+/* ══════════════════════════════════════════════
+   PROJECT PATH SECTION
+   ══════════════════════════════════════════════ */
+.paths-section {
+  padding: 80px clamp(16px, 5vw, 64px);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.paths-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 56px;
+}
+@media (max-width: 768px) {
+  .paths-grid { grid-template-columns: 1fr; }
+}
 
-.svg-path-anim{stroke-dasharray:300;stroke-dashoffset:300;animation:dashIn 1.4s ease forwards}
-.svg-fade{opacity:0;animation:fadeUp .6s ease forwards}
-.svg-pulse{animation:pulse 2s ease-in-out infinite}
-.svg-flow{stroke-dasharray:8 4;animation:flow .9s linear infinite}
-.svg-spin{animation:spin 8s linear infinite;transform-origin:center}
+/* path card base */
+.path-card {
+  border: 1px solid var(--brd);
+  border-radius: 8px;
+  padding: 40px 36px;
+  background: var(--sur);
+  position: relative;
+  overflow: hidden;
+  transition: border-color .25s, transform .25s;
+  cursor: pointer;
+}
+.path-card:hover { transform: translateY(-3px); }
+
+/* new project variant — amber */
+.path-card.new-proj  { border-color: rgba(255,179,0,.25); }
+.path-card.new-proj:hover { border-color: rgba(255,179,0,.7); }
+
+/* existing project variant — purple */
+.path-card.exist-proj { border-color: rgba(124,106,247,.25); }
+.path-card.exist-proj:hover { border-color: rgba(124,106,247,.6); }
+
+/* badges */
+.path-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  font-size: .65rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: .25rem .6rem;
+  border-radius: 3px;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+.badge-new   { background: rgba(255,179,0,.1);   color: #ffb300; border: 1px solid rgba(255,179,0,.3); }
+.badge-exist { background: rgba(124,106,247,.1); color: #9d8ff7; border: 1px solid rgba(124,106,247,.3); }
+
+.path-title { font-size: 1.4rem; font-weight: 700; margin-bottom: .75rem; letter-spacing: -.01em; }
+
+/* descriptive text — warm tertiary */
+.path-desc  { font-size: .87rem; color: #997755; line-height: 1.65; margin-bottom: 2rem; }
+
+/* step list */
+.path-steps {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+.path-steps li          { font-size: .78rem; color: #bb9966; display: flex; align-items: flex-start; gap: .6rem; }
+.path-steps li::before  { content: '→'; color: #664422; flex-shrink: 0; margin-top: .05em; }
+.path-steps li strong   { color: #ffe0b2; }
+
+/* path action links */
+.path-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .8rem;
+  font-weight: 600;
+  text-decoration: none;
+  padding: .55rem 1.1rem;
+  border-radius: 4px;
+  transition: background .15s;
+  font-family: inherit;
+}
+.path-link-new   { background: rgba(255,179,0,.1);   color: #ffb300; border: 1px solid rgba(255,179,0,.3); }
+.path-link-new:hover   { background: rgba(255,179,0,.2); }
+.path-link-exist { background: rgba(124,106,247,.12); color: #9d8ff7; border: 1px solid rgba(124,106,247,.4); }
+.path-link-exist:hover { background: rgba(124,106,247,.22); }
+
+/* animated SVG wrapper */
+.path-svg-wrap { position: relative; height: 90px; margin-bottom: 2rem; overflow: visible; }
+
+/* ══════════════════════════════════════════════
+   STORY SECTION
+   ══════════════════════════════════════════════ */
+.story-section {
+  padding: 120px 48px;
+  background: linear-gradient(180deg, transparent 0%, rgba(124,106,247,.03) 50%, transparent 100%);
+  position: relative;
+  overflow: hidden;
+}
+.story-inner { max-width: 960px; margin: 0 auto; }
+
+.story-kicker {
+  font-size: .7rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #7c6af7;
+  margin-bottom: 1rem;
+}
+.story-headline {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -.02em;
+  margin-bottom: 1.2rem;
+}
+.story-headline em { font-style: normal; color: #ffb300; }
+
+/* body copy — warm tertiary */
+.story-body { font-size: 1rem; color: #997755; line-height: 1.8; max-width: 640px; }
+
+/* timeline */
+.story-timeline { margin-top: 64px; display: flex; flex-direction: column; gap: 0; }
+
+.stl-item    { display: flex; gap: 32px; position: relative; }
+.stl-item + .stl-item { margin-top: 0; }
+
+.stl-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 48px;
+  flex-shrink: 0;
+}
+
+/* timeline dot — purple ring, dark amber fill */
+.stl-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 2px solid #7c6af7;
+  background: #100900;
+  position: relative;
+  z-index: 2;
+  margin-top: 4px;
+  transition: background .3s, border-color .3s;
+}
+.stl-dot.active { background: #7c6af7; box-shadow: 0 0 12px rgba(124,106,247,.6); }
+.stl-dot.done   { background: #ffb300; border-color: #ffb300; box-shadow: 0 0 10px rgba(255,179,0,.5); }
+
+.stl-line {
+  flex: 1;
+  width: 2px;
+  background: linear-gradient(180deg, rgba(124,106,247,.4) 0%, rgba(124,106,247,.08) 100%);
+  margin-top: 2px;
+}
+
+.stl-content { padding-bottom: 48px; flex: 1; }
+
+/* label — very dim amber */
+.stl-label { font-size: .63rem; letter-spacing: .1em; text-transform: uppercase; color: #664422; margin-bottom: .4rem; }
+
+/* title — strong warm cream */
+.stl-title { font-size: 1.05rem; font-weight: 600; margin-bottom: .5rem; color: #ffe0b2; }
+
+/* desc — warm secondary-low */
+.stl-desc { font-size: .84rem; color: #996644; line-height: 1.6; }
+
+.stl-code {
+  display: inline-block;
+  margin-top: .7rem;
+  background: rgba(124,106,247,.08);
+  border: 1px solid rgba(124,106,247,.2);
+  border-radius: 4px;
+  padding: .3rem .7rem;
+  font-size: .75rem;
+  color: #9d8ff7;
+}
+
+/* ══════════════════════════════════════════════
+   BEYOND CODE SECTION
+   ══════════════════════════════════════════════ */
+.beyond-section {
+  padding: 80px clamp(16px, 5vw, 64px);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.beyond-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 56px;
+}
+@media (max-width: 900px) {
+  .beyond-grid { grid-template-columns: 1fr; }
+}
+
+.beyond-card {
+  border: 1px solid var(--brd);
+  border-radius: 8px;
+  padding: 32px 28px;
+  background: var(--sur);
+  position: relative;
+  overflow: hidden;
+}
+
+/* top accent stripe */
+.beyond-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  border-radius: 8px 8px 0 0;
+}
+.beyond-card.sport::before    { background: linear-gradient(90deg, #ffb300, #00e5ff); }
+.beyond-card.coaching::before { background: linear-gradient(90deg, #f7b731, #ff6b35); }
+.beyond-card.holistic::before { background: linear-gradient(90deg, #7c6af7, #ff6b9d); }
+
+.beyond-icon { font-size: 1.8rem; margin-bottom: 1rem; }
+
+.beyond-tag {
+  font-size: .62rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: .2rem .5rem;
+  border-radius: 2px;
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+.tag-sport    { background: rgba(255,179,0,.08);   color: #ffb300; border: 1px solid rgba(255,179,0,.2); }
+.tag-coaching { background: rgba(247,183,49,.08);  color: #f7b731; border: 1px solid rgba(247,183,49,.2); }
+.tag-holistic { background: rgba(124,106,247,.08); color: #9d8ff7; border: 1px solid rgba(124,106,247,.2); }
+
+.beyond-title { font-size: 1.1rem; font-weight: 600; margin-bottom: .6rem; }
+
+/* desc — warm secondary-low */
+.beyond-desc { font-size: .82rem; color: #996644; line-height: 1.6; margin-bottom: 1.2rem; }
+
+.beyond-agents { display: flex; flex-wrap: wrap; gap: .35rem; }
+
+/* chips — very faint amber surface */
+.ba-chip {
+  font-size: .62rem;
+  background: rgba(255,179,0,.04);
+  border: 1px solid #3d2200;
+  border-radius: 2px;
+  padding: .18rem .45rem;
+  color: #886644;
+}
+
+/* ══════════════════════════════════════════════
+   SVG ANIMATIONS (amber-native)
+   ══════════════════════════════════════════════ */
+@keyframes dashIn  { from { stroke-dashoffset: 300 } to { stroke-dashoffset: 0 } }
+@keyframes fadeUp  { from { opacity: 0; transform: translateY(10px) } to { opacity: 1; transform: translateY(0) } }
+@keyframes pulse   { 0%, 100% { opacity: .4 } 50% { opacity: 1 } }
+@keyframes flow    { from { stroke-dashoffset: 40 } to { stroke-dashoffset: 0 } }
+@keyframes blink   { 0%, 49% { opacity: 1 } 50%, 100% { opacity: 0 } }
+@keyframes spin    { from { transform: rotate(0deg) } to { transform: rotate(360deg) } }
+
+.svg-path-anim { stroke-dasharray: 300; stroke-dashoffset: 300; animation: dashIn 1.4s ease forwards; }
+.svg-fade      { opacity: 0; animation: fadeUp .6s ease forwards; }
+.svg-pulse     { animation: pulse 2s ease-in-out infinite; }
+.svg-flow      { stroke-dasharray: 8 4; animation: flow .9s linear infinite; }
+.svg-spin      { animation: spin 8s linear infinite; transform-origin: center; }
 
 /* animated orbit ring */
-.orbit-ring{
-  position:absolute;border-radius:50%;border:1px solid;
-  animation:spin linear infinite;
+.orbit-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid;
+  animation: spin linear infinite;
 }
-
 </style>
 </head>
 <body>
 
-<!-- ─── NAV ─── -->
+<!-- ═══════════════════════════════════════════════════════════
+     NAV
+     ═══════════════════════════════════════════════════════════ -->
 <nav>
   <div class="nav-logo"><span>~/</span>config.finta</div>
   <div class="nav-right">
@@ -188,13 +380,16 @@
   </div>
 </nav>
 
+<!-- ─── MOBILE MENU ─── -->
 <div class="nav-mobile-menu" id="nav-mobile-menu">
   <a href="#project" onclick="closeMobileMenu()">// new project</a>
   <a href="#features" onclick="closeMobileMenu()">// features</a>
   <a href="./wizard.html" class="nav-mobile-cta">[ launch wizard ]</a>
 </div>
 
-<!-- ─── CINEMATIC SCENE ─── -->
+<!-- ═══════════════════════════════════════════════════════════
+     CINEMATIC HERO SCENE
+     ═══════════════════════════════════════════════════════════ -->
 <div id="scene">
   <div class="scene-sticky" id="scene-sticky">
     <canvas id="particle-canvas"></canvas>
@@ -230,7 +425,7 @@
       <div class="slide-eyebrow">// new project or existing codebase — both in &lt; 5 min</div>
       <h1 class="slide-h1">
         <span class="slide-line">Five minutes from now,</span>
-        <span class="slide-line accent-line">your AI becomes a co-founder.</span>
+        <span class="slide-line accent-line">your AI becomes a copilote.</span>
       </h1>
       <p class="slide-sub">Drop the config. Watch your assistant go from generic tool to domain expert — reading every rule, every agent spec, shipping from day zero.</p>
       <a href="./wizard.html" class="cta-btn slide-cta">
@@ -250,7 +445,9 @@
   </div>
 </div>
 
-<!-- ─── STATS BAR ─── -->
+<!-- ═══════════════════════════════════════════════════════════
+     STATS BAR — 681 · 1623 · 128 · 2432 · 3 · <5 min
+     ═══════════════════════════════════════════════════════════ -->
 <div class="stats-bar" id="stats-bar">
   <div class="stat-item">
     <div class="stat-num" data-target="681">0</div>
@@ -280,7 +477,9 @@
   </div>
 </div>
 
-<!-- ─── STORY: THE PROBLEM ─── -->
+<!-- ═══════════════════════════════════════════════════════════
+     STORY: THE PROBLEM
+     ═══════════════════════════════════════════════════════════ -->
 <section class="story-section" id="story">
   <div class="story-inner">
     <div class="story-kicker reveal" data-i18n="idx_story_kicker">// the problem we're solving</div>
@@ -294,6 +493,7 @@
 
     <div class="story-timeline reveal reveal-delay-3">
 
+      <!-- timeline item 1 -->
       <div class="stl-item">
         <div class="stl-left">
           <div class="stl-dot" id="stl-0"></div>
@@ -302,11 +502,12 @@
         <div class="stl-content">
           <div class="stl-label" data-i18n="idx_stl_pain">// the pain</div>
           <div class="stl-title" data-i18n="idx_stl_pain_title">Session 1: "What stack are we using?"</div>
-          <div class="stl-desc">You type it all out. React, TypeScript, Supabase, Stripe. Security-first. No any types. TDD. It nods. You build. It forgets half of it by session 3.</div>
+          <div class="stl-desc" data-i18n="idx_stl_pain_desc">You type it all out. React, TypeScript, Supabase, Stripe. Security-first. No any types. TDD. It nods. You build. It forgets half of it by session 3.</div>
           <span class="stl-code">$ cat README.md | pbcopy | paste into chat again...</span>
         </div>
       </div>
 
+      <!-- timeline item 2 -->
       <div class="stl-item">
         <div class="stl-left">
           <div class="stl-dot" id="stl-1"></div>
@@ -315,11 +516,12 @@
         <div class="stl-content">
           <div class="stl-label" data-i18n="idx_stl_discovery">// the discovery</div>
           <div class="stl-title" data-i18n="idx_stl_discovery_title">What if the AI had a briefing file?</div>
-          <div class="stl-desc">A CLAUDE.md that says everything — stack, architecture, agent roster, rules, standards — and gets read at the start of every session automatically. No repeating yourself. Ever.</div>
+          <div class="stl-desc" data-i18n="idx_stl_discovery_desc">A CLAUDE.md that says everything — stack, architecture, agent roster, rules, standards — and gets read at the start of every session automatically. No repeating yourself. Ever.</div>
           <span class="stl-code">// CLAUDE.md, .claude/agents/, .claude/rules/ → loaded once, used forever</span>
         </div>
       </div>
 
+      <!-- timeline item 3 -->
       <div class="stl-item">
         <div class="stl-left">
           <div class="stl-dot" id="stl-2"></div>
@@ -328,11 +530,12 @@
         <div class="stl-content">
           <div class="stl-label" data-i18n="idx_stl_problem">// the problem with that</div>
           <div class="stl-title" data-i18n="idx_stl_problem_title">Writing it from scratch takes days.</div>
-          <div class="stl-desc">Researching the right agents. Picking the right skills. Writing security rules. Structuring the architecture doc. By the time you've configured the AI, you could have shipped three features.</div>
+          <div class="stl-desc" data-i18n="idx_stl_problem_desc">Researching the right agents. Picking the right skills. Writing security rules. Structuring the architecture doc. By the time you've configured the AI, you could have shipped three features.</div>
           <span class="stl-code">⏱ avg 4–8 hours to configure manually. once.</span>
         </div>
       </div>
 
+      <!-- timeline item 4 — solution -->
       <div class="stl-item">
         <div class="stl-left">
           <div class="stl-dot active" id="stl-3"></div>
@@ -340,7 +543,7 @@
         <div class="stl-content">
           <div class="stl-label" data-i18n="idx_stl_solution">// the solution</div>
           <div class="stl-title" data-i18n="idx_stl_solution_title">Finta does it in 5 minutes. For any project.</div>
-          <div class="stl-desc">Answer 13–29 questions. Our scoring engine picks your agents, builds your rules, generates your config. Download. Drop. Done. Whether you're starting fresh or configuring an existing codebase.</div>
+          <div class="stl-desc" data-i18n="idx_stl_solution_desc">Answer 13–29 questions. Our scoring engine picks your agents, builds your rules, generates your config. Download. Drop. Done. Whether you're starting fresh or configuring an existing codebase.</div>
           <a href="./wizard.html" class="path-link path-link-exist" style="margin-top:.8rem;display:inline-flex">
             <span>&gt;</span> start now →
           </a>
@@ -351,7 +554,9 @@
   </div>
 </section>
 
-<!-- ─── NEW OR EXISTING PROJECT ─── -->
+<!-- ═══════════════════════════════════════════════════════════
+     NEW OR EXISTING PROJECT
+     ═══════════════════════════════════════════════════════════ -->
 <section id="project">
 <div class="paths-section">
   <div class="section-label reveal"><span>//</span> your starting point</div>
@@ -360,24 +565,35 @@
 
   <div class="paths-grid">
 
-    <!-- NEW PROJECT -->
+    <!-- ── NEW PROJECT ── -->
     <div class="path-card new-proj reveal reveal-delay-2" onclick="window.location='./wizard.html?mode=new'">
       <div class="path-svg-wrap">
+        <!--
+          New project SVG — amber palette
+          baseline:      stroke="#2a1200"
+          animated path: stroke="#ffb300"
+          circle nodes:  fill="#100900" stroke="#ffb300"
+          terminal node: fill="#ffb300"
+          labels:        fill="#ffb300" opacity=".6"
+        -->
         <svg viewBox="0 0 420 90" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
           <!-- baseline -->
-          <line x1="20" y1="45" x2="400" y2="45" stroke="#1a1a1a" stroke-width="1"/>
-          <!-- animated path -->
-          <path d="M 20 45 L 100 45 L 140 20 L 180 20 L 220 45 L 280 45 L 320 15 L 380 15" stroke="#39ff14" stroke-width="1.5" fill="none" class="svg-path-anim" style="animation-delay:.1s"/>
+          <line x1="20" y1="45" x2="400" y2="45" stroke="#2a1200" stroke-width="1"/>
+          <!-- animated amber path -->
+          <path d="M 20 45 L 100 45 L 140 20 L 180 20 L 220 45 L 280 45 L 320 15 L 380 15"
+                stroke="#ffb300" stroke-width="1.5" fill="none"
+                class="svg-path-anim" style="animation-delay:.1s"/>
           <!-- nodes -->
-          <circle cx="100" cy="45" r="4" fill="#0d0d0d" stroke="#39ff14" stroke-width="1.5" class="svg-fade" style="animation-delay:.5s"/>
-          <circle cx="180" cy="20" r="4" fill="#0d0d0d" stroke="#39ff14" stroke-width="1.5" class="svg-fade" style="animation-delay:.7s"/>
-          <circle cx="280" cy="45" r="4" fill="#0d0d0d" stroke="#39ff14" stroke-width="1.5" class="svg-fade" style="animation-delay:.9s"/>
-          <circle cx="380" cy="15" r="6" fill="#39ff14" class="svg-fade svg-pulse" style="animation-delay:1.1s"/>
+          <circle cx="100" cy="45" r="4" fill="#100900" stroke="#ffb300" stroke-width="1.5" class="svg-fade" style="animation-delay:.5s"/>
+          <circle cx="180" cy="20" r="4" fill="#100900" stroke="#ffb300" stroke-width="1.5" class="svg-fade" style="animation-delay:.7s"/>
+          <circle cx="280" cy="45" r="4" fill="#100900" stroke="#ffb300" stroke-width="1.5" class="svg-fade" style="animation-delay:.9s"/>
+          <!-- terminal amber dot -->
+          <circle cx="380" cy="15" r="6" fill="#ffb300" class="svg-fade svg-pulse" style="animation-delay:1.1s"/>
           <!-- labels -->
-          <text x="95" y="60" font-size="9" fill="#39ff14" opacity=".6" font-family="monospace" class="svg-fade" style="animation-delay:.6s">blank</text>
-          <text x="175" y="13" font-size="9" fill="#39ff14" opacity=".6" font-family="monospace" class="svg-fade" style="animation-delay:.8s">wizard</text>
-          <text x="262" y="60" font-size="9" fill="#39ff14" opacity=".6" font-family="monospace" class="svg-fade" style="animation-delay:1s">config</text>
-          <text x="362" y="10" font-size="9" fill="#39ff14" font-family="monospace" class="svg-fade" style="animation-delay:1.2s">ship ✓</text>
+          <text x="95"  y="60" font-size="9" fill="#ffb300" opacity=".6" font-family="monospace" class="svg-fade" style="animation-delay:.6s">blank</text>
+          <text x="175" y="13" font-size="9" fill="#ffb300" opacity=".6" font-family="monospace" class="svg-fade" style="animation-delay:.8s">wizard</text>
+          <text x="262" y="60" font-size="9" fill="#ffb300" opacity=".6" font-family="monospace" class="svg-fade" style="animation-delay:1s">config</text>
+          <text x="362" y="10" font-size="9" fill="#ffb300"              font-family="monospace" class="svg-fade" style="animation-delay:1.2s">ship ✓</text>
         </svg>
       </div>
       <div class="path-badge badge-new">// new project</div>
@@ -394,21 +610,36 @@
       </a>
     </div>
 
-    <!-- EXISTING PROJECT -->
+    <!-- ── EXISTING PROJECT ── -->
     <div class="path-card exist-proj reveal reveal-delay-3" onclick="window.location='./wizard.html?mode=existing'">
       <div class="path-svg-wrap">
+        <!--
+          Existing project SVG — purple overlay on amber base
+          messy bg lines:   stroke="#3d2200"
+          finta overlay:    stroke="#7c6af7"
+          processing rect:  fill="#100900" stroke="#7c6af7"
+          output node:      fill="#7c6af7"
+          text:             fill="#9d8ff7"
+        -->
         <svg viewBox="0 0 420 90" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
-          <!-- existing messy lines -->
-          <path d="M 20 30 Q 80 50 120 35 Q 160 20 200 40" stroke="#2a2a2a" stroke-width="1" fill="none"/>
-          <path d="M 20 55 Q 70 35 110 55 Q 150 70 190 50" stroke="#2a2a2a" stroke-width="1" fill="none"/>
-          <!-- finta overlay -->
-          <path d="M 200 40 L 240 40 L 280 18 L 380 18" stroke="#7c6af7" stroke-width="1.5" fill="none" class="svg-path-anim" style="animation-delay:.3s"/>
-          <path d="M 200 50 L 240 50 L 280 68 L 320 68 L 360 45 L 380 45" stroke="#7c6af7" stroke-width="1" stroke-opacity=".5" fill="none" class="svg-path-anim" style="animation-delay:.6s"/>
+          <!-- existing messy lines (warm dark border) -->
+          <path d="M 20 30 Q 80 50 120 35 Q 160 20 200 40" stroke="#3d2200" stroke-width="1" fill="none"/>
+          <path d="M 20 55 Q 70 35 110 55 Q 150 70 190 50" stroke="#3d2200" stroke-width="1" fill="none"/>
+          <!-- finta overlay — purple paths -->
+          <path d="M 200 40 L 240 40 L 280 18 L 380 18"
+                stroke="#7c6af7" stroke-width="1.5" fill="none"
+                class="svg-path-anim" style="animation-delay:.3s"/>
+          <path d="M 200 50 L 240 50 L 280 68 L 320 68 L 360 45 L 380 45"
+                stroke="#7c6af7" stroke-width="1" stroke-opacity=".5" fill="none"
+                class="svg-path-anim" style="animation-delay:.6s"/>
           <!-- finta processing node -->
-          <rect x="185" y="28" width="30" height="30" rx="3" fill="#0d0d0d" stroke="#7c6af7" stroke-width="1.5" class="svg-fade" style="animation-delay:.2s"/>
-          <text x="193" y="48" font-size="10" fill="#7c6af7" font-family="monospace" class="svg-fade" style="animation-delay:.4s">F</text>
+          <rect x="185" y="28" width="30" height="30" rx="3"
+                fill="#100900" stroke="#7c6af7" stroke-width="1.5"
+                class="svg-fade" style="animation-delay:.2s"/>
+          <text x="193" y="48" font-size="10" fill="#7c6af7" font-family="monospace"
+                class="svg-fade" style="animation-delay:.4s">F</text>
           <!-- output nodes -->
-          <circle cx="380" cy="18" r="5" fill="#0d0d0d" stroke="#7c6af7" stroke-width="1.5" class="svg-fade" style="animation-delay:.9s"/>
+          <circle cx="380" cy="18" r="5" fill="#100900" stroke="#7c6af7" stroke-width="1.5" class="svg-fade" style="animation-delay:.9s"/>
           <circle cx="380" cy="45" r="5" fill="#7c6af7" class="svg-fade svg-pulse" style="animation-delay:1.1s"/>
           <text x="340" y="13" font-size="8" fill="#9d8ff7" opacity=".8" font-family="monospace" class="svg-fade" style="animation-delay:1s">agents</text>
           <text x="340" y="61" font-size="8" fill="#9d8ff7" opacity=".8" font-family="monospace" class="svg-fade" style="animation-delay:1.2s">rules</text>
@@ -432,7 +663,9 @@
 </div>
 </section>
 
-<!-- ─── HOW IT WORKS ─── -->
+<!-- ═══════════════════════════════════════════════════════════
+     HOW IT WORKS
+     ═══════════════════════════════════════════════════════════ -->
 <section class="how-section" id="how">
   <div class="section-label"><span>//</span> process</div>
   <h2 class="section-title reveal">How it works</h2>
@@ -446,7 +679,7 @@
     </div>
     <div class="step-card reveal reveal-delay-2">
       <div class="step-num">[02]</div>
-      <div class="step-title">Browse 681 agents, 1,623 skills & 128 commands</div>
+      <div class="step-title">Browse 681 agents, 1,623 skills &amp; 128 commands</div>
       <p class="step-desc">Our scoring engine ranks agents by relevance to your answers. Explore 1,623 curated skills and 128 slash commands. Toggle what you need, confirm your selection. Board view available for fast review.</p>
     </div>
     <div class="step-card reveal reveal-delay-3">
@@ -457,7 +690,9 @@
   </div>
 </section>
 
-<!-- ─── WHAT YOU GET ─── -->
+<!-- ═══════════════════════════════════════════════════════════
+     WHAT YOU GET
+     ═══════════════════════════════════════════════════════════ -->
 <section class="get-section" id="get">
   <div class="section-label"><span>//</span> output</div>
   <h2 class="section-title reveal">What you get</h2>
@@ -491,7 +726,9 @@
   </div>
 </section>
 
-<!-- ─── AGENT SHOWCASE ─── -->
+<!-- ═══════════════════════════════════════════════════════════
+     AGENT SHOWCASE
+     ═══════════════════════════════════════════════════════════ -->
 <section class="agents-section" id="agents">
   <div class="section-label reveal"><span>//</span> agents</div>
   <h2 class="section-title reveal">681 agents · 1,623 skills · 128 commands</h2>
@@ -507,15 +744,17 @@
       <div class="terminal-bar">
         <div class="terminal-dot dot-red"></div>
         <div class="terminal-dot dot-yellow"></div>
-        <div class="terminal-dot dot-green"></div>
-        <span class="terminal-title">config output — .claude/ · agents/ · rules/ · docs/</span>
+        <div class="terminal-dot dot-amber"></div>
+        <span class="terminal-title">config output — CLAUDE.md · .claude/{rules,agents,skills,commands} · docs/ · prompts/</span>
       </div>
       <canvas id="neural-net" class="neural-net-canvas"></canvas>
     </div>
   </div>
 </section>
 
-<!-- ─── BEYOND CODE ─── -->
+<!-- ═══════════════════════════════════════════════════════════
+     BEYOND CODE
+     ═══════════════════════════════════════════════════════════ -->
 <section id="beyond">
 <div class="beyond-section">
   <div class="section-label reveal" data-i18n="idx_beyond_label"><span>//</span> beyond code</div>
@@ -526,9 +765,9 @@
 
     <div class="beyond-card sport reveal reveal-delay-1">
       <div class="beyond-icon">🏃</div>
-      <div class="beyond-tag tag-sport">sport performance</div>
-      <div class="beyond-title">Multi-Sport Agents</div>
-      <p class="beyond-desc">11 specialist agents covering biomechanics, physical preparation, skill acquisition, mental performance, sport neuroscience, analytics, and team culture — for any sport, any level.</p>
+      <div class="beyond-tag tag-sport" data-i18n="idx_sport_tag">sport performance</div>
+      <div class="beyond-title" data-i18n="idx_sport_title">Multi-Sport Agents</div>
+      <p class="beyond-desc" data-i18n="idx_sport_desc">11 specialist agents covering biomechanics, physical preparation, skill acquisition, mental performance, sport neuroscience, analytics, and team culture — for any sport, any level.</p>
       <div class="beyond-agents">
         <span class="ba-chip">biomechanics</span>
         <span class="ba-chip">load-management</span>
@@ -542,9 +781,9 @@
 
     <div class="beyond-card coaching reveal reveal-delay-2">
       <div class="beyond-icon">⚽</div>
-      <div class="beyond-tag tag-coaching">football coaching</div>
-      <div class="beyond-title">Football Coaching Agents</div>
-      <p class="beyond-desc">11 football-specific agents with deep tactical, physical, and psychological knowledge — from Guardiola positional play to ecological dynamics, periodisation to pre-match protocols.</p>
+      <div class="beyond-tag tag-coaching" data-i18n="idx_coaching_tag">football coaching</div>
+      <div class="beyond-title" data-i18n="idx_coaching_title">Football Coaching Agents</div>
+      <p class="beyond-desc" data-i18n="idx_coaching_desc">11 football-specific agents with deep tactical, physical, and psychological knowledge — from Guardiola positional play to ecological dynamics, periodisation to pre-match protocols.</p>
       <div class="beyond-agents">
         <span class="ba-chip">tactical-philosophy</span>
         <span class="ba-chip">decision-science</span>
@@ -557,9 +796,9 @@
 
     <div class="beyond-card holistic reveal reveal-delay-3">
       <div class="beyond-icon">🔮</div>
-      <div class="beyond-tag tag-holistic">holistic development</div>
-      <div class="beyond-title">Professional Development Agents</div>
-      <p class="beyond-desc">12 agents for personal and professional growth — career strategy, emotional intelligence, productivity, purpose &amp; values, learning science, resilience, and sustainable performance. Evidence-based.</p>
+      <div class="beyond-tag tag-holistic" data-i18n="idx_holistic_tag">holistic development</div>
+      <div class="beyond-title" data-i18n="idx_holistic_title">Professional Development Agents</div>
+      <p class="beyond-desc" data-i18n="idx_holistic_desc">12 agents for personal and professional growth — career strategy, emotional intelligence, productivity, purpose &amp; values, learning science, resilience, and sustainable performance. Evidence-based.</p>
       <div class="beyond-agents">
         <span class="ba-chip">career-development</span>
         <span class="ba-chip">emotional-intelligence</span>
@@ -571,11 +810,12 @@
     </div>
 
   </div>
-
 </div>
 </section>
 
-<!-- ─── FEATURE DEEP DIVE ─── -->
+<!-- ═══════════════════════════════════════════════════════════
+     FEATURE DEEP DIVE
+     ═══════════════════════════════════════════════════════════ -->
 <section class="features-section" id="features">
   <div class="section-label"><span>//</span> features</div>
   <h2 class="section-title reveal">Built for serious developers</h2>
@@ -612,12 +852,14 @@
   </div>
 </section>
 
-<!-- ─── TERMINAL DEMO ─── -->
+<!-- ═══════════════════════════════════════════════════════════
+     TERMINAL DEMO
+     ═══════════════════════════════════════════════════════════ -->
 <section class="demo-section" id="demo">
-  <div style="text-align:center; margin-bottom: 48px;">
+  <div style="text-align:center;margin-bottom:48px">
     <div class="section-label"><span>//</span> demo</div>
     <h2 class="section-title reveal" style="text-align:center">See it in action</h2>
-    <p class="section-sub reveal reveal-delay-1" style="text-align:center; margin:0 auto">A real wizard session — Advanced mode, TypeScript + React stack.</p>
+    <p class="section-sub reveal reveal-delay-1" style="text-align:center;margin:0 auto">A real wizard session — Advanced mode, TypeScript + React stack.</p>
   </div>
 
   <div class="demo-container">
@@ -625,7 +867,7 @@
       <div class="terminal-bar">
         <div class="terminal-dot dot-red"></div>
         <div class="terminal-dot dot-yellow"></div>
-        <div class="terminal-dot dot-green"></div>
+        <div class="terminal-dot dot-amber"></div>
         <span class="terminal-title">terminal — wizard --level advanced</span>
       </div>
       <div class="demo-body">
@@ -660,7 +902,9 @@
   </div>
 </section>
 
-<!-- ─── CTA SECTION ─── -->
+<!-- ═══════════════════════════════════════════════════════════
+     CTA SECTION
+     ═══════════════════════════════════════════════════════════ -->
 <section class="cta-section" id="cta">
   <div class="cta-label reveal"><span>$</span> ready to ship</div>
   <h2 class="cta-h2 reveal reveal-delay-1">Stop configuring.<br><span>Start building.</span></h2>
@@ -675,7 +919,9 @@
 
 <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
 
-<!-- ─── FOOTER ─── -->
+<!-- ═══════════════════════════════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════════════════════════════ -->
 <footer>
   <div class="footer-logo">~/config.finta</div>
   <div class="footer-links">
@@ -688,97 +934,265 @@
   <div class="footer-copy">// built for developers — and coaches, and athletes, and humans</div>
 </footer>
 
+<!-- ═══════════════════════════════════════════════════════════
+     SCRIPTS
+     ═══════════════════════════════════════════════════════════ -->
 <script src="js/index.js"></script>
 
 <script>
-/* ── INDEX I18N ── */
+/* ── INDEX I18N ──────────────────────────────────────────── */
 (function(){
   const SUPPORTED = ['en','fr','es','de','pt','ja','zh','ko'];
   const IDX_TRANSLATIONS = {
+
+    // ── ENGLISH ──────────────────────────────────────────────────────
     en: {
       idx_story_kicker: '// the problem we\'re solving',
-      idx_story_h2: 'It\'s Monday morning.<br>New project. Blank repo.<br>Your AI assistant is <em>completely lost.</em>',
+      idx_story_h2: 'It\'s Monday morning.<br>New project. Blank repo.<br>Your AI assistant is completely lost.',
       idx_story_body: 'It doesn\'t know your stack. It doesn\'t know your conventions. It doesn\'t know whether you\'re building a fintech startup or a sport analytics platform. Every session starts from zero. You repeat yourself. It hallucinates. You fix it. Repeat.',
       idx_stl_pain: '// the pain',
       idx_stl_pain_title: 'Session 1: "What stack are we using?"',
+      idx_stl_pain_desc: 'You type it all out. React, TypeScript, Supabase, Stripe. Security-first. No any types. TDD. It nods. You build. It forgets half of it by session 3.',
       idx_stl_discovery: '// the discovery',
       idx_stl_discovery_title: 'What if the AI had a briefing file?',
+      idx_stl_discovery_desc: 'A CLAUDE.md that says everything — stack, architecture, agent roster, rules, standards — and gets read at the start of every session automatically. No repeating yourself. Ever.',
       idx_stl_problem: '// the problem with that',
       idx_stl_problem_title: 'Writing it from scratch takes days.',
+      idx_stl_problem_desc: 'Researching the right agents. Picking the right skills. Writing security rules. Structuring the architecture doc. By the time you\'ve configured the AI, you could have shipped three features.',
       idx_stl_solution: '// the solution',
       idx_stl_solution_title: 'Finta does it in 5 minutes. For any project.',
+      idx_stl_solution_desc: 'Answer 13–29 questions. Our scoring engine picks your agents, builds your rules, generates your config. Download. Drop. Done. Whether you\'re starting fresh or configuring an existing codebase.',
       idx_beyond_label: '<span>//</span> beyond code',
       idx_beyond_h2: 'Not just for developers.',
       idx_beyond_sub: 'Finta now ships three exclusive agent libraries for sport performance, football coaching, and holistic professional development — built with the same rigour as the technical catalog.',
+      idx_sport_tag: 'sport performance',
+      idx_sport_title: 'Multi-Sport Agents',
+      idx_sport_desc: '11 specialist agents covering biomechanics, physical preparation, skill acquisition, mental performance, sport neuroscience, analytics, and team culture — for any sport, any level.',
+      idx_coaching_tag: 'football coaching',
+      idx_coaching_title: 'Football Coaching Agents',
+      idx_coaching_desc: '11 football-specific agents with deep tactical, physical, and psychological knowledge — from Guardiola positional play to ecological dynamics, periodisation to pre-match protocols.',
+      idx_holistic_tag: 'holistic development',
+      idx_holistic_title: 'Professional Development Agents',
+      idx_holistic_desc: '12 agents for personal and professional growth — career strategy, emotional intelligence, productivity, purpose & values, learning science, resilience, and sustainable performance. Evidence-based.',
     },
+
+    // ── FRENCH ───────────────────────────────────────────────────────
     fr: {
       idx_story_kicker: '// le problème qu\'on résout',
-      idx_story_h2: 'Lundi matin.<br>Nouveau projet. Repo vide.<br>Ton assistant IA est <em>complètement perdu.</em>',
+      idx_story_h2: 'Lundi matin.<br>Nouveau projet. Repo vide.<br>Ton assistant IA est complètement perdu.',
       idx_story_body: 'Il ne connaît pas ta stack. Il ne connaît pas tes conventions. Il ne sait pas si tu construis une fintech ou une plateforme d\'analytics sportif. Chaque session repart de zéro. Tu te répètes. Il hallucine. Tu corriges. Recommence.',
       idx_stl_pain: '// la douleur',
       idx_stl_pain_title: 'Session 1 : « Quelle stack on utilise ? »',
+      idx_stl_pain_desc: 'Tu tout expliques. React, TypeScript, Supabase, Stripe. Sécurité en priorité. Pas de any. TDD. Il acquiesce. Tu construis. Il a oublié la moitié dès la session 3.',
       idx_stl_discovery: '// la découverte',
       idx_stl_discovery_title: 'Et si l\'IA avait un fichier de briefing ?',
+      idx_stl_discovery_desc: 'Un CLAUDE.md qui dit tout — stack, architecture, roster d\'agents, règles, standards — et qui est lu automatiquement au début de chaque session. Plus jamais se répéter.',
       idx_stl_problem: '// le problème',
       idx_stl_problem_title: 'L\'écrire from scratch prend des jours.',
+      idx_stl_problem_desc: 'Chercher les bons agents. Choisir les bonnes compétences. Écrire les règles de sécurité. Structurer la doc d\'architecture. Le temps de configurer l\'IA, tu aurais pu livrer trois features.',
       idx_stl_solution: '// la solution',
       idx_stl_solution_title: 'Finta le fait en 5 minutes. Pour n\'importe quel projet.',
+      idx_stl_solution_desc: 'Réponds à 13–29 questions. Notre moteur de scoring choisit tes agents, construit tes règles, génère ta config. Télécharge. Dépose. C\'est fait. Nouveau projet ou codebase existant.',
       idx_beyond_label: '<span>//</span> au-delà du code',
       idx_beyond_h2: 'Pas seulement pour les développeurs.',
-      idx_beyond_sub: 'Finta propose désormais trois bibliothèques d\'agents exclusives pour la performance sportive, le coaching football et le développement professionnel holistique — construites avec la même rigueur que le catalogue technique.',
+      idx_beyond_sub: 'Finta propose trois bibliothèques d\'agents exclusives pour la performance sportive, le coaching football et le développement professionnel holistique — construites avec la même rigueur que le catalogue technique.',
+      idx_sport_tag: 'performance sportive',
+      idx_sport_title: 'Agents Multi-Sports',
+      idx_sport_desc: '11 agents spécialistes couvrant la biomécanique, la préparation physique, l\'acquisition de compétences, la performance mentale, les neurosciences du sport, l\'analytique et la culture d\'équipe — pour tout sport, tout niveau.',
+      idx_coaching_tag: 'coaching football',
+      idx_coaching_title: 'Agents de Coaching Football',
+      idx_coaching_desc: '11 agents spécialisés football avec une connaissance tactique, physique et psychologique approfondie — du jeu positionnel de Guardiola aux dynamiques écologiques, de la périodisation aux protocoles pré-match.',
+      idx_holistic_tag: 'développement holistique',
+      idx_holistic_title: 'Agents de Développement Professionnel',
+      idx_holistic_desc: '12 agents pour la croissance personnelle et professionnelle — stratégie de carrière, intelligence émotionnelle, productivité, sens & valeurs, sciences de l\'apprentissage, résilience et performance durable. Basé sur les données.',
     },
+
+    // ── SPANISH ──────────────────────────────────────────────────────
     es: {
       idx_story_kicker: '// el problema que resolvemos',
-      idx_story_h2: 'Lunes por la mañana.<br>Nuevo proyecto. Repositorio vacío.<br>Tu asistente IA está <em>completamente perdido.</em>',
+      idx_story_h2: 'Lunes por la mañana.<br>Nuevo proyecto. Repositorio vacío.<br>Tu asistente IA está completamente perdido.',
       idx_story_body: 'No conoce tu stack. No conoce tus convenciones. No sabe si estás construyendo una fintech o una plataforma de análisis deportivo. Cada sesión empieza desde cero. Te repites. Alucina. Lo corriges. Repite.',
       idx_stl_pain: '// el dolor',
       idx_stl_pain_title: 'Sesión 1: «¿Qué stack usamos?»',
+      idx_stl_pain_desc: 'Lo escribes todo. React, TypeScript, Supabase, Stripe. Seguridad primero. Sin any types. TDD. Asiente. Construyes. Se olvida de la mitad en la sesión 3.',
       idx_stl_discovery: '// el descubrimiento',
       idx_stl_discovery_title: '¿Y si la IA tuviera un archivo de briefing?',
+      idx_stl_discovery_desc: 'Un CLAUDE.md que lo dice todo — stack, arquitectura, roster de agentes, reglas, estándares — y se lee automáticamente al inicio de cada sesión. Sin repetirte nunca más.',
       idx_stl_problem: '// el problema',
       idx_stl_problem_title: 'Escribirlo desde cero lleva días.',
+      idx_stl_problem_desc: 'Investigar los agentes correctos. Elegir las skills adecuadas. Escribir reglas de seguridad. Estructurar la doc de arquitectura. Para cuando terminas de configurar la IA, podrías haber entregado tres features.',
       idx_stl_solution: '// la solución',
       idx_stl_solution_title: 'Finta lo hace en 5 minutos. Para cualquier proyecto.',
+      idx_stl_solution_desc: 'Responde 13–29 preguntas. Nuestro motor de scoring elige tus agentes, construye tus reglas, genera tu config. Descarga. Suelta. Listo. Proyecto nuevo o codebase existente.',
       idx_beyond_label: '<span>//</span> más allá del código',
       idx_beyond_h2: 'No solo para desarrolladores.',
-      idx_beyond_sub: 'Finta incluye tres bibliotecas de agentes exclusivas para rendimiento deportivo, coaching de fútbol y desarrollo profesional holístico.',
+      idx_beyond_sub: 'Finta incluye tres bibliotecas de agentes exclusivas para rendimiento deportivo, coaching de fútbol y desarrollo profesional holístico — creadas con el mismo rigor que el catálogo técnico.',
+      idx_sport_tag: 'rendimiento deportivo',
+      idx_sport_title: 'Agentes Multi-Deporte',
+      idx_sport_desc: '11 agentes especialistas que cubren biomecánica, preparación física, adquisición de habilidades, rendimiento mental, neurociencia del deporte, analítica y cultura de equipo — para cualquier deporte y nivel.',
+      idx_coaching_tag: 'coaching de fútbol',
+      idx_coaching_title: 'Agentes de Coaching de Fútbol',
+      idx_coaching_desc: '11 agentes específicos de fútbol con conocimiento táctico, físico y psicológico profundo — del juego posicional de Guardiola a la dinámica ecológica, de la periodización a los protocolos pre-partido.',
+      idx_holistic_tag: 'desarrollo holístico',
+      idx_holistic_title: 'Agentes de Desarrollo Profesional',
+      idx_holistic_desc: '12 agentes para el crecimiento personal y profesional — estrategia de carrera, inteligencia emocional, productividad, propósito y valores, ciencias del aprendizaje, resiliencia y rendimiento sostenible. Basado en evidencia.',
     },
+
+    // ── GERMAN ───────────────────────────────────────────────────────
     de: {
       idx_story_kicker: '// das Problem, das wir lösen',
-      idx_story_h2: 'Montagmorgen.<br>Neues Projekt. Leeres Repo.<br>Dein KI-Assistent ist <em>völlig verloren.</em>',
-      idx_story_body: 'Er kennt deinen Stack nicht. Er kennt deine Konventionen nicht. Er weiß nicht, ob du ein Fintech oder eine Sport-Analytics-Plattform baust. Jede Sitzung beginnt bei null. Du wiederholst dich. Es halluziniert. Du korrigierst. Wiederholen.',
+      idx_story_h2: 'Montagmorgen.<br>Neues Projekt. Leeres Repo.<br>Dein KI-Assistent ist völlig verloren.',
+      idx_story_body: 'Er kennt deinen Stack nicht. Er kennt deine Konventionen nicht. Er weiß nicht, ob du ein Fintech oder eine Sport-Analytics-Plattform baust. Jede Sitzung beginnt bei null. Du wiederholst dich. Es halluziniert. Du korrigierst. Und wieder von vorn.',
       idx_stl_pain: '// der Schmerz',
       idx_stl_pain_title: 'Session 1: „Welchen Stack verwenden wir?"',
+      idx_stl_pain_desc: 'Du tippst alles ein. React, TypeScript, Supabase, Stripe. Security first. Kein any. TDD. Es nickt. Du baust. In Session 3 hat es die Hälfte vergessen.',
       idx_stl_discovery: '// die Entdeckung',
-      idx_stl_discovery_title: 'Was wenn die KI eine Briefing-Datei hätte?',
-      idx_stl_problem: '// das Problem damit',
+      idx_stl_discovery_title: 'Was, wenn die KI eine Briefing-Datei hätte?',
+      idx_stl_discovery_desc: 'Eine CLAUDE.md, die alles enthält — Stack, Architektur, Agenten-Roster, Regeln, Standards — und zu Beginn jeder Sitzung automatisch gelesen wird. Nie wieder wiederholen.',
+      idx_stl_problem: '// das Problem dabei',
       idx_stl_problem_title: 'Es from scratch zu schreiben dauert Tage.',
+      idx_stl_problem_desc: 'Die richtigen Agenten recherchieren. Die richtigen Skills auswählen. Sicherheitsregeln schreiben. Die Architekturdokumentation strukturieren. Bis die KI konfiguriert ist, hättest du drei Features geliefert.',
       idx_stl_solution: '// die Lösung',
       idx_stl_solution_title: 'Finta erledigt das in 5 Minuten. Für jedes Projekt.',
+      idx_stl_solution_desc: 'Beantworte 13–29 Fragen. Unser Scoring-Engine wählt deine Agenten, baut deine Regeln, generiert deine Config. Herunterladen. Ablegen. Fertig. Neues Projekt oder bestehendes Codebase.',
       idx_beyond_label: '<span>//</span> jenseits des Codes',
       idx_beyond_h2: 'Nicht nur für Entwickler.',
-      idx_beyond_sub: 'Finta liefert jetzt drei exklusive Agenten-Bibliotheken für Sportleistung, Fußball-Coaching und ganzheitliche berufliche Entwicklung.',
+      idx_beyond_sub: 'Finta liefert drei exklusive Agenten-Bibliotheken für Sportperformance, Fußball-Coaching und ganzheitliche Personalentwicklung — mit derselben Präzision wie der technische Katalog.',
+      idx_sport_tag: 'sportliche Leistung',
+      idx_sport_title: 'Multi-Sport-Agenten',
+      idx_sport_desc: '11 Spezialisten-Agenten für Biomechanik, körperliche Vorbereitung, Technikerwerb, mentale Leistung, Sportneurowissenschaft, Analytik und Teamkultur — für jede Sportart und jedes Niveau.',
+      idx_coaching_tag: 'Fußball-Coaching',
+      idx_coaching_title: 'Fußball-Coaching-Agenten',
+      idx_coaching_desc: '11 fußballspezifische Agenten mit tiefem taktischen, körperlichen und psychologischen Wissen — von Guardiolas Positionsspiel bis zur ökologischen Dynamik, von der Periodisierung bis zum Vorspiel-Protokoll.',
+      idx_holistic_tag: 'ganzheitliche Entwicklung',
+      idx_holistic_title: 'Agenten für Personalentwicklung',
+      idx_holistic_desc: '12 Agenten für persönliches und berufliches Wachstum — Karrierestrategie, emotionale Intelligenz, Produktivität, Sinn & Werte, Lernwissenschaft, Resilienz und nachhaltige Leistung. Evidenzbasiert.',
     },
+
+    // ── PORTUGUESE ───────────────────────────────────────────────────
     pt: {
       idx_story_kicker: '// o problema que resolvemos',
+      idx_story_h2: 'Segunda-feira de manhã.<br>Novo projeto. Repositório vazio.<br>Seu assistente IA está completamente perdido.',
+      idx_story_body: 'Ele não conhece sua stack. Não conhece suas convenções. Não sabe se você está construindo uma fintech ou uma plataforma de análise esportiva. Cada sessão começa do zero. Você se repete. Ele alucina. Você corrige. Repete.',
+      idx_stl_pain: '// a dor',
+      idx_stl_pain_title: 'Sessão 1: "Qual stack estamos usando?"',
+      idx_stl_pain_desc: 'Você digita tudo. React, TypeScript, Supabase, Stripe. Segurança em primeiro lugar. Sem any types. TDD. Ele concorda. Você constrói. Ele esquece metade na sessão 3.',
+      idx_stl_discovery: '// a descoberta',
+      idx_stl_discovery_title: 'E se a IA tivesse um arquivo de briefing?',
+      idx_stl_discovery_desc: 'Um CLAUDE.md que diz tudo — stack, arquitetura, roster de agentes, regras, padrões — e é lido automaticamente no início de cada sessão. Sem se repetir. Nunca mais.',
+      idx_stl_problem: '// o problema com isso',
+      idx_stl_problem_title: 'Escrever do zero leva dias.',
+      idx_stl_problem_desc: 'Pesquisar os agentes certos. Escolher as skills certas. Escrever regras de segurança. Estruturar a doc de arquitetura. Quando termina de configurar a IA, você já poderia ter entregado três features.',
+      idx_stl_solution: '// a solução',
+      idx_stl_solution_title: 'A Finta faz isso em 5 minutos. Para qualquer projeto.',
+      idx_stl_solution_desc: 'Responda 13–29 perguntas. Nosso motor de scoring escolhe seus agentes, constrói suas regras, gera sua config. Baixe. Solte. Pronto. Projeto novo ou codebase existente.',
       idx_beyond_label: '<span>//</span> além do código',
       idx_beyond_h2: 'Não apenas para desenvolvedores.',
+      idx_beyond_sub: 'A Finta inclui três bibliotecas exclusivas de agentes para performance esportiva, coaching de futebol e desenvolvimento profissional holístico — construídas com o mesmo rigor do catálogo técnico.',
+      idx_sport_tag: 'performance esportiva',
+      idx_sport_title: 'Agentes Multi-Esporte',
+      idx_sport_desc: '11 agentes especialistas cobrindo biomecânica, preparação física, aquisição de habilidades, performance mental, neurociência do esporte, analytics e cultura de equipe — para qualquer esporte e nível.',
+      idx_coaching_tag: 'coaching de futebol',
+      idx_coaching_title: 'Agentes de Coaching de Futebol',
+      idx_coaching_desc: '11 agentes específicos para futebol com conhecimento tático, físico e psicológico aprofundado — do jogo posicional de Guardiola à dinâmica ecológica, da periodização aos protocolos pré-jogo.',
+      idx_holistic_tag: 'desenvolvimento holístico',
+      idx_holistic_title: 'Agentes de Desenvolvimento Profissional',
+      idx_holistic_desc: '12 agentes para crescimento pessoal e profissional — estratégia de carreira, inteligência emocional, produtividade, propósito e valores, ciências do aprendizado, resiliência e performance sustentável. Baseado em evidências.',
     },
+
+    // ── JAPANESE ─────────────────────────────────────────────────────
     ja: {
       idx_story_kicker: '// 私たちが解決する問題',
+      idx_story_h2: '月曜日の朝。<br>新プロジェクト。空のリポジトリ。<br>AIアシスタントは完全に迷っています。',
+      idx_story_body: 'あなたのスタックを知りません。コーディング規約も知りません。フィンテックを作っているのか、スポーツ分析プラットフォームを作っているのかも分かりません。毎セッション、ゼロから始まります。同じことを繰り返し説明し、幻覚を起こし、修正して、また繰り返す。',
+      idx_stl_pain: '// 課題',
+      idx_stl_pain_title: 'セッション1：「どのスタックを使いますか？」',
+      idx_stl_pain_desc: 'すべてを入力します。React、TypeScript、Supabase、Stripe。セキュリティ重視。anyは使わない。TDD。頷きます。構築します。セッション3には半分を忘れています。',
+      idx_stl_discovery: '// 発見',
+      idx_stl_discovery_title: 'AIにブリーフィングファイルがあったら？',
+      idx_stl_discovery_desc: 'すべてを記述したCLAUDE.md — スタック、アーキテクチャ、エージェント一覧、ルール、標準 — が毎セッションの開始時に自動的に読み込まれます。二度と繰り返す必要はありません。',
+      idx_stl_problem: '// そこにある問題',
+      idx_stl_problem_title: 'ゼロから書くには何日もかかる。',
+      idx_stl_problem_desc: '適切なエージェントを調査し、適切なスキルを選び、セキュリティルールを書き、アーキテクチャドキュメントを構造化する。AIの設定が終わる頃には、3つのフィーチャーを出荷できていたはずです。',
+      idx_stl_solution: '// 解決策',
+      idx_stl_solution_title: 'Fintaなら5分で完了。どんなプロジェクトでも。',
+      idx_stl_solution_desc: '13〜29の質問に答えるだけ。スコアリングエンジンがエージェントを選び、ルールを構築し、設定を生成します。ダウンロード。配置。完了。新規プロジェクトでも既存コードベースでも。',
       idx_beyond_label: '<span>//</span> コードを超えて',
       idx_beyond_h2: '開発者だけではありません。',
+      idx_beyond_sub: 'Fintaはスポーツパフォーマンス、フットボールコーチング、ホリスティックな専門能力開発のための3つの専用エージェントライブラリを提供しています。',
+      idx_sport_tag: 'スポーツパフォーマンス',
+      idx_sport_title: 'マルチスポーツエージェント',
+      idx_sport_desc: '11のスペシャリストエージェントがバイオメカニクス、フィジカル準備、スキル習得、メンタルパフォーマンス、スポーツ神経科学、アナリティクス、チームカルチャーをカバー — あらゆるスポーツ・レベルに対応。',
+      idx_coaching_tag: 'フットボールコーチング',
+      idx_coaching_title: 'フットボールコーチングエージェント',
+      idx_coaching_desc: '11のフットボール専門エージェント。グアルディオラのポジショナルプレーから生態学的ダイナミクス、ピリオダイゼーションから試合前プロトコルまで、深い戦術・フィジカル・心理的知識を持つ。',
+      idx_holistic_tag: 'ホリスティック開発',
+      idx_holistic_title: 'プロフェッショナル開発エージェント',
+      idx_holistic_desc: '12のエージェントが個人・職業的成長をサポート — キャリア戦略、感情知性、生産性、目的と価値観、学習科学、レジリエンス、持続可能なパフォーマンス。エビデンスに基づく。',
     },
+
+    // ── CHINESE (SIMPLIFIED) ─────────────────────────────────────────
     zh: {
       idx_story_kicker: '// 我们解决的问题',
+      idx_story_h2: '周一早晨。<br>新项目，空仓库。<br>你的AI助手完全迷失了。',
+      idx_story_body: '它不了解你的技术栈，不了解你的编码规范，不知道你是在构建金融科技产品还是体育分析平台。每次会话都从零开始，你不断重复自己，它不断幻觉，你不断纠正，周而复始。',
+      idx_stl_pain: '// 痛点',
+      idx_stl_pain_title: '第1次会话："我们用什么技术栈？"',
+      idx_stl_pain_desc: '你全部输入一遍。React、TypeScript、Supabase、Stripe。安全优先。不用 any。TDD。它点头。你开始构建。到第3次会话，它已经忘了一半。',
+      idx_stl_discovery: '// 发现',
+      idx_stl_discovery_title: '如果AI有一个简报文件呢？',
+      idx_stl_discovery_desc: '一个包含所有内容的 CLAUDE.md —— 技术栈、架构、代理列表、规则、标准 —— 在每次会话开始时自动读取。再也不用重复自己。',
+      idx_stl_problem: '// 问题所在',
+      idx_stl_problem_title: '从头开始写需要好几天。',
+      idx_stl_problem_desc: '研究合适的代理，挑选合适的技能，编写安全规则，整理架构文档。等你配置好AI，你本可以交付三个功能了。',
+      idx_stl_solution: '// 解决方案',
+      idx_stl_solution_title: 'Finta只需5分钟。适用于任何项目。',
+      idx_stl_solution_desc: '回答13–29个问题。我们的评分引擎选择你的代理、构建你的规则、生成你的配置。下载。放置。完成。无论是新项目还是现有代码库。',
       idx_beyond_label: '<span>//</span> 超越代码',
       idx_beyond_h2: '不仅仅面向开发者。',
+      idx_beyond_sub: 'Finta提供三个专属代理库，分别面向运动表现、足球教练和全面职业发展——与技术目录具有相同的严格标准。',
+      idx_sport_tag: '运动表现',
+      idx_sport_title: '多运动项目代理',
+      idx_sport_desc: '11个专业代理，涵盖生物力学、体能准备、技能习得、心理表现、运动神经科学、数据分析和团队文化——适用于任何运动项目和级别。',
+      idx_coaching_tag: '足球教练',
+      idx_coaching_title: '足球教练代理',
+      idx_coaching_desc: '11个足球专项代理，具备深厚的战术、体能和心理知识——从瓜迪奥拉的位置性踢法到生态动力学，从周期化训练到赛前协议。',
+      idx_holistic_tag: '全面发展',
+      idx_holistic_title: '职业发展代理',
+      idx_holistic_desc: '12个代理助力个人与职业成长——职业战略、情商、生产力、目标与价值观、学习科学、韧性与可持续表现。以证据为基础。',
     },
+
+    // ── KOREAN ───────────────────────────────────────────────────────
     ko: {
       idx_story_kicker: '// 우리가 해결하는 문제',
+      idx_story_h2: '월요일 아침.<br>새 프로젝트. 빈 저장소.<br>AI 어시스턴트가 완전히 길을 잃었습니다.',
+      idx_story_body: '기술 스택을 모릅니다. 코딩 규칙을 모릅니다. 핀테크를 만드는지 스포츠 분석 플랫폼을 만드는지도 모릅니다. 매 세션마다 처음부터 시작합니다. 반복해서 설명하고, 환각이 일어나고, 수정하고, 또 반복합니다.',
+      idx_stl_pain: '// 고통',
+      idx_stl_pain_title: '세션 1: "어떤 스택을 사용하나요?"',
+      idx_stl_pain_desc: '모두 입력합니다. React, TypeScript, Supabase, Stripe. 보안 우선. any 타입 금지. TDD. 고개를 끄덕입니다. 개발을 시작합니다. 세션 3이 되면 절반을 잊어버렸습니다.',
+      idx_stl_discovery: '// 발견',
+      idx_stl_discovery_title: 'AI에게 브리핑 파일이 있다면?',
+      idx_stl_discovery_desc: '모든 것을 담은 CLAUDE.md — 스택, 아키텍처, 에이전트 목록, 규칙, 표준 — 가 매 세션 시작 시 자동으로 읽힙니다. 두 번 다시 반복할 필요가 없습니다.',
+      idx_stl_problem: '// 그 문제점',
+      idx_stl_problem_title: '처음부터 작성하는 데 며칠이 걸립니다.',
+      idx_stl_problem_desc: '적합한 에이전트를 조사하고, 적합한 스킬을 고르고, 보안 규칙을 작성하고, 아키텍처 문서를 구성합니다. AI 설정이 끝날 때쯤이면 세 가지 기능을 이미 출시했을 수도 있습니다.',
+      idx_stl_solution: '// 해결책',
+      idx_stl_solution_title: 'Finta는 5분이면 됩니다. 모든 프로젝트에서.',
+      idx_stl_solution_desc: '13–29개의 질문에 답하세요. 스코어링 엔진이 에이전트를 선택하고, 규칙을 구성하고, 설정을 생성합니다. 다운로드. 배치. 완료. 새 프로젝트든 기존 코드베이스든.',
       idx_beyond_label: '<span>//</span> 코드를 넘어서',
       idx_beyond_h2: '개발자만을 위한 것이 아닙니다.',
+      idx_beyond_sub: 'Finta는 스포츠 퍼포먼스, 축구 코칭, 전인적 전문 개발을 위한 세 가지 독점 에이전트 라이브러리를 제공합니다 — 기술 카탈로그와 동일한 엄격한 기준으로 제작되었습니다.',
+      idx_sport_tag: '스포츠 퍼포먼스',
+      idx_sport_title: '멀티스포츠 에이전트',
+      idx_sport_desc: '생체역학, 체력 준비, 기술 습득, 멘탈 퍼포먼스, 스포츠 신경과학, 분석, 팀 문화를 다루는 11개 전문 에이전트 — 모든 스포츠, 모든 수준에 적용.',
+      idx_coaching_tag: '축구 코칭',
+      idx_coaching_title: '축구 코칭 에이전트',
+      idx_coaching_desc: '11개의 축구 전문 에이전트. 과르디올라의 포지셔널 플레이부터 생태학적 역학, 주기화 훈련부터 경기 전 프로토콜까지 깊은 전술·체력·심리 지식을 보유.',
+      idx_holistic_tag: '홀리스틱 개발',
+      idx_holistic_title: '전문성 개발 에이전트',
+      idx_holistic_desc: '개인 및 직업적 성장을 위한 12개 에이전트 — 커리어 전략, 감성 지능, 생산성, 목적과 가치관, 학습 과학, 회복력, 지속 가능한 퍼포먼스. 근거 기반.',
     },
+
   };
 
   function applyIndexI18n(lang) {
@@ -789,6 +1203,8 @@
       else if (IDX_TRANSLATIONS.en[key] !== undefined) el.innerHTML = IDX_TRANSLATIONS.en[key];
     });
   }
+  // Expose globally so index.js applyLang() can call it after each lang switch
+  window.applyIndexI18n = applyIndexI18n;
 
   function detectIndexLang() {
     const url = new URL(window.location.href);
@@ -800,9 +1216,19 @@
     return SUPPORTED.includes(browser) ? browser : 'en';
   }
 
-  // Expose pickLang and toggleLangMenu if not already defined
+  // Expose pickLang and toggleLangMenu if not already defined by index.js
   if (typeof window.pickLang !== 'function') {
-    const LANG_FLAGS_IDX = {en:'https://flagcdn.com/w40/gb.png',fr:'https://flagcdn.com/w40/fr.png',es:'https://flagcdn.com/w40/es.png',de:'https://flagcdn.com/w40/de.png',pt:'https://flagcdn.com/w40/pt.png',ja:'https://flagcdn.com/w40/jp.png',zh:'https://flagcdn.com/w40/cn.png',ko:'https://flagcdn.com/w40/kr.png'};
+    const LANG_FLAGS_IDX = {
+      en: 'https://flagcdn.com/w40/gb.png',
+      fr: 'https://flagcdn.com/w40/fr.png',
+      es: 'https://flagcdn.com/w40/es.png',
+      de: 'https://flagcdn.com/w40/de.png',
+      pt: 'https://flagcdn.com/w40/pt.png',
+      ja: 'https://flagcdn.com/w40/jp.png',
+      zh: 'https://flagcdn.com/w40/cn.png',
+      ko: 'https://flagcdn.com/w40/kr.png',
+    };
+
     window.toggleLangMenu = function() {
       const m = document.getElementById('lang-menu');
       const t = document.getElementById('lang-trigger');
@@ -812,16 +1238,21 @@
       if (!m.hidden) {
         setTimeout(() => document.addEventListener('click', function h(e) {
           const lf = document.getElementById('lang-float');
-          if (!lf || !lf.contains(e.target)) { m.hidden = true; if (t) t.setAttribute('aria-expanded','false'); }
-          else document.addEventListener('click', h, {once:true});
-        }, {once:true}), 0);
+          if (!lf || !lf.contains(e.target)) {
+            m.hidden = true;
+            if (t) t.setAttribute('aria-expanded', 'false');
+          } else {
+            document.addEventListener('click', h, { once: true });
+          }
+        }, { once: true }), 0);
       }
     };
+
     window.pickLang = function(lang) {
       const m = document.getElementById('lang-menu');
       if (m) m.hidden = true;
       const t = document.getElementById('lang-trigger');
-      if (t) t.setAttribute('aria-expanded','false');
+      if (t) t.setAttribute('aria-expanded', 'false');
       localStorage.setItem('index-lang', lang);
       const flag = document.getElementById('lang-flag');
       const code = document.getElementById('lang-code');
@@ -840,9 +1271,18 @@
     const lang = detectIndexLang();
     if (lang !== 'en') {
       applyIndexI18n(lang);
+      const LANG_FLAGS_IDX = {
+        en: 'https://flagcdn.com/w40/gb.png',
+        fr: 'https://flagcdn.com/w40/fr.png',
+        es: 'https://flagcdn.com/w40/es.png',
+        de: 'https://flagcdn.com/w40/de.png',
+        pt: 'https://flagcdn.com/w40/pt.png',
+        ja: 'https://flagcdn.com/w40/jp.png',
+        zh: 'https://flagcdn.com/w40/cn.png',
+        ko: 'https://flagcdn.com/w40/kr.png',
+      };
       const flag = document.getElementById('lang-flag');
       const code = document.getElementById('lang-code');
-      const LANG_FLAGS_IDX = {en:'https://flagcdn.com/w40/gb.png',fr:'https://flagcdn.com/w40/fr.png',es:'https://flagcdn.com/w40/es.png',de:'https://flagcdn.com/w40/de.png',pt:'https://flagcdn.com/w40/pt.png',ja:'https://flagcdn.com/w40/jp.png',zh:'https://flagcdn.com/w40/cn.png',ko:'https://flagcdn.com/w40/kr.png'};
       if (flag && LANG_FLAGS_IDX[lang]) { flag.src = LANG_FLAGS_IDX[lang]; flag.alt = lang.toUpperCase(); }
       if (code) code.textContent = lang.toUpperCase();
       document.querySelectorAll('.lang-opt').forEach(b => b.classList.toggle('act', b.dataset.lang === lang));
@@ -852,7 +1292,7 @@
 </script>
 
 <script>
-/* ── TIMELINE DOTS INTERSECTION OBSERVER ── */
+/* ── TIMELINE DOTS INTERSECTION OBSERVER ──────────────────── */
 (function() {
   const dots = document.querySelectorAll('.stl-dot');
   if (!dots.length) return;
@@ -867,34 +1307,35 @@
   dots.forEach(d => obs.observe(d));
 })();
 
-/* ── STAT BAR: handle prefix/suffix divs ── */
+/* ── STAT BAR: handle prefix/suffix divs ──────────────────── */
 (function() {
-  document.querySelectorAll('.stat-prefix,.stat-suffix').forEach(el => {
-    el.style.display = 'inline';
-    el.style.fontSize = '.72rem';
-    el.style.color = 'var(--mut,#555)';
+  document.querySelectorAll('.stat-prefix, .stat-suffix').forEach(el => {
+    el.style.display    = 'inline';
+    el.style.fontSize   = '.72rem';
+    el.style.color      = 'var(--mut, #7a5500)';
     el.style.fontFamily = 'inherit';
   });
-  const nums = document.querySelectorAll('.stat-item');
-  nums.forEach(item => {
+
+  const items = document.querySelectorAll('.stat-item');
+  items.forEach(item => {
     const inner = item.querySelector('.stat-prefix, .stat-suffix, .stat-num');
     if (inner) {
-      item.style.display = 'flex';
+      item.style.display       = 'flex';
       item.style.flexDirection = 'column';
-      item.style.alignItems = 'center';
+      item.style.alignItems    = 'center';
     }
-    // merge prefix+num+suffix into a row
+    // Merge prefix + num + suffix into a single baseline row
     const pre = item.querySelector('.stat-prefix');
     const num = item.querySelector('.stat-num');
     const suf = item.querySelector('.stat-suffix');
     if ((pre || suf) && num) {
       const row = document.createElement('div');
-      row.style.display = 'flex';
+      row.style.display    = 'flex';
       row.style.alignItems = 'baseline';
-      row.style.gap = '0';
-      if (pre) { row.appendChild(pre); }
+      row.style.gap        = '0';
+      if (pre) row.appendChild(pre);
       row.appendChild(num);
-      if (suf) { row.appendChild(suf); }
+      if (suf) row.appendChild(suf);
       item.insertBefore(row, item.querySelector('.stat-label'));
     }
   });
