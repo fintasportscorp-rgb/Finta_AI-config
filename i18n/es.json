@@ -168,7 +168,14 @@
     "orch_type_custom_desc": "Conexiones libres — diseña tu propia topología",
     "loop_layer_title": "Capa de ejecución en bucle (loop/)",
     "loop_layer_desc": "Añade un bundle de agente con bucle ejecutable — contrato AGENT.md, salvaguardas aplicadas por un runner Python, memoria en disco y verificación de dos modos — preconfigurado según tus respuestas.",
-    "loop_layer_customize": "Ajustar en Loop Forge"
+    "loop_layer_customize": "Ajustar en Loop Forge",
+    "lean_title": "Stubs de agentes compactos (modo lean)",
+    "lean_desc": "Incluye solo rol + salvaguardas en vez de personas completas: los modelos frontier no necesitan la prosa, y cada persona se relee en cada sesión. Recomendado con más de 7 agentes.",
+    "agent_budget_warn": "⚠ {n} agentes seleccionados: cada persona completa consume contexto en cada sesión. Considera recortar; si no, se sugerirá el modo lean al generar.",
+    "hv_domain": "dominio",
+    "hv_domain_tip": "Experiencia de dominio que tu modelo no tiene por defecto: vale sus tokens en cualquier modelo.",
+    "hv_skill": "alto valor",
+    "hv_skill_tip": "Conocimiento procedimental que ningún modelo puede derivar solo: alto valor en cualquier modelo."
   },
   "levels": {
     "fast": {

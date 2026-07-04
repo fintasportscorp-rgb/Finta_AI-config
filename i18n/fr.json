@@ -168,7 +168,14 @@
     "orch_type_custom_desc": "Connexions libres — concevez votre propre topologie",
     "loop_layer_title": "Couche d'exécution en boucle (loop/)",
     "loop_layer_desc": "Ajoute un bundle d'agent à boucle exécutable — contrat AGENT.md, garde-fous appliqués par un runner Python, mémoire sur disque et vérification à deux modes — préconfiguré depuis vos réponses.",
-    "loop_layer_customize": "Affiner dans Loop Forge"
+    "loop_layer_customize": "Affiner dans Loop Forge",
+    "lean_title": "Stubs d’agents compacts (mode lean)",
+    "lean_desc": "Ne garde que le rôle + les garde-fous au lieu des personas complets — les modèles frontier n’ont pas besoin de la prose, et chaque persona est relu à chaque session. Recommandé au-delà de 7 agents.",
+    "agent_budget_warn": "⚠ {n} agents sélectionnés — chaque persona complet coûte du contexte à chaque session. Pensez à élaguer, sinon le mode lean sera proposé à la génération.",
+    "hv_domain": "domaine",
+    "hv_domain_tip": "Expertise métier que votre modèle n’a pas par défaut — rentable sur tous les modèles.",
+    "hv_skill": "haute valeur",
+    "hv_skill_tip": "Savoir procédural qu’aucun modèle ne peut déduire seul — haute valeur sur tous les modèles."
   },
   "levels": {
     "fast": {

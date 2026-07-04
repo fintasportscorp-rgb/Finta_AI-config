@@ -168,7 +168,14 @@
     "orch_type_custom_desc": "Freie Verbindungen — eigene Topologie gestalten",
     "loop_layer_title": "Loop-Ausführungsschicht (loop/)",
     "loop_layer_desc": "Fügt ein ausführbares Agent-Loop-Bundle hinzu — AGENT.md-Vertrag, per Python-Runner erzwungene Leitplanken, Speicher auf der Festplatte und Zwei-Modus-Verifikation — vorkonfiguriert aus deinen Antworten.",
-    "loop_layer_customize": "In Loop Forge verfeinern"
+    "loop_layer_customize": "In Loop Forge verfeinern",
+    "lean_title": "Kompakte Agent-Stubs (Lean-Modus)",
+    "lean_desc": "Liefert nur Rolle + Leitplanken statt voller Personas — Frontier-Modelle brauchen die Prosa nicht, und jede Persona wird jede Session neu gelesen. Empfohlen ab 7 Agenten.",
+    "agent_budget_warn": "⚠ {n} Agenten ausgewählt — jede volle Persona kostet in jeder Session Kontext. Kürzen erwägen, sonst wird beim Generieren der Lean-Modus vorgeschlagen.",
+    "hv_domain": "Domäne",
+    "hv_domain_tip": "Fachwissen, das dein Modell nicht von Haus aus hat — auf jedem Modell die Tokens wert.",
+    "hv_skill": "hochwertig",
+    "hv_skill_tip": "Prozedurales Wissen, das kein Modell selbst herleiten kann — hochwertig auf jedem Modell."
   },
   "levels": {
     "fast": {

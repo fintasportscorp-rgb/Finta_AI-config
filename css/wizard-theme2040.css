@@ -166,3 +166,15 @@ input[type=text]:focus, textarea:focus, .ap-search:focus {
 
 /* Round the language float to match */
 #lang-float button, #lang-menu { border-radius: 999px !important; }
+
+/* High-value badge — model-fit signal, not popularity */
+.ac-hv {
+  font-size: .62rem;
+  letter-spacing: .06em;
+  padding: .1rem .45rem;
+  border-radius: 999px;
+  color: var(--acc);
+  border: 1px solid var(--acd);
+  background: var(--acd);
+  white-space: nowrap;
+}

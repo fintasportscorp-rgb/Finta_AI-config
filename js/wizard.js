@@ -366,6 +366,7 @@ function agentCardHtml(a, selected, recIds) {
       <span class="ac-cat cat-${a.category}">${CAT_LABELS[a.category]||a.category}</span>
       <span class="ac-tier tier-${tier}">${tier}</span>
       <span class="ac-quality">${qualityStars(quality)}</span>
+      ${a.source === 'finta' ? `<span class="ac-hv" title="${t('hv_domain_tip')}">◆ ${t('hv_domain')}</span>` : ''}
     </div>
   </div>`;
 }
@@ -555,6 +556,7 @@ function skillCardHtml(s, selected, recIds) {
       <span class="ac-cat cat-${s.category}">${SKILL_CAT_LABELS[s.category]||s.category}</span>
       <span class="ac-tier tier-${tier}">${tier}</span>
       <span class="ac-quality">${qualityStars(quality)}</span>
+      ${tier === 'official' ? `<span class="ac-hv" title="${t('hv_skill_tip')}">⚡ ${t('hv_skill')}</span>` : ''}
     </div>
   </div>`;
 }
@@ -803,7 +805,22 @@ function toggleAgent(id) {
   }
 
   const c = document.getElementById('agent-count');
-  if (c) c.textContent = t('agents_selected',{n:a.length});
+  if (c) {
+    c.textContent = t('agents_selected',{n:a.length});
+    // Context-budget guard: every persona is re-read each session
+    let w = document.getElementById('agent-budget-warn');
+    if (a.length > 7) {
+      if (!w) {
+        w = document.createElement('span');
+        w.id = 'agent-budget-warn';
+        w.style.cssText = 'display:block;margin-top:.3rem;font-size:.74rem;color:var(--amb)';
+        c.parentNode.insertBefore(w, c.nextSibling);
+      }
+      w.textContent = t('agent_budget_warn', { n: a.length });
+    } else if (w) {
+      w.remove();
+    }
+  }
 
   refreshSidenavChecks();
   saveSession();
@@ -2761,7 +2778,8 @@ function generateFiles(ans, level, agentContents = {}, skillContents = {}, comma
     const agent = AGENTS_CATALOG.find(a => a.id === id);
     if (!agent) return;
     const orchCtx = agentOrchContext[id] || '';
-    F[`${cfg}/agents/${agent.name}.md`] = content + orchCtx;
+    const body = ans.lean_agents === 'yes' ? compactAgentStub(content, agent) : content;
+    F[`${cfg}/agents/${agent.name}.md`] = body + orchCtx;
   });
 
   // ── Skills (catalog-driven) ──────────────────────────────
@@ -3221,6 +3239,24 @@ function generateFiles(ans, level, agentContents = {}, skillContents = {}, comma
     `_Re-run this prompt after adding a dependency or making a major architectural change._`
   ].filter(l => l !== null).join('\n');
 
+  // ── Definition of Done (all users, loop layer or not) ─────
+  // The single highest-value line of a config: when does work count as
+  // finished? Same command derivation as the loop layer — one source.
+  {
+    const chk = deriveCheckCommands({ cmds, hasPy, hasTS, hasGo, hasRust });
+    const cmdsList = [chk.testCmd, chk.lintCmd].filter(Boolean);
+    F[mainFile] += [
+      ``, ``, `## Definition of Done`,
+      cmdsList.length
+        ? `Work counts as DONE only when every command below exits 0. Never declare completion from reading the code — run them.`
+        : `⚠ No verification command could be derived from this stack. Before any substantial task, ask the user: "which command proves this work is correct?" — and record the answer here.`,
+      ...(cmdsList.length ? ['```bash', ...cmdsList, '```'] : []),
+      `- Run the checks BEFORE reporting completion; if one fails, report the failing output — never "should work now".`,
+      `- A change with no covering test: say so explicitly and propose one. Silence is not verification.`,
+      coverage && coverage !== '0' ? `- Coverage target: ${coverage}% minimum on changed code.` : null,
+    ].filter(l => l !== null).join('\n');
+  }
+
   // ── Loop execution layer (shared with Loop Forge) ─────────
   // Generated at project root (loop/<agent>/), tool-agnostic on purpose:
   // memory files and the Python runner don't belong inside .claude/-style
@@ -3245,6 +3281,45 @@ function generateFiles(ans, level, agentContents = {}, skillContents = {}, comma
   return F;
 }
 
+// ── Derive real check commands from the stack/package manager ─
+// Used by BOTH the Definition of Done section and the loop layer.
+function deriveCheckCommands(d) {
+  const usable = c => c && !/définir|define/i.test(c);
+  const testCmd = (d.cmds && usable(d.cmds.test)) ? d.cmds.test
+                : d.hasPy ? 'python -m pytest -q'
+                : d.hasGo ? 'go test ./...'
+                : d.hasRust ? 'cargo test'
+                : d.hasTS ? 'npm test' : '';
+  const lintCmd = (d.cmds && usable(d.cmds.lint)) ? d.cmds.lint
+                : d.hasPy ? 'ruff check .' : d.hasTS ? 'npx eslint .' : '';
+  return { testCmd, lintCmd };
+}
+
+// ── Compact agent stub (lean mode) ──────────────────────────
+// Keeps identity + guardrails, drops the prose a frontier model doesn't
+// need. Full personas cost tokens every session; stubs keep the routing
+// and the constraints.
+function compactAgentStub(content, agent) {
+  const lines = content.split('\n');
+  const out = [];
+  // frontmatter block
+  if (lines[0] === '---') {
+    const end = lines.indexOf('---', 1);
+    if (end > 0) out.push(...lines.slice(0, end + 1), '');
+  }
+  // keep only identity/guardrail sections
+  const KEEP = /^#{1,3}\s.*(role|behavior|rule|guardrail|never|always|focus|invocation|when to use)/i;
+  let keeping = false, kept = 0;
+  for (const line of lines) {
+    if (/^#{1,3}\s/.test(line)) keeping = KEEP.test(line);
+    if (keeping && kept < 60) { out.push(line); kept++; }
+  }
+  if (kept === 0) out.push(...lines.slice(0, 30)); // fallback: file head
+  out.push('', '---',
+    `_Compact stub (lean mode) — full persona omitted to save context. Frontier models don't need the prose; the guardrails above still apply. Full version: ${agent.source || 'catalog'} / ${agent.name}._`);
+  return out.join('\n');
+}
+
 // ── Derive a Loop Forge config from wizard answers ──────────
 // The wizard already knows the stack, TDD discipline, autonomy level and
 // constraints — no need to ask twice. Users can fine-tune in Loop Forge.
@@ -3261,14 +3336,8 @@ function deriveLoopConfig(ans, d) {
   // TDD discipline → how much proof is required to stop
   const threshold = d.tdd === 'tdd_strict' ? 90 : d.tdd === 'tdd_soft' ? 85 : d.tdd === 'critical' ? 80 : 70;
 
-  // Stack → deterministic verification commands
-  const testCmd = (d.cmds && d.cmds.test && !/définir|define/i.test(d.cmds.test)) ? d.cmds.test
-                : d.hasPy ? 'python -m pytest -q'
-                : d.hasGo ? 'go test ./...'
-                : d.hasRust ? 'cargo test'
-                : d.hasTS ? 'npm test' : '';
-  const lintCmd = (d.cmds && d.cmds.lint && !/définir|define/i.test(d.cmds.lint)) ? d.cmds.lint
-                : d.hasPy ? 'ruff check .' : d.hasTS ? 'npx eslint .' : '';
+  // Stack → deterministic verification commands (shared with the DoD section)
+  const { testCmd, lintCmd } = deriveCheckCommands(d);
   const criteria = [];
   if (testCmd) criteria.push({ label: 'Test suite passes', mode: 'deterministic', check: testCmd, weight: 3 });
   if (lintCmd) criteria.push({ label: 'Lint passes', mode: 'deterministic', check: lintCmd, weight: 1 });
@@ -3966,6 +4035,8 @@ async function rResults(el) {
   const isMultiTool = aiToolsAll.length > 1;
   // Loop layer default: on for coders (Advanced/Deep), off for no-code Fast
   if (S.ans.loop_layer === undefined) S.ans.loop_layer = (S.level === 'fast' ? 'no' : 'yes');
+  // Lean agents default: on when the selection is heavy enough to bloat context
+  if (S.ans.lean_agents === undefined) S.ans.lean_agents = ((S.ans.agents_wanted || []).length > 7 ? 'yes' : 'no');
   const files = isMultiTool
     ? buildMultiToolFiles(S.ans, S.level, aiToolsAll, agentContents, skillContents, commandContents)
     : generateFiles(S.ans, S.level, agentContents, skillContents, commandContents);
@@ -4049,6 +4120,16 @@ ${buildAnsPanel()}
     </span>
   </label>
   <a href="./loopforge.html" target="_blank" rel="noopener" class="btn bs" style="text-decoration:none">${t('loop_layer_customize')} →</a>
+</div>
+<div class="boot-box">
+  <label style="display:flex;align-items:flex-start;gap:.7rem;cursor:pointer">
+    <input type="checkbox" ${S.ans.lean_agents === 'yes' ? 'checked' : ''} onchange="toggleLeanAgents(this)" style="margin-top:.3rem;accent-color:var(--grn);width:16px;height:16px;cursor:pointer">
+    <span>
+      <strong style="color:var(--grn)">${t('lean_title')}</strong>
+      <span style="font-size:.72rem;color:var(--mut);margin-left:.4rem">${(S.ans.agents_wanted||[]).length} agents</span><br>
+      <span style="font-size:.8rem;color:var(--grn3)">${t('lean_desc')}</span>
+    </span>
+  </label>
 </div>
 <div class="dls">
   <button class="btndl" onclick="dlZip()">${dlLabel}</button>
@@ -4361,6 +4442,12 @@ function toggleLoopLayer(cb) {
   S.ans.loop_layer = cb.checked ? 'yes' : 'no';
   saveSession();
   render(); // regenerate results with/without the loop/ bundle
+}
+
+function toggleLeanAgents(cb) {
+  S.ans.lean_agents = cb.checked ? 'yes' : 'no';
+  saveSession();
+  render(); // regenerate agent files as stubs or full personas
 }
 
 function buildBootPromptText(ans, name) {
