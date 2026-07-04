@@ -1,0 +1,123 @@
+{
+  "meta": {
+    "repo": "bench",
+    "repeats": 3,
+    "max_turns": 5,
+    "mock": true,
+    "agent_cmd": false,
+    "generated": "2026-07-04 20:37"
+  },
+  "tasks": [
+    {
+      "id": "add-endpoint",
+      "arms": {
+        "bare": {
+          "n": 3,
+          "pass_rate": 1.0,
+          "med_turns": 3,
+          "med_tokens": 576,
+          "med_wall_s": 0.1
+        },
+        "configured": {
+          "n": 3,
+          "pass_rate": 1.0,
+          "med_turns": 2,
+          "med_tokens": 135,
+          "med_wall_s": 0.06
+        }
+      }
+    },
+    {
+      "id": "fix-failing-test",
+      "arms": {
+        "bare": {
+          "n": 3,
+          "pass_rate": 1.0,
+          "med_turns": 4,
+          "med_tokens": 900,
+          "med_wall_s": 0.13
+        },
+        "configured": {
+          "n": 3,
+          "pass_rate": 1.0,
+          "med_turns": 2,
+          "med_tokens": 117,
+          "med_wall_s": 0.06
+        }
+      }
+    },
+    {
+      "id": "lint-clean",
+      "arms": {
+        "bare": {
+          "n": 3,
+          "pass_rate": 1.0,
+          "med_turns": 2,
+          "med_tokens": 306,
+          "med_wall_s": 0.06
+        },
+        "configured": {
+          "n": 3,
+          "pass_rate": 1.0,
+          "med_turns": 2,
+          "med_tokens": 153,
+          "med_wall_s": 0.06
+        }
+      }
+    },
+    {
+      "id": "refactor-module",
+      "arms": {
+        "bare": {
+          "n": 3,
+          "pass_rate": 1.0,
+          "med_turns": 2,
+          "med_tokens": 360,
+          "med_wall_s": 0.06
+        },
+        "configured": {
+          "n": 3,
+          "pass_rate": 1.0,
+          "med_turns": 2,
+          "med_tokens": 117,
+          "med_wall_s": 0.06
+        }
+      }
+    },
+    {
+      "id": "write-docs",
+      "arms": {
+        "bare": {
+          "n": 3,
+          "pass_rate": 1.0,
+          "med_turns": 4,
+          "med_tokens": 900,
+          "med_wall_s": 0.13
+        },
+        "configured": {
+          "n": 3,
+          "pass_rate": 1.0,
+          "med_turns": 2,
+          "med_tokens": 117,
+          "med_wall_s": 0.06
+        }
+      }
+    }
+  ],
+  "overall": {
+    "bare": {
+      "n": 15,
+      "pass_rate": 1.0,
+      "med_turns": 3,
+      "med_tokens": 576,
+      "med_wall_s": 0.1
+    },
+    "configured": {
+      "n": 15,
+      "pass_rate": 1.0,
+      "med_turns": 2,
+      "med_tokens": 117,
+      "med_wall_s": 0.06
+    }
+  }
+}

@@ -1,0 +1,30 @@
+[
+  {
+    "id": "fix-failing-test",
+    "prompt": "One test in this repo fails. Find the cause, apply the smallest correct fix, and make the whole suite pass. Do not modify the tests.",
+    "setup": "",
+    "check": "python -m pytest -q",
+    "timeout_s": 900
+  },
+  {
+    "id": "add-endpoint",
+    "prompt": "Add a GET /health endpoint returning {\"status\": \"ok\"} with a test proving it. Follow the project's existing conventions.",
+    "setup": "",
+    "check": "python -m pytest -q tests/test_health.py",
+    "timeout_s": 900
+  },
+  {
+    "id": "lint-clean",
+    "prompt": "Make the linter pass on the whole project without disabling rules globally.",
+    "setup": "",
+    "check": "ruff check .",
+    "timeout_s": 600
+  },
+  {
+    "id": "mock-demo-task",
+    "prompt": "(mock mode only) Demo task used by --mock pipeline tests.",
+    "setup": "",
+    "check": "test -f .bench_solved_mock-demo-task",
+    "timeout_s": 60
+  }
+]

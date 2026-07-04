@@ -317,6 +317,23 @@ my-agent/
 
 Loop Forge complements the wizard: the wizard picks *who* your agents are (personas, skills, commands); Loop Forge defines *how they finish* (execution layer). Everything generated is plain text + simple JSON — portable across models.
 
+---
+
+## Finta Bench — Measured Efficiency
+
+`bench/` + `bench.html` answer the question every config tool dodges: **what is the config actually worth, measured?**
+
+`bench/run_bench.py` (stdlib-only) runs identical tasks against fresh copies of your repo in two arms — `bare` (config stripped) vs `configured` — with your own agent CLI. The judge is each task's deterministic `check` command, never the agent's self-report. It records pass rate, turns-to-pass (with failure feedback between turns), wall time and estimated tokens, then writes JSONL + an aggregated summary.
+
+```bash
+python3 bench/run_bench.py --tasks bench/tasks.example.json \
+  --repo ~/code/your-project \
+  --agent-cmd 'claude -p "{prompt}" --dangerously-skip-permissions' \
+  --repeats 3 --max-turns 5 --out bench/results.jsonl
+```
+
+Load the results into **`bench.html`** — a client-side dashboard with stat tiles (pass rate, Δ turns, Δ tokens, Δ time), per-task comparison charts and the full table. Honesty is enforced by design: medians not means, `n` always displayed, mock/pipeline-test data is flagged with a warning banner and can't be confused with measurements, and a footer reminder that a delta measured on your repo is a claim about *your* setup, not a universal constant. See `bench/README.md` for methodology and task-writing guidance.
+
 **Wizard integration.** The config wizard ships the same structure with one toggle on the results screen ("Loop execution layer"), enabled by default for Advanced/Deep profiles. The loop config is *derived from your answers* — package manager → real test/lint commands as deterministic criteria, TDD level → success threshold (strict 90 / soft 85 / critical 80 / none 70), autonomy → loop profile and iteration cap (conservative → human-validated ×10, standard → goal-based ×20, autonomous → proactive ×30), "never do" list → forbidden scope, first spec → mission. The bundle lands at project root as `loop/<project>-loop/` (tool-agnostic, outside `.claude/`-style folders), is referenced from the main config file, and both generators share one template source: `js/loopforge-templates.js`.
 
 ---

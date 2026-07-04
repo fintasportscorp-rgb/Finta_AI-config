@@ -1,0 +1,144 @@
+/* ════════════════════════════════════════════════════════════════
+   FINTA 2040 — BENCH DASHBOARD
+   Chart colors are role tokens, validated with the dataviz six
+   checks against both surfaces (see bench notes):
+     light: with-config #2a78d6 · bare #1baf7a (relief: direct labels + table)
+     dark : with-config #3987e5 · bare #199e70
+   ════════════════════════════════════════════════════════════════ */
+
+:root {
+  --viz-configured: #3987e5;
+  --viz-bare:       #199e70;
+  --viz-grid:       rgba(148, 184, 255, 0.12);
+}
+:root[data-theme="light"] {
+  --viz-configured: #2a78d6;
+  --viz-bare:       #1baf7a;
+  --viz-grid:       rgba(30, 64, 175, 0.12);
+}
+
+.benchpage { padding-top: 8.5rem; padding-bottom: 4rem; }
+#report { scroll-margin-top: 96px; }
+.benchpage code.mono {
+  background: var(--glass-strong);
+  border: 1px solid var(--glass-brd);
+  border-radius: 5px;
+  padding: .08rem .4rem;
+  font-size: .85em;
+}
+
+/* ─── Load panel ────────────────────────────────────────────── */
+.load-panel { padding: 1.5rem 1.7rem; border-radius: var(--r-lg); margin-bottom: 1.4rem; }
+.load-row { display: flex; flex-wrap: wrap; align-items: center; gap: .9rem; }
+.load-row .hint { font-size: .72rem; color: var(--txt-3); }
+.howto { margin-top: 1rem; }
+.howto summary { cursor: pointer; font-size: .78rem; color: var(--txt-3); }
+.howto .codeblock { margin-top: .7rem; }
+
+/* ─── Banners ───────────────────────────────────────────────── */
+.banner {
+  padding: .75rem 1.1rem;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--glass-brd);
+  background: var(--glass);
+  font-size: .84rem;
+  color: var(--txt-2);
+  margin-bottom: 1rem;
+}
+.banner--warn {
+  border-color: rgba(251, 191, 36, .45);
+  background: rgba(251, 191, 36, .08);
+  color: var(--txt);
+}
+
+/* ─── Stat tiles ────────────────────────────────────────────── */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.4rem;
+}
+.tile {
+  padding: 1.15rem 1.25rem;
+  border-radius: var(--r);
+  border: 1px solid var(--glass-brd);
+  background: var(--glass);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+}
+.tile .k {
+  font-family: var(--f-mono);
+  font-size: .64rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--txt-3);
+  margin-bottom: .35rem;
+}
+.tile .v {
+  font-family: var(--f-display);
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  color: var(--txt);
+  line-height: 1.15;
+}
+.tile .s { font-size: .74rem; color: var(--txt-2); margin-top: .25rem; }
+
+/* ─── Chart cards ───────────────────────────────────────────── */
+.chart-card { padding: 1.6rem 1.7rem; border-radius: var(--r-lg); margin-bottom: 1.4rem; }
+.chart-card h2 { font-family: var(--f-display); font-size: 1.12rem; }
+.chart-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .8rem; }
+.chart-sub { font-size: .8rem; color: var(--txt-3); margin: .3rem 0 1.1rem; max-width: 44rem; }
+
+.legend { display: flex; gap: 1.1rem; font-size: .78rem; color: var(--txt-2); }
+.legend .li { display: inline-flex; align-items: center; gap: .45rem; }
+.legend .sw { width: 12px; height: 12px; border-radius: 4px; }
+
+.chart svg { display: block; width: 100%; height: auto; }
+.chart .bar { transition: opacity .15s; cursor: default; }
+.chart .bar-hit:hover + .bar, .chart .bar:hover { opacity: .82; }
+.chart text { font-family: var(--f-text); }
+.chart .tick { font-family: var(--f-mono); font-size: 10px; fill: var(--txt-3); }
+.chart .tasklbl { font-size: 12px; fill: var(--txt); }
+.chart .vallbl { font-family: var(--f-mono); font-size: 10.5px; fill: var(--txt-2); }
+.chart .faillbl { font-family: var(--f-mono); font-size: 10.5px; fill: var(--err); }
+.chart .gridline { stroke: var(--viz-grid); stroke-width: 1; }
+
+/* ─── Tooltip ───────────────────────────────────────────────── */
+.viz-tip {
+  position: fixed;
+  z-index: 3000;
+  pointer-events: none;
+  padding: .5rem .75rem;
+  border-radius: var(--r-sm);
+  font-size: .72rem;
+  line-height: 1.6;
+  color: var(--txt);
+  background: var(--bg2);
+  border: 1px solid var(--glass-brd-hi);
+  box-shadow: var(--shadow-lift);
+  max-width: 260px;
+}
+
+/* ─── Table ─────────────────────────────────────────────────── */
+.table-wrap { overflow-x: auto; }
+.bench-table { width: 100%; border-collapse: collapse; font-size: .74rem; }
+.bench-table th, .bench-table td {
+  text-align: right;
+  padding: .5rem .7rem;
+  border-bottom: 1px solid var(--glass-brd);
+  white-space: nowrap;
+}
+.bench-table th:first-child, .bench-table td:first-child { text-align: left; }
+.bench-table th {
+  font-weight: 600;
+  color: var(--txt-3);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: .62rem;
+}
+.bench-table .fail { color: var(--err); }
+.bench-table .arm-dot { display: inline-block; width: 8px; height: 8px; border-radius: 3px; margin-right: .45rem; vertical-align: 1px; }
+
+@media (max-width: 900px) { .tiles { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .tiles { grid-template-columns: 1fr; } }
