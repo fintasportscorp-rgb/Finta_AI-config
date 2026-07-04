@@ -165,7 +165,10 @@
     "orch_type_hitl": "Humano no ciclo",
     "orch_type_hitl_desc": "Validação humana necessária em pontos de controlo definidos",
     "orch_type_custom": "Grafo personalizado",
-    "orch_type_custom_desc": "Conexões livres — projete sua própria topologia"
+    "orch_type_custom_desc": "Conexões livres — projete sua própria topologia",
+    "loop_layer_title": "Camada de execução em loop (loop/)",
+    "loop_layer_desc": "Adiciona um bundle de agente com loop executável — contrato AGENT.md, salvaguardas aplicadas por um runner Python, memória em disco e verificação em dois modos — pré-configurado a partir das suas respostas.",
+    "loop_layer_customize": "Afinar no Loop Forge"
   },
   "levels": {
     "fast": {

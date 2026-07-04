@@ -165,7 +165,10 @@
     "orch_type_hitl": "Mensch im Regelkreis",
     "orch_type_hitl_desc": "Menschliche Validierung an definierten Kontrollpunkten erforderlich",
     "orch_type_custom": "Benutzerdefinierter Graph",
-    "orch_type_custom_desc": "Freie Verbindungen — eigene Topologie gestalten"
+    "orch_type_custom_desc": "Freie Verbindungen — eigene Topologie gestalten",
+    "loop_layer_title": "Loop-Ausführungsschicht (loop/)",
+    "loop_layer_desc": "Fügt ein ausführbares Agent-Loop-Bundle hinzu — AGENT.md-Vertrag, per Python-Runner erzwungene Leitplanken, Speicher auf der Festplatte und Zwei-Modus-Verifikation — vorkonfiguriert aus deinen Antworten.",
+    "loop_layer_customize": "In Loop Forge verfeinern"
   },
   "levels": {
     "fast": {

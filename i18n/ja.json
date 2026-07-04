@@ -165,7 +165,10 @@
     "orch_type_hitl": "ヒューマンインザループ",
     "orch_type_hitl_desc": "定義されたチェックポイントでの人間による検証が必要",
     "orch_type_custom": "カスタムグラフ",
-    "orch_type_custom_desc": "自由な接続 — 独自のトポロジーを設計"
+    "orch_type_custom_desc": "自由な接続 — 独自のトポロジーを設計",
+    "loop_layer_title": "ループ実行レイヤー (loop/)",
+    "loop_layer_desc": "実行可能なエージェントループのバンドルを追加します — AGENT.md契約、Pythonランナーで強制されるガードレール、ディスク上のメモリ、2モード検証 — 回答から自動設定されます。",
+    "loop_layer_customize": "Loop Forge で調整"
   },
   "levels": {
     "fast": {

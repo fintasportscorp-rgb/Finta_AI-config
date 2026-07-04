@@ -165,7 +165,10 @@
     "orch_type_hitl": "Humano en el bucle",
     "orch_type_hitl_desc": "Validación humana requerida en puntos de control definidos",
     "orch_type_custom": "Grafo personalizado",
-    "orch_type_custom_desc": "Conexiones libres — diseña tu propia topología"
+    "orch_type_custom_desc": "Conexiones libres — diseña tu propia topología",
+    "loop_layer_title": "Capa de ejecución en bucle (loop/)",
+    "loop_layer_desc": "Añade un bundle de agente con bucle ejecutable — contrato AGENT.md, salvaguardas aplicadas por un runner Python, memoria en disco y verificación de dos modos — preconfigurado según tus respuestas.",
+    "loop_layer_customize": "Ajustar en Loop Forge"
   },
   "levels": {
     "fast": {

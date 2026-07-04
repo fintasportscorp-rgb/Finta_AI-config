@@ -165,7 +165,10 @@
     "orch_type_hitl": "Human-in-the-Loop",
     "orch_type_hitl_desc": "Human validation required at defined checkpoints",
     "orch_type_custom": "Custom Graph",
-    "orch_type_custom_desc": "Free-form connections — design your own topology"
+    "orch_type_custom_desc": "Free-form connections — design your own topology",
+    "loop_layer_title": "Loop execution layer (loop/)",
+    "loop_layer_desc": "Adds an executable agent-loop bundle — AGENT.md contract, guardrails enforced by a Python runner, on-disk memory and two-mode verification — pre-configured from your answers.",
+    "loop_layer_customize": "Fine-tune in Loop Forge"
   },
   "questions": {
     "orchestration_type": {
@@ -174,7 +177,7 @@
     "domain": {
       "opts": {
         "football": "Football Coaching & Club Management",
-        "sport":    "Multi-Sport Science & Athletic Coaching",
+        "sport": "Multi-Sport Science & Athletic Coaching",
         "holistic": "Personal Development & Wellbeing"
       }
     }

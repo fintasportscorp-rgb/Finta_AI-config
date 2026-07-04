@@ -317,6 +317,8 @@ my-agent/
 
 Loop Forge complements the wizard: the wizard picks *who* your agents are (personas, skills, commands); Loop Forge defines *how they finish* (execution layer). Everything generated is plain text + simple JSON — portable across models.
 
+**Wizard integration.** The config wizard ships the same structure with one toggle on the results screen ("Loop execution layer"), enabled by default for Advanced/Deep profiles. The loop config is *derived from your answers* — package manager → real test/lint commands as deterministic criteria, TDD level → success threshold (strict 90 / soft 85 / critical 80 / none 70), autonomy → loop profile and iteration cap (conservative → human-validated ×10, standard → goal-based ×20, autonomous → proactive ×30), "never do" list → forbidden scope, first spec → mission. The bundle lands at project root as `loop/<project>-loop/` (tool-agnostic, outside `.claude/`-style folders), is referenced from the main config file, and both generators share one template source: `js/loopforge-templates.js`.
+
 ---
 
 ## Fintalab Sports Ecosystem

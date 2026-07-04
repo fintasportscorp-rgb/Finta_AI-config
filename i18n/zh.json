@@ -165,7 +165,10 @@
     "orch_type_hitl": "人在回路",
     "orch_type_hitl_desc": "在定义的检查点需要人工验证",
     "orch_type_custom": "自定义图",
-    "orch_type_custom_desc": "自由连接 — 设计您自己的拓扑"
+    "orch_type_custom_desc": "自由连接 — 设计您自己的拓扑",
+    "loop_layer_title": "循环执行层 (loop/)",
+    "loop_layer_desc": "添加可执行的智能体循环包 — AGENT.md 契约、由 Python 运行器强制执行的护栏、磁盘记忆和双模式校验 — 已根据你的回答预配置。",
+    "loop_layer_customize": "在 Loop Forge 中微调"
   },
   "levels": {
     "fast": {
