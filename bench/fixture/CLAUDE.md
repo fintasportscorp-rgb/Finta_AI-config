@@ -18,7 +18,8 @@ python3 checks/check_conventions.py
 
 ## Coding Conventions
 - Every function in `src/` MUST have a return type annotation and a docstring
-  — enforced by `checks/check_conventions.py`, which is part of the test gate.
+  whose first line starts with `Contract:` (a one-line behavioral contract) —
+  enforced by `checks/check_conventions.py`, which is part of the test gate.
 - New code ships with its test in `tests/test_<module>.py`.
 - Never modify existing tests to make them pass.
 

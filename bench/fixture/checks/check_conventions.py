@@ -9,10 +9,15 @@ for node in ast.walk(tree):
     if isinstance(node, ast.FunctionDef):
         if node.returns is None:
             bad.append(f"{node.name}: missing return type annotation")
-        if not (node.body and isinstance(node.body[0], ast.Expr)
+        doc = None
+        if (node.body and isinstance(node.body[0], ast.Expr)
                 and isinstance(node.body[0].value, ast.Constant)
                 and isinstance(node.body[0].value.value, str)):
+            doc = node.body[0].value.value
+        if doc is None:
             bad.append(f"{node.name}: missing docstring")
+        elif not doc.lstrip().startswith("Contract:"):
+            bad.append(f"{node.name}: docstring must start with 'Contract:' (project convention)")
 if bad:
     print("CONVENTIONS: FAIL")
     for b in bad:
