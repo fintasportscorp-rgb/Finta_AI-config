@@ -313,7 +313,9 @@ my-agent/
     └── validate-coherence.py # config values agree?
 ```
 
-`loop_runner.py` exit codes: **0** RESOLVED · **2** HTL (human takes over, incident buffer preserved) · **3** CLARIFY (answer, persist, re-run). A copy-paste **bootstrap prompt** is also generated for assistants that install the bundle themselves.
+`loop_runner.py` exit codes: **0** RESOLVED · **2** HTL (human takes over, incident buffer preserved) · **3** CLARIFY · **5** turn done, re-run to continue (`turn_by_turn`) · **6** awaiting `--confirm` (`human_validated`). A copy-paste **bootstrap prompt** is also generated — it now instructs the installing assistant to test-run every deterministic command before trusting the loop.
+
+**The profile changes runtime behavior** (all five verified by execution): `turn_by_turn` runs one iteration per invocation; `human_validated` dry-runs until `--confirm`; `temporal` polls `temporal.trigger_cmd` between iterations; `proactive` keeps watching after RESOLVED and autonomously re-enters on regression. HTL semantics are honest: hard brakes (iteration cap, stagnation, budgets) always stop — the toggles govern only the advisory triggers the agent raises itself. An **escalation ladder** (`escalation_ladder` in `loop.config.json`) retries a BLOCKED task with stronger model tiers — each with a fresh iteration budget and its own `agent_cmd` — before falling back to a human: run Haiku first, escalate on proof of failure, pay for Fable 5 only when needed. Sub-agents can carry their own `agent_cmd` too, and each turn now receives the tail of `memory_temp.md` as working memory instead of a bare 800-char error.
 
 Loop Forge complements the wizard: the wizard picks *who* your agents are (personas, skills, commands); Loop Forge defines *how they finish* (execution layer). Everything generated is plain text + simple JSON — portable across models.
 

@@ -84,6 +84,11 @@ Weighted score ≥ ${c.guard.success_threshold_pct}% → STOP (RESOLVED). Otherw
 ## Human-to-loop (HTL) triggers
 ${Object.entries(c.htl).map(([k, v]) => `- [${v ? 'x' : ' '}] ${k.replace(/_/g, ' ')}`).join('\n')}
 
+Semantics: hard brakes (iteration cap, stagnation, time/token budget) ALWAYS
+stop — stopping is guaranteed and not configurable. The toggles above govern
+the advisory triggers the agent raises itself via \`[HTL:<trigger>]\` markers:
+enabled → stop and escalate; disabled → logged warning, loop continues.
+
 ## Orchestration
 ${subsBlock}
 `;
@@ -103,13 +108,22 @@ function fileLoopConfig(c) {
     rollback_on_regression: c.guard.rollback_on_regression,
     git_checkpoints: c.guard.rollback_on_regression,
     htl_triggers: c.htl,
+    _comment_htl: "Hard brakes (iteration cap, stagnation, budgets) ALWAYS stop — stopping is guaranteed. These toggles govern the advisory triggers the agent itself raises via [HTL:<trigger>] markers: enabled = stop and escalate, disabled = log a warning and continue.",
+    temporal: { poll_seconds: 60, trigger_cmd: "" },
+    _comment_temporal: "loop_type=temporal only: before each iteration, poll trigger_cmd (exit 0 = event happened) every poll_seconds, within the time budget. Empty trigger_cmd = run immediately with a warning.",
+    proactive: { watch_seconds: 0, max_watch_cycles: 3 },
+    _comment_proactive: "loop_type=proactive only: after RESOLVED, keep watching — re-score every watch_seconds; if a criterion regresses below threshold, autonomously re-enter the loop (up to max_watch_cycles). 0 = resolve and exit like goal_based.",
     orchestration: {
       pattern: c.pattern,
-      sub_agents: c.subs.map(s => ({ name: s.name, role: s.role, group: c.pattern === 'mixed' ? s.group : (c.pattern === 'sequential' ? 'sequential' : 'parallel') })),
+      sub_agents: c.subs.map(s => ({ name: s.name, role: s.role, group: c.pattern === 'mixed' ? s.group : (c.pattern === 'sequential' ? 'sequential' : 'parallel'), ...(s.cmd ? { agent_cmd: s.cmd } : {}) })),
       exchange_bus: 'memory/exchange.md',
     },
     agent_cmd: "",
-    _comment_agent_cmd: "Optional: shell command template that invokes your LLM agent for one loop turn, e.g. 'claude -p \"{prompt}\"'. Empty = evaluate-only mode (deterministic criteria still run).",
+    _comment_agent_cmd: "Shell command template invoking your LLM agent for one loop turn, e.g. 'claude -p \"{prompt}\"'. Empty = evaluate-only mode (deterministic criteria still run). Sub-agents may override with their own agent_cmd.",
+    escalation_ladder: [],
+    _comment_escalation_ladder: "Optional list of stronger tiers tried IN ORDER when the current tier ends BLOCKED (iteration cap or hard failure), each with a fresh iteration budget, before falling back to a human. Example: [{\"label\": \"sonnet\", \"agent_cmd\": \"claude --model claude-sonnet-5 -p \\\"{prompt}\\\"\"}, {\"label\": \"fable-5\", \"agent_cmd\": \"claude --model claude-fable-5 -p \\\"{prompt}\\\"\"}]. This is the cheap-model economics: run Haiku first, escalate only on proof of failure.",
+    feedback_context_chars: 3000,
+    _comment_feedback: "Each turn after the first receives the tail of memory_temp.md (this many chars) plus the last check failure — turns are stateless processes, this is their working memory.",
   }, null, 2) + '\n';
 }
 
@@ -242,17 +256,30 @@ Output conventions for this agent:
 /* ── Python: loop runner ── */
 function fileLoopRunner(c) {
   return `#!/usr/bin/env python3
-"""loop_runner.py — minimal loop-engineering runtime for '${c.name}'.
+"""loop_runner.py — loop-engineering runtime for '${c.name}'.
 
 Enforces in code (not prose):
-  * max_iterations cap
-  * stagnation stop (N rounds without score progress)
-  * time / token budgets
+  * loop profile behavior (loop_type actually branches — see PROFILES below)
+  * max_iterations cap, stagnation stop, time/token budgets  [hard brakes]
   * two-mode verification (deterministic commands / soft spec validations)
-  * HTL escalation triggers
-  * optional git checkpoint + rollback on regression
+  * HTL: hard brakes always stop; agent-raised advisory triggers respect
+    the htl_triggers toggles (enabled = stop, disabled = warn + continue)
+  * escalation ladder: on BLOCKED, retry with the next (stronger) tier's
+    agent_cmd and a fresh iteration budget before asking a human
+  * git checkpoint on improvement + rollback on regression
 
-Stdlib only. Exit codes: 0 RESOLVED · 2 HTL/BLOCKED · 3 CLARIFY needed.
+PROFILES (loop_type):
+  goal_based      iterate until score >= threshold (the default loop)
+  turn_by_turn    exactly ONE iteration per invocation; exit 5 = re-run to continue
+  human_validated dry-run + plan unless --confirm; with --confirm, ONE iteration
+  temporal        before each iteration, poll temporal.trigger_cmd (exit 0 = go)
+  proactive       goal_based, then keep watching: re-score every
+                  proactive.watch_seconds and autonomously re-enter on regression
+
+Stdlib only. Exit codes:
+  0 RESOLVED · 2 HTL/BLOCKED (human takes over) · 3 CLARIFY needed
+  5 TURN DONE, not resolved (turn_by_turn: review then re-run)
+  6 AWAITING CONFIRMATION (human_validated: re-run with --confirm)
 """
 import json, os, re, subprocess, sys, time, uuid
 from concurrent.futures import ThreadPoolExecutor
@@ -270,16 +297,23 @@ def append(path, text):
 CFG = json.loads(read("loop.config.json"))
 SCALE = json.loads(read("asset/scale-objectif.json"))
 SESSION = uuid.uuid4().hex[:8]
+TOKENS_USED = 0
+T0 = time.time()
 
 def log(msg):
     line = f"[{time.strftime('%H:%M:%S')}] {msg}"
     print(line, flush=True)
     append("memory/memory_temp.md", line + "\\n")
 
-def htl(trigger, question):
-    """Human-To-Loop: stop and hand control back."""
+def htl(trigger, question, hard=False):
+    """Human-To-Loop. Hard brakes (cap/stagnation/budget) ALWAYS stop.
+    Advisory triggers (raised by the agent) stop only if enabled in
+    htl_triggers; disabled -> warn and let the loop continue."""
     enabled = CFG.get("htl_triggers", {}).get(trigger, True)
-    log(f"HTL[{trigger}] {'(enabled)' if enabled else '(trigger disabled — stopping anyway: stop must be guaranteed)'}")
+    if not hard and not enabled:
+        log(f"HTL[{trigger}] advisory, disabled in config -> logged, continuing: {question}")
+        return False
+    log(f"HTL[{trigger}] {'hard brake' if hard else 'advisory, enabled'} -> stopping")
     print("\\n=== HUMAN NEEDED " + "=" * 44)
     print(f"Trigger : {trigger}")
     print(f"Question: {question}")
@@ -293,6 +327,14 @@ def clarify(question):
     print("Answer, persist it in memory/memory.md, then re-run.")
     print("=" * 61)
     sys.exit(3)
+
+def budgets_ok(where):
+    t_budget = float(CFG.get("time_budget_minutes", 0)) * 60
+    tok_budget = int(CFG.get("token_budget", 0))
+    if t_budget and time.time() - T0 > t_budget:
+        htl("budget_exhausted", f"Time budget ({CFG['time_budget_minutes']} min) reached at {where}.", hard=True)
+    if tok_budget and TOKENS_USED > tok_budget:
+        htl("budget_exhausted", f"Token budget (~{tok_budget}) reached at {where}.", hard=True)
 
 # ── verification ────────────────────────────────────────────────
 def eval_criterion(cr):
@@ -353,23 +395,28 @@ def rollback(sha):
 HTL_MARK = re.compile(r"\\[HTL:(\\w+)\\]\\s*(.*)")
 CLARIFY_MARK = re.compile(r"\\[CLARIFY\\]\\s*(.*)")
 
-def run_agent(task, iteration):
-    """One work turn. If agent_cmd is configured, call the LLM agent;
-    otherwise evaluate-only mode (useful to wire the loop first)."""
-    tpl = CFG.get("agent_cmd", "")
+def run_agent(task, iteration, cmd_tpl=None):
+    """One work turn. Turns are stateless processes: working memory is the
+    tail of memory_temp.md (feedback_context_chars), passed in the prompt."""
+    global TOKENS_USED
+    tpl = cmd_tpl if cmd_tpl is not None else CFG.get("agent_cmd", "")
     if not tpl:
         log("agent_cmd empty → evaluate-only turn")
         return ""
+    ctx_chars = int(CFG.get("feedback_context_chars", 3000))
+    context = read("memory/memory_temp.md")[-ctx_chars:] if iteration > 1 else ""
     prompt = (f"Iteration {iteration}. Task: {task}. "
               f"Respect AGENT.md scope. If doubt > {CFG.get('doubt_threshold_pct', 10)}% "
-              f"output [CLARIFY] <question>. For escalation output [HTL:<trigger>] <reason>.")
+              f"output [CLARIFY] <question>. To escalate output [HTL:<trigger>] <reason>."
+              + (f"\\nWorking memory (loop log tail):\\n{context}" if context else ""))
     cmd = tpl.replace("{prompt}", prompt.replace('"', "'"))
     r = subprocess.run(cmd, shell=True, cwd=ROOT, capture_output=True, text=True,
                        timeout=3600)
     out = (r.stdout or "") + (r.stderr or "")
+    TOKENS_USED += len(out) // 4  # rough estimate
     m = HTL_MARK.search(out)
     if m:
-        htl(m.group(1).lower(), m.group(2) or "agent requested escalation")
+        htl(m.group(1).lower(), m.group(2) or "agent requested escalation")  # advisory
     m = CLARIFY_MARK.search(out)
     if m:
         clarify(m.group(1))
@@ -379,11 +426,13 @@ def bus_write(entry):
     append("memory/exchange.md", json.dumps(entry, ensure_ascii=False) + "\\n")
 
 def run_sub(sub, task):
+    """Sub-agents may carry their own agent_cmd (e.g. a cheaper model)."""
     bus_write({"session_id": SESSION, "source_agent": "orchestrator",
                "target_agent": sub["name"], "task": task,
                "inputs": [], "outputs": [], "status": "EN_COURS"})
     try:
-        out = run_agent(f"[{sub['name']}] {sub['role']} — {task}", 0)
+        out = run_agent(f"[{sub['name']}] {sub['role']} — {task}", 1,
+                        cmd_tpl=sub.get("agent_cmd") or None)
         bus_write({"session_id": SESSION, "source_agent": sub["name"],
                    "target_agent": "orchestrator", "task": task,
                    "inputs": [], "outputs": [out[-500:]], "status": "TERMINE"})
@@ -402,7 +451,7 @@ def orchestrate(task):
     subs = orch.get("sub_agents", [])
     pattern = orch.get("pattern", "single")
     if pattern == "single" or not subs:
-        run_agent(task, 0)
+        run_agent(task, 1)
         return
     par = [s for s in subs if s.get("group") != "sequential"]
     seq = [s for s in subs if s.get("group") == "sequential"]
@@ -422,68 +471,139 @@ def orchestrate(task):
     for sub in failed:
         log(f"re-entering correction loop for {sub['name']}")
 
-# ── main loop ───────────────────────────────────────────────────
-def main():
-    task = " ".join(sys.argv[1:]) or "Advance the mission defined in AGENT.md."
-    goal = read("AGENT.md")
-    if "## Mission" not in goal:
-        clarify("AGENT.md has no Mission section — define the verifiable objective first.")
+# ── profile behaviors ───────────────────────────────────────────
+def wait_for_trigger():
+    """temporal: block until the trigger fires (exit 0), within budgets."""
+    t = CFG.get("temporal", {})
+    trig, poll = t.get("trigger_cmd", ""), int(t.get("poll_seconds", 60))
+    if not trig:
+        log("temporal profile but temporal.trigger_cmd is empty → running immediately")
+        return
+    while True:
+        budgets_ok("temporal wait")
+        r = subprocess.run(trig, shell=True, cwd=ROOT, capture_output=True, text=True)
+        if r.returncode == 0:
+            log(f"temporal trigger fired: {trig}")
+            return
+        log(f"temporal trigger not ready (exit {r.returncode}) — sleeping {poll}s")
+        time.sleep(poll)
 
-    max_iter   = int(CFG.get("max_iterations", 20))
-    stag_n     = int(CFG.get("stagnation_rounds", 3))
-    threshold  = float(SCALE.get("success_threshold_pct", CFG.get("success_threshold_pct", 80)))
-    t_budget   = float(CFG.get("time_budget_minutes", 0)) * 60
-    tok_budget = int(CFG.get("token_budget", 0))
-    t0, tokens_used = time.time(), 0
+def resolve(task, s, i, sha):
+    log(f"RESOLVED · score {s}% ≥ threshold")
+    append("memory/memory.md",
+           f"\\n- {time.strftime('%Y-%m-%d')} session {SESSION}: RESOLVED '{task}' at {s}% in {i} iteration(s).\\n")
+    with open(os.path.join(ROOT, f"resolved_{SESSION}.json"), "w", encoding="utf-8") as f:
+        json.dump({"session": SESSION, "task": task, "score": s,
+                   "iterations": i, "checkpoint": sha}, f, indent=2)
+    open(os.path.join(ROOT, "memory/memory_temp.md"), "w", encoding="utf-8").write(
+        "# memory_temp.md — purged after RESOLVED\\n")
+
+def run_tier(task, cmd_tpl, tier, max_iter, single_turn=False):
+    """One tier of the escalation ladder. Returns ('resolved', score, iters)
+    or ('blocked', best_score, iters). Hard brakes exit directly."""
+    stag_n = int(CFG.get("stagnation_rounds", 3))
+    threshold = float(SCALE.get("success_threshold_pct", CFG.get("success_threshold_pct", 80)))
+    profile = CFG.get("loop_type", "goal_based")
     history, best, best_sha = [], -1.0, None
 
-    append("memory/memory_temp.md", f"\\n## session {SESSION} — {time.strftime('%Y-%m-%d %H:%M')}\\n")
-    log(f"BOOTSTRAP ok · profile={CFG.get('loop_type')} · task: {task}")
-
     for i in range(1, max_iter + 1):
-        log(f"— iteration {i}/{max_iter} —")
-        # budgets (emergency brakes)
-        if t_budget and time.time() - t0 > t_budget:
-            htl("budget_exhausted", f"Time budget ({CFG['time_budget_minutes']} min) reached at iteration {i}.")
-        if tok_budget and tokens_used > tok_budget:
-            htl("budget_exhausted", f"Token budget (~{tok_budget}) reached at iteration {i}.")
-
-        out = ""
+        log(f"— tier '{tier}' · iteration {i}/{max_iter} —")
+        budgets_ok(f"iteration {i}")
+        if profile == "temporal":
+            wait_for_trigger()
         try:
             if i == 1 and CFG.get("orchestration", {}).get("pattern", "single") != "single":
                 orchestrate(task)
             else:
-                out = run_agent(task, i)
+                run_agent(task, i, cmd_tpl=cmd_tpl)
         except subprocess.TimeoutExpired:
             log("agent turn timed out")
-        tokens_used += len(out) // 4  # rough estimate
 
         s = score()
         history.append(s)
-
         if s >= threshold:
-            sha = checkpoint(i)
-            log(f"RESOLVED · score {s}% ≥ {threshold}%")
-            append("memory/memory.md",
-                   f"\\n- {time.strftime('%Y-%m-%d')} session {SESSION}: RESOLVED '{task}' at {s}% in {i} iteration(s).\\n")
-            with open(os.path.join(ROOT, f"resolved_{SESSION}.json"), "w", encoding="utf-8") as f:
-                json.dump({"session": SESSION, "task": task, "score": s,
-                           "iterations": i, "checkpoint": sha}, f, indent=2)
-            open(os.path.join(ROOT, "memory/memory_temp.md"), "w", encoding="utf-8").write(
-                "# memory_temp.md — purged after RESOLVED\\n")
-            sys.exit(0)
-
-        # regression → rollback to last healthy checkpoint
+            return ("resolved", s, i)
         if s < best and rollback(best_sha):
             history.append(best)
         elif s > best:
             best, best_sha = s, checkpoint(i)
-
-        # stagnation brake
         if len(history) >= stag_n and len(set(history[-stag_n:])) == 1:
-            htl("ambiguity", f"No score progress for {stag_n} rounds (stuck at {s}%). A human should look.")
+            log(f"stagnation in tier '{tier}': {stag_n} rounds flat at {s}%")
+            return ("blocked", best, i)
+        if single_turn:
+            return ("turn_done", s, i)
+    return ("blocked", best, max_iter)
 
-    htl("budget_exhausted", f"Iteration cap ({max_iter}) reached — best score {best}%.")
+def main():
+    task = " ".join(a for a in sys.argv[1:] if a != "--confirm") \\
+           or "Advance the mission defined in AGENT.md."
+    confirmed = "--confirm" in sys.argv
+    if "## Mission" not in read("AGENT.md"):
+        clarify("AGENT.md has no Mission section — define the verifiable objective first.")
+
+    profile = CFG.get("loop_type", "goal_based")
+    max_iter = int(CFG.get("max_iterations", 20))
+    threshold = float(SCALE.get("success_threshold_pct", CFG.get("success_threshold_pct", 80)))
+    append("memory/memory_temp.md", f"\\n## session {SESSION} — {time.strftime('%Y-%m-%d %H:%M')}\\n")
+    log(f"BOOTSTRAP ok · profile={profile} · task: {task}")
+
+    # human_validated: no side effects without explicit confirmation
+    if profile == "human_validated" and not confirmed:
+        s = score()
+        print("\\n=== AWAITING CONFIRMATION " + "=" * 35)
+        print(f"Plan   : run ONE iteration of: {task}")
+        print(f"Current score: {s}% (threshold {threshold}%)")
+        print(f"Approve with:  python3 script/loop_runner.py --confirm {task}")
+        print("=" * 61)
+        sys.exit(6)
+
+    single_turn = profile in ("turn_by_turn", "human_validated")
+
+    # tiers: base agent_cmd, then the escalation ladder (each = fresh budget)
+    tiers = [("base", CFG.get("agent_cmd", ""))] + \\
+            [(t.get("label", f"tier{n+1}"), t.get("agent_cmd", ""))
+             for n, t in enumerate(CFG.get("escalation_ladder", []))]
+
+    for tn, (tier, cmd_tpl) in enumerate(tiers):
+        status, s, iters = run_tier(task, cmd_tpl, tier, max_iter, single_turn)
+        if status == "resolved":
+            resolve(task, s, iters, checkpoint(iters))
+            if profile == "proactive":
+                watch(task, threshold)
+            sys.exit(0)
+        if status == "turn_done":
+            print(f"\\nTURN DONE — score {s}%, not yet at threshold {threshold}%.")
+            print("Review memory/memory_temp.md, then re-run to continue.")
+            sys.exit(5)
+        # blocked → escalate to the next tier, if any
+        if tn + 1 < len(tiers):
+            nxt = tiers[tn + 1][0]
+            log(f"tier '{tier}' BLOCKED at {s}% → escalating to tier '{nxt}' (fresh budget)")
+            bus_write({"session_id": SESSION, "source_agent": tier,
+                       "target_agent": nxt, "task": task, "inputs": [],
+                       "outputs": [f"blocked at {s}%"], "status": "ECHEC"})
+    htl("budget_exhausted",
+        f"All tiers exhausted ({', '.join(t for t, _ in tiers)}) — best score {s}%.", hard=True)
+
+def watch(task, threshold):
+    """proactive: after RESOLVED, keep watching and re-enter on regression."""
+    w = CFG.get("proactive", {})
+    interval, cycles = int(w.get("watch_seconds", 0)), int(w.get("max_watch_cycles", 3))
+    if interval <= 0:
+        return
+    for cycle in range(1, cycles + 1):
+        log(f"proactive watch {cycle}/{cycles} — sleeping {interval}s")
+        time.sleep(interval)
+        budgets_ok(f"watch cycle {cycle}")
+        if score() >= threshold:
+            continue
+        log("regression detected while watching → autonomously re-entering the loop")
+        status, s, iters = run_tier(task, CFG.get("agent_cmd", ""), f"watch{cycle}",
+                                    int(CFG.get("max_iterations", 20)))
+        if status != "resolved":
+            htl("budget_exhausted", f"Watch-cycle repair blocked at {s}%.", hard=True)
+        resolve(task, s, iters, checkpoint(iters))
+    log("proactive watch complete — no unresolved regression")
 
 if __name__ == "__main__":
     main()
@@ -610,6 +730,16 @@ if orch.get("pattern") != "single" and not orch.get("sub_agents"):
 if orch.get("pattern") == "single" and orch.get("sub_agents"):
     warnings.append("sub_agents listed but pattern is 'single' — they will not run")
 
+# profile-specific coherence
+lt = cfg.get("loop_type")
+if lt == "temporal" and not cfg.get("temporal", {}).get("trigger_cmd"):
+    warnings.append("loop_type=temporal but temporal.trigger_cmd is empty — the loop will run immediately instead of waiting on events")
+if lt == "proactive" and not cfg.get("proactive", {}).get("watch_seconds"):
+    warnings.append("loop_type=proactive but proactive.watch_seconds=0 — behaves exactly like goal_based")
+for i, t in enumerate(cfg.get("escalation_ladder", [])):
+    if not t.get("agent_cmd"):
+        errors.append(f"escalation_ladder[{i}] has no agent_cmd — an empty tier cannot escalate anything")
+
 for w in warnings: print("  ⚠", w)
 if errors:
     print("COHERENCE: FAIL")
@@ -659,7 +789,16 @@ Wire your LLM in \`loop.config.json → agent_cmd\`
 (e.g. \`claude -p "{prompt}"\`). Empty = evaluate-only mode.
 
 Exit codes: **0** RESOLVED · **2** HTL (a human takes over, \`memory_temp.md\`
-preserved) · **3** CLARIFY (answer the question, persist it, re-run).
+preserved) · **3** CLARIFY (answer, persist, re-run) · **5** turn done, not
+resolved (turn_by_turn: re-run to continue) · **6** awaiting confirmation
+(human_validated: re-run with \`--confirm\`).
+
+The loop profile (\`loop_type\`) changes runtime behavior: \`turn_by_turn\` runs
+one iteration per invocation; \`human_validated\` dry-runs until \`--confirm\`;
+\`temporal\` waits on \`temporal.trigger_cmd\` between iterations; \`proactive\`
+keeps watching after RESOLVED and re-enters on regression. \`escalation_ladder\`
+retries a BLOCKED task with stronger (costlier) model tiers before HTL —
+cheap models first, human last.
 
 Everything is plain text + simple JSON — editable by a human, interpretable
 by any LLM. Nothing here is locked to one model.
@@ -705,6 +844,12 @@ Mission: ${c.goal}
 
 Confirm the structure was created by running:
 python3 ${c.name}/script/validate-structure.py && python3 ${c.name}/script/validate-coherence.py
+
+Finally, VERIFY EVERY DETERMINISTIC COMMAND before trusting the loop: run each
+"command" from asset/scale-objectif.json once in this project. A command that
+errors for a wrong reason (typo, missing dependency, wrong path) makes every
+future verification meaningless. Report each command's exit code to the user
+and fix the config (not the command's target) if one is broken.
 `;
 }
 

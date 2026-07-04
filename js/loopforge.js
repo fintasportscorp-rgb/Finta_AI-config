@@ -209,6 +209,7 @@ function renderSubs() {
         <option value="parallel" ${s.group === 'parallel' ? 'selected' : ''}>parallel</option>
         <option value="sequential" ${s.group === 'sequential' ? 'selected' : ''}>sequential</option>
       </select>
+      <input class="input mono" data-k="cmd" placeholder="own agent_cmd (optional — e.g. cheaper model)" value="${esc(s.cmd || '')}" title="Shell template invoking this sub-agent's own model, {prompt} substituted. Empty = inherit the global agent_cmd.">
       <button class="del" title="Remove" aria-label="Remove">✕</button>`;
     row.querySelectorAll('[data-k]').forEach(inp =>
       inp.addEventListener('change', () => { s[inp.dataset.k] = inp.value; }));

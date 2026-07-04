@@ -102,7 +102,7 @@ delete files outside its workspace</textarea>
   <!-- ── STEP 1 · LOOP PROFILE ─────────────────────────────── -->
   <section class="forge-step glass" data-panel="1" hidden>
     <h2>02 · Loop profile</h2>
-    <p class="step-intro">Three questions pick one of five loop profiles. Start simple; add autonomy only when the proof of success is reliable.</p>
+    <p class="step-intro">Three questions pick one of five loop profiles — and the profile <b>changes how the runner executes</b>: turn-by-turn runs one iteration per invocation, human-validated dry-runs until you <code class="mono">--confirm</code>, temporal waits on an event trigger, proactive keeps watching after success and re-enters on regression. Start simple; add autonomy only when the proof is reliable.</p>
     <div class="qa" id="q-recurring">
       <span class="qa-q">Is the task recurring?</span>
       <div class="qa-opts">
@@ -200,7 +200,7 @@ delete files outside its workspace</textarea>
   <!-- ── STEP 3 · HTL ──────────────────────────────────────── -->
   <section class="forge-step glass" data-panel="3" hidden>
     <h2>04 · Human-to-loop triggers</h2>
-    <p class="step-intro">When the loop hands control back to a human. All five are recommended — disable one only if you know why.</p>
+    <p class="step-intro">Hard brakes — iteration cap, stagnation, budgets — <b>always stop the loop</b>; stopping is guaranteed and not configurable. These toggles govern the <b>advisory triggers the agent raises itself</b> (<code class="mono">[HTL:…]</code> markers): enabled → stop and escalate; disabled → logged warning, loop continues.</p>
     <div class="htl-grid" id="htl-grid">
       <label class="check-pill on"><input type="checkbox" data-htl="ambiguity" checked><span class="box">✓</span>
         <span><span class="t">Ambiguity</span><br><span class="d">Context or objective is unclear — ask a targeted question instead of guessing.</span></span></label>
@@ -210,8 +210,8 @@ delete files outside its workspace</textarea>
         <span><span class="t">Sensitive data</span><br><span class="d">Access to or processing of critical data requires a human OK.</span></span></label>
       <label class="check-pill on"><input type="checkbox" data-htl="subjective_judgment" checked><span class="box">✓</span>
         <span><span class="t">Subjective judgment</span><br><span class="d">Quality calls a machine shouldn’t make alone — tone, design, tradeoffs.</span></span></label>
-      <label class="check-pill on"><input type="checkbox" data-htl="budget_exhausted" checked><span class="box">✓</span>
-        <span><span class="t">Budget exhausted</span><br><span class="d">Time, cost or token ceiling reached — stop and report.</span></span></label>
+      <label class="check-pill on" style="opacity:.75;cursor:not-allowed"><input type="checkbox" data-htl="budget_exhausted" checked disabled><span class="box">✓</span>
+        <span><span class="t">Budget exhausted — always on</span><br><span class="d">Hard brake: time, iteration or token ceiling reached → stop and report. Not disableable — a loop must be guaranteed to stop.</span></span></label>
     </div>
   </section>
 

@@ -158,7 +158,7 @@ select.input option { background: var(--bg2); color: var(--txt); }
 }
 .sub-row {
   display: grid;
-  grid-template-columns: 1fr 1.6fr .9fr auto;
+  grid-template-columns: .9fr 1.3fr .7fr 1.2fr auto;
   gap: .7rem;
   margin-bottom: .7rem;
   animation: panelIn .35s var(--ease);
