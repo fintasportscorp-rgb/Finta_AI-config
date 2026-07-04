@@ -74,8 +74,23 @@ function delta(bare, conf) {
   return `${sign}${Math.abs(d).toFixed(0)}%`;
 }
 
+function costPerSuccess(arm, price) {
+  if (!price || !arm || arm.med_tokens == null) return null;
+  const cost = arm.med_tokens * price / 1e6;
+  if (!arm.pass_rate) return Infinity;
+  return cost / arm.pass_rate;
+}
+
+function fmtCost(x) {
+  if (x === null) return '—';
+  if (x === Infinity) return '∞ (never passes)';
+  return '$' + (x < 0.01 ? x.toFixed(4) : x.toFixed(2));
+}
+
 function renderTiles(sum) {
   const b = sum.overall.bare || {}, c = sum.overall.configured || {};
+  const price = parseFloat(document.getElementById('price-in')?.value) || 0;
+  const cb = costPerSuccess(b, price), cc = costPerSuccess(c, price);
   const tiles = [
     { k: 'Pass rate', v: `${fmtPct(b.pass_rate)} → ${fmtPct(c.pass_rate)}`,
       s: 'bare → configured' },
@@ -86,6 +101,15 @@ function renderTiles(sum) {
     { k: 'Median wall time', v: `${b.med_wall_s ?? '—'}s → ${c.med_wall_s ?? '—'}s`,
       s: `n = ${(b.n || 0) + (c.n || 0)} runs total` },
   ];
+  if (price > 0) {
+    tiles.push({
+      k: 'Cost per solved task',
+      v: `${fmtCost(cb)} → ${fmtCost(cc)}`,
+      s: (cb && cc && cb !== Infinity && cc !== Infinity)
+        ? `${delta(cb, cc)} with config · at $${price}/MTok (estimate)`
+        : `at $${price}/MTok (estimate)`,
+    });
+  }
   $('tiles').innerHTML = tiles.map(t =>
     `<div class="tile"><div class="k">${t.k}</div><div class="v">${t.v}</div><div class="s">${t.s}</div></div>`).join('');
 }
@@ -181,7 +205,13 @@ function renderTable(sum) {
 }
 
 /* ─── Render all ────────────────────────────────────────────── */
+let CURRENT_SUM = null;
+document.addEventListener('input', e => {
+  if (e.target.id === 'price-in' && CURRENT_SUM) renderTiles(CURRENT_SUM);
+});
+
 function renderReport(sum) {
+  CURRENT_SUM = sum;
   $('report').hidden = false;
   $('mock-banner').hidden = !sum.meta?.mock;
   const m = sum.meta || {};

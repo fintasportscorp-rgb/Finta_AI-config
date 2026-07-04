@@ -1,0 +1,21 @@
+#!/usr/bin/env python3
+"""Project convention gate: every function in src/stats.py must have a
+return type annotation and a docstring. Exit 0 = conventions respected."""
+import ast, sys
+
+tree = ast.parse(open("src/stats.py", encoding="utf-8").read())
+bad = []
+for node in ast.walk(tree):
+    if isinstance(node, ast.FunctionDef):
+        if node.returns is None:
+            bad.append(f"{node.name}: missing return type annotation")
+        if not (node.body and isinstance(node.body[0], ast.Expr)
+                and isinstance(node.body[0].value, ast.Constant)
+                and isinstance(node.body[0].value.value, str)):
+            bad.append(f"{node.name}: missing docstring")
+if bad:
+    print("CONVENTIONS: FAIL")
+    for b in bad:
+        print("  ✗", b)
+    sys.exit(1)
+print("CONVENTIONS: OK")
