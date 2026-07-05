@@ -147,6 +147,8 @@ body {
 img { max-width: 100%; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+button:focus { outline: none; }
+button:focus-visible { outline: 2px solid var(--blue-hi); outline-offset: 2px; }
 
 /* ─── Aurora background ─────────────────────────────────────── */
 .aurora {
