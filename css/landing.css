@@ -325,6 +325,12 @@
     min-height: 0;
   }
   .hero-visual { max-width: 480px; }
+  .console-body {
+    min-height: 0;
+    height: 190px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
 }
 @media (max-width: 620px) {
   .feat-grid, .how-grid, .lf-cards, .src-grid { grid-template-columns: 1fr; }
@@ -332,4 +338,10 @@
   .section { padding: 4.2rem 0; }
   .hero-copy h1 { font-size: clamp(2.1rem, 9vw, 2.8rem); }
   .nav2040 .actions .btn { display: none; }
+  .console-body {
+    height: 170px;
+    font-size: .72rem;
+    line-height: 1.7;
+    padding: .9rem 1rem;
+  }
 }
