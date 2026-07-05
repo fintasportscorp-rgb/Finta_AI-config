@@ -182,9 +182,10 @@ code.mono {
 /* ─── Generate panel ────────────────────────────────────────── */
 .gen-layout {
   display: grid;
-  grid-template-columns: 290px 1fr;
+  grid-template-columns: 290px minmax(0, 1fr);
   gap: 1.6rem;
 }
+.gen-preview { min-width: 0; }
 .filetree {
   list-style: none;
   font-size: .78rem;
