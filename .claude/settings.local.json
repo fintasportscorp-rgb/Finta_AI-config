@@ -195,7 +195,15 @@
       "Bash(npm list *)",
       "Bash(pip show *)",
       "Bash(grep -E '\\\\.\\(html|css|js\\)$')",
-      "Bash(grep -E '\\\\.\\(html|js|json|css\\)$')"
+      "Bash(grep -E '\\\\.\\(html|js|json|css\\)$')",
+      "Bash(mkdir -p /tmp/claude-0/-home-user-Finta-AI-config/1455c8d7-260a-5db6-bca0-1781750f5318/scratchpad/loop-forge-seed/diagrams)",
+      "Bash(cp \"/root/.claude/uploads/1455c8d7-260a-5db6-bca0-1781750f5318/b095762d-IMG_2188.jpeg\" \"/tmp/claude-0/-home-user-Finta-AI-config/1455c8d7-260a-5db6-bca0-1781750f5318/scratchpad/loop-forge-seed/diagrams/01-agent-recursif-boucle-conception-execution-correction.jpeg\")",
+      "Bash(cp \"/root/.claude/uploads/1455c8d7-260a-5db6-bca0-1781750f5318/dcd65882-IMG_2191.jpeg\" \"/tmp/claude-0/-home-user-Finta-AI-config/1455c8d7-260a-5db6-bca0-1781750f5318/scratchpad/loop-forge-seed/diagrams/02-verifications-freins-durgence-htl.jpeg\")",
+      "Bash(cp \"/root/.claude/uploads/1455c8d7-260a-5db6-bca0-1781750f5318/27677109-IMG_2194.jpeg\" \"/tmp/claude-0/-home-user-Finta-AI-config/1455c8d7-260a-5db6-bca0-1781750f5318/scratchpad/loop-forge-seed/diagrams/03-sous-agents-parallele-exchange-md.jpeg\")",
+      "Bash(cp \"/root/.claude/uploads/1455c8d7-260a-5db6-bca0-1781750f5318/46b8ffa3-IMG_2193.jpeg\" \"/tmp/claude-0/-home-user-Finta-AI-config/1455c8d7-260a-5db6-bca0-1781750f5318/scratchpad/loop-forge-seed/diagrams/04-architecture-globale-agent-ia-prompt-maker.jpeg\")",
+      "Bash(cp \"/root/.claude/uploads/1455c8d7-260a-5db6-bca0-1781750f5318/33891461-IMG_2189.jpeg\" \"/tmp/claude-0/-home-user-Finta-AI-config/1455c8d7-260a-5db6-bca0-1781750f5318/scratchpad/loop-forge-seed/diagrams/06-boucle-intelligente-vue-simple.jpeg\")",
+      "Bash(cp \"/root/.claude/uploads/1455c8d7-260a-5db6-bca0-1781750f5318/1fba9eea-IMG_2190.jpeg\" \"/tmp/claude-0/-home-user-Finta-AI-config/1455c8d7-260a-5db6-bca0-1781750f5318/scratchpad/loop-forge-seed/diagrams/07-loop-engineering-deterministe-vs-soft.jpeg\")",
+      "mcp__bf7c680d-5fdc-5ef4-b4a0-abadb619bf0a__add_repo"
     ],
     "additionalDirectories": [
       "c:\\Users\\Propriétaire\\Desktop\\CLAUDE",
