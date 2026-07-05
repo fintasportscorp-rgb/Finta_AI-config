@@ -200,7 +200,10 @@
       "Bash(git -C /home/runner/workspace diff --stat bench.html css/finta2040.css index.html loopforge.html)",
       "Read(//home/runner/.config/nixpkgs/**)",
       "Bash(nix --version)",
-      "Bash(env)"
+      "Bash(env)",
+      "Bash(git commit *)",
+      "Read(//nix/store/**)",
+      "Read(//nix/store/0n9rl5l9syy808xi9bk4f6dhnfrvhkww-playwright-browsers-chromium/**)"
     ],
     "additionalDirectories": [
       "c:\\Users\\Propriétaire\\Desktop\\CLAUDE",
