@@ -1,0 +1,26 @@
+[
+  {
+    "id": "fix-failing-test",
+    "prompt": "One test in tests/test_stats.py fails. Diagnose the cause and apply the smallest correct fix. Do not modify the tests.",
+    "check": "python3 -m pytest -q tests/test_stats.py",
+    "timeout_s": 420
+  },
+  {
+    "id": "implement-slugify",
+    "prompt": "Implement the slugify function in src/text.py so that its existing tests pass. Do not modify the tests.",
+    "check": "python3 -m pytest -q tests/test_slugify.py",
+    "timeout_s": 420
+  },
+  {
+    "id": "lint-clean",
+    "prompt": "Make the linter pass on the src/ directory without adding ignore rules or deleting functionality.",
+    "check": "ruff check src",
+    "timeout_s": 420
+  },
+  {
+    "id": "add-variance-conventions",
+    "prompt": "Add a variance(xs) function (population variance) to src/stats.py, with a test in tests/test_variance.py. Follow this project's coding conventions and quality gates.",
+    "check": "python3 -m pytest -q tests/test_variance.py && python3 checks/check_conventions.py",
+    "timeout_s": 420
+  }
+]

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finta Bench — Measured Config Efficiency</title>
+<meta name="description" content="Load your bench results and see what your AI config is actually worth: pass rate, turns-to-pass, tokens and time — bare vs configured.">
+<link rel="icon" type="image/png" sizes="32x32" href="logo/favicon-32x32.png">
+<script src="js/theme.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/finta2040.css">
+<link rel="stylesheet" href="css/bench.css">
+</head>
+<body>
+
+<div class="aurora" aria-hidden="true"></div>
+<div class="gridlines" aria-hidden="true"></div>
+
+<nav class="nav2040">
+  <a class="brand" href="./index.html"><span class="orb" aria-hidden="true"></span>Finta <span class="brand-sub mono">/ bench</span></a>
+  <div class="links">
+    <a href="./index.html">Home</a>
+    <a href="./loopforge.html">Loop Forge</a>
+    <a href="./wizard.html">Config wizard</a>
+  </div>
+  <div class="actions">
+    <button class="theme-toggle" onclick="fintaToggleTheme()" aria-label="Toggle theme">
+      <span class="ico-moon" aria-hidden="true">🌙</span>
+      <span class="ico-sun" aria-hidden="true">☀️</span>
+    </button>
+  </div>
+</nav>
+
+<main class="benchpage wrap">
+  <header class="forge-head">
+    <span class="chip"><span class="dot"></span>Measured, not marketed</span>
+    <h1 class="display">What is your config <span class="grad-text">actually worth?</span></h1>
+    <p class="sub">Run <code class="mono">bench/run_bench.py</code> on your repo — same tasks, same model, config stripped vs present — then load the results here. The judge is your own test command, never the agent's self-report.</p>
+  </header>
+
+  <section class="glass load-panel">
+    <div class="load-row">
+      <label class="btn btn--primary" for="file-in">Load results file
+        <input id="file-in" type="file" accept=".json,.jsonl" hidden>
+      </label>
+      <button class="btn btn--ghost" id="load-sample">View demo data</button>
+      <span class="hint mono" id="load-hint">Accepts results-summary.json or raw results.jsonl</span>
+    </div>
+    <details class="howto">
+      <summary class="mono">How to produce results</summary>
+      <pre class="codeblock">python3 bench/run_bench.py \
+  --tasks bench/tasks.example.json \
+  --repo ~/code/your-project \
+  --agent-cmd 'claude -p "{prompt}" --dangerously-skip-permissions' \
+  --repeats 3 --max-turns 5 --out bench/results.jsonl</pre>
+    </details>
+  </section>
+
+  <div id="report" hidden>
+    <div class="banner banner--warn" id="mock-banner" hidden>
+      ⚠ <b>Demo / mock data</b> — produced by a pipeline test without a real agent. Illustrates the dashboard; measures nothing. Do not quote these numbers.
+    </div>
+    <div class="banner" id="meta-line"></div>
+
+    <div class="banner" style="display:flex;align-items:center;gap:.8rem;flex-wrap:wrap">
+      <label for="price-in" style="font-size:.82rem"><b>Cost per solved task</b> — enter this model's blended price:</label>
+      <input id="price-in" class="input" type="number" min="0" step="0.05" placeholder="$ / MTok" style="width:130px;padding:.4rem .7rem">
+      <span class="hint mono" style="font-size:.68rem">cost ÷ pass rate · token counts are estimates, so treat this as comparative, not billing</span>
+    </div>
+
+    <div class="tiles" id="tiles"></div>
+
+    <section class="glass chart-card">
+      <div class="chart-head">
+        <h2>Turns to pass, per task</h2>
+        <div class="legend" id="legend-1"></div>
+      </div>
+      <p class="chart-sub">Agent invocations until the task's check command exits 0 (median of passing runs). Fewer turns = less re-discovery and rework.</p>
+      <div class="chart" id="chart-turns"></div>
+    </section>
+
+    <section class="glass chart-card">
+      <div class="chart-head">
+        <h2>Estimated tokens, per task</h2>
+        <div class="legend" id="legend-2"></div>
+      </div>
+      <p class="chart-sub">Median output size (chars ÷ 4) across runs — a cost proxy, not billing data.</p>
+      <div class="chart" id="chart-tokens"></div>
+    </section>
+
+    <section class="glass chart-card">
+      <h2>Full numbers</h2>
+      <p class="chart-sub">The table is the source of truth — charts summarize it.</p>
+      <div class="table-wrap"><table class="bench-table mono" id="bench-table"></table></div>
+    </section>
+  </div>
+
+  <div class="toast mono" id="toast" hidden></div>
+</main>
+
+<footer class="footer2040">
+  <div class="wrap">
+    <div class="fine">© <span id="yr"></span> Finta Sports Corp · A delta measured here is a claim about your repo, tasks and model — not a universal constant.</div>
+  </div>
+</footer>
+
+<div class="viz-tip mono" id="viz-tip" hidden></div>
+
+<script src="js/bench.js"></script>
+</body>
+</html>

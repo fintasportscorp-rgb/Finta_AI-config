@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "repo": "fixture",
+    "label": "sonnet-5",
+    "repeats": 1,
+    "max_turns": 3,
+    "mock": false,
+    "agent_cmd": true,
+    "generated": "2026-07-04 22:33"
+  },
+  "tasks": [
+    {
+      "id": "add-variance-conventions",
+      "arms": {
+        "bare": {
+          "n": 1,
+          "pass_rate": 1.0,
+          "med_turns": 2,
+          "med_tokens": 332,
+          "med_wall_s": 84.09
+        },
+        "configured": {
+          "n": 1,
+          "pass_rate": 1.0,
+          "med_turns": 2,
+          "med_tokens": 632,
+          "med_wall_s": 136.13
+        }
+      }
+    },
+    {
+      "id": "fix-failing-test",
+      "arms": {
+        "bare": {
+          "n": 1,
+          "pass_rate": 1.0,
+          "med_turns": 1,
+          "med_tokens": 48,
+          "med_wall_s": 18.07
+        },
+        "configured": {
+          "n": 1,
+          "pass_rate": 1.0,
+          "med_turns": 1,
+          "med_tokens": 254,
+          "med_wall_s": 34.23
+        }
+      }
+    },
+    {
+      "id": "implement-slugify",
+      "arms": {
+        "bare": {
+          "n": 1,
+          "pass_rate": 1.0,
+          "med_turns": 1,
+          "med_tokens": 39,
+          "med_wall_s": 23.6
+        },
+        "configured": {
+          "n": 1,
+          "pass_rate": 1.0,
+          "med_turns": 1,
+          "med_tokens": 225,
+          "med_wall_s": 38.17
+        }
+      }
+    },
+    {
+      "id": "lint-clean",
+      "arms": {
+        "bare": {
+          "n": 1,
+          "pass_rate": 1.0,
+          "med_turns": 1,
+          "med_tokens": 82,
+          "med_wall_s": 32.11
+        },
+        "configured": {
+          "n": 1,
+          "pass_rate": 1.0,
+          "med_turns": 1,
+          "med_tokens": 184,
+          "med_wall_s": 32.86
+        }
+      }
+    }
+  ],
+  "overall": {
+    "bare": {
+      "n": 4,
+      "pass_rate": 1.0,
+      "med_turns": 1.0,
+      "med_tokens": 65.0,
+      "med_wall_s": 27.86
+    },
+    "configured": {
+      "n": 4,
+      "pass_rate": 1.0,
+      "med_turns": 1.0,
+      "med_tokens": 239.5,
+      "med_wall_s": 36.2
+    }
+  }
+}

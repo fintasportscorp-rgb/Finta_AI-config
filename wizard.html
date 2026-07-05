@@ -17,9 +17,17 @@
 <link rel="apple-touch-icon" href="logo/setup.png">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.28.1/cytoscape.min.js"></script>
+<script src="js/theme.js"></script>
 <link rel="stylesheet" href="css/wizard.css">
+<link rel="stylesheet" href="css/wizard-theme2040.css">
 </head>
 <body>
+<div id="theme-float">
+  <button onclick="fintaToggleTheme()" aria-label="Toggle theme">
+    <span class="ico-moon" aria-hidden="true">🌙</span>
+    <span class="ico-sun" aria-hidden="true">☀️</span>
+  </button>
+</div>
 <div id="lang-float">
   <button id="lang-trigger" onclick="toggleLangMenu()" aria-haspopup="true" aria-expanded="false">
     <img id="lang-flag" src="https://flagcdn.com/w40/gb.png" alt="EN">
@@ -40,6 +48,7 @@
   <div class="loading"><div class="spinner"></div><span>Loading…</span></div>
 </div>
 
+<script src="js/loopforge-templates.js"></script>
 <script src="js/wizard.js?v=2"></script>
 <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
 </body>

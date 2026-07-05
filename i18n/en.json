@@ -165,7 +165,17 @@
     "orch_type_hitl": "Human-in-the-Loop",
     "orch_type_hitl_desc": "Human validation required at defined checkpoints",
     "orch_type_custom": "Custom Graph",
-    "orch_type_custom_desc": "Free-form connections — design your own topology"
+    "orch_type_custom_desc": "Free-form connections — design your own topology",
+    "loop_layer_title": "Loop execution layer (loop/)",
+    "loop_layer_desc": "Adds an executable agent-loop bundle — AGENT.md contract, guardrails enforced by a Python runner, on-disk memory and two-mode verification — pre-configured from your answers.",
+    "loop_layer_customize": "Fine-tune in Loop Forge",
+    "lean_title": "Compact agent stubs (lean mode)",
+    "lean_desc": "Ships role + guardrails only instead of full personas — frontier models don’t need the prose, and every persona is re-read each session. Recommended above 7 agents.",
+    "agent_budget_warn": "⚠ {n} agents selected — each full persona costs context every session. Consider trimming, or lean mode will be suggested at generation.",
+    "hv_domain": "domain",
+    "hv_domain_tip": "Domain expertise your model does not have by default — worth its tokens on any model.",
+    "hv_skill": "high-value",
+    "hv_skill_tip": "Procedural knowledge no model can derive on its own — high value on any model."
   },
   "questions": {
     "orchestration_type": {
@@ -174,7 +184,7 @@
     "domain": {
       "opts": {
         "football": "Football Coaching & Club Management",
-        "sport":    "Multi-Sport Science & Athletic Coaching",
+        "sport": "Multi-Sport Science & Athletic Coaching",
         "holistic": "Personal Development & Wellbeing"
       }
     }

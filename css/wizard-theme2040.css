@@ -1,0 +1,180 @@
+/* ════════════════════════════════════════════════════════════════
+   FINTA 2040 — WIZARD THEME OVERRIDE
+   Loaded AFTER wizard.css. Re-skins the amber CRT terminal into the
+   blue liquid-glass system, with light/dark via [data-theme].
+   The wizard engine (js/wizard.js) is untouched — only tokens and
+   a few hardcoded amber effects are overridden here.
+   ════════════════════════════════════════════════════════════════ */
+
+/* ─── Token remap (dark = default) ──────────────────────────── */
+:root {
+  color-scheme: dark;
+
+  --bg:  #060d1f;
+  --sur: #0b1530;
+  --sur2:#111e40;
+  --brd: #24365e;
+  --cod: #040918;
+
+  /* --grn is the wizard's primary accent — now electric blue */
+  --grn: #60a5fa;
+  --grn2:#93c5fd;
+  --grn3:#7ea2d8;
+  --txt: #e6eeff;
+  --mut: #6d84b4;
+
+  --acc: #22d3ee;
+  --acl: #67e8f9;
+  --acd: rgba(34,211,238,.12);
+
+  --amb: #fbbf24;
+  --red: #fb7185;
+
+  --r: 10px;
+  --scan-opacity: 0;
+
+  --glow:    0 0 20px rgba(59,130,246,.35), 0 0 40px rgba(34,211,238,.12);
+  --glow-sm: 0 0 10px rgba(59,130,246,.3);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --bg:  #eef4ff;
+  --sur: #ffffff;
+  --sur2:#e7efff;
+  --brd: #c3d4f1;
+  --cod: #0b1a3a;
+
+  --grn: #2563eb;
+  --grn2:#1d4ed8;
+  --grn3:#3b5f9e;
+  --txt: #0b1a3a;
+  --mut: #5c74a6;
+
+  --acc: #0891b2;
+  --acl: #0e7490;
+  --acd: rgba(8,145,178,.10);
+
+  --amb: #b45309;
+  --red: #e11d48;
+
+  --glow:    0 0 20px rgba(37,99,235,.16), 0 0 40px rgba(8,145,178,.08);
+  --glow-sm: 0 0 10px rgba(37,99,235,.14);
+}
+
+/* ─── Kill the CRT: scanlines + vignette ────────────────────── */
+body { background-image: none !important; transition: background .45s, color .45s; }
+body::before { background: none !important; }
+
+/* Liquid backdrop */
+body {
+  background:
+    radial-gradient(55% 40% at 12% -6%,  rgba(37,99,235,.22) 0%, transparent 60%),
+    radial-gradient(45% 34% at 92% 4%,   rgba(129,140,248,.16) 0%, transparent 58%),
+    radial-gradient(70% 50% at 50% 112%, rgba(34,211,238,.12) 0%, transparent 60%),
+    var(--bg) !important;
+  background-attachment: fixed !important;
+}
+:root[data-theme="light"] body {
+  background:
+    radial-gradient(55% 40% at 12% -6%,  rgba(96,165,250,.30) 0%, transparent 60%),
+    radial-gradient(45% 34% at 92% 4%,   rgba(165,180,252,.28) 0%, transparent 58%),
+    radial-gradient(70% 50% at 50% 112%, rgba(103,232,249,.24) 0%, transparent 60%),
+    var(--bg) !important;
+  background-attachment: fixed !important;
+}
+
+/* ─── Neutralize amber-hardcoded glows with blue ────────────── */
+@keyframes glowPulse {
+  0%, 100% { text-shadow: 0 0 4px var(--grn), 0 0 8px rgba(59,130,246,.4); }
+  50%      { text-shadow: 0 0 8px var(--grn), 0 0 20px rgba(34,211,238,.5); }
+}
+@keyframes inclPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(59,130,246,.45); border-color: var(--grn); }
+  50%      { box-shadow: 0 0 6px 3px rgba(59,130,246,0); border-color: var(--grn3); }
+}
+.ascii-art { text-shadow: 0 0 8px rgba(59,130,246,.45); }
+.welcome h1 { text-shadow: 0 0 12px rgba(59,130,246,.35); }
+.btn.bp:hover, .btndl:hover {
+  background: rgba(59,130,246,.12);
+  box-shadow: 0 0 12px rgba(59,130,246,.22);
+}
+input[type=text]:focus, textarea:focus, .ap-search:focus {
+  border-color: var(--grn);
+  box-shadow: 0 0 0 3px rgba(59,130,246,.18);
+}
+.orch-incl-btn:hover { background: rgba(59,130,246,.18); }
+#scroll-top { background: var(--sur); border-radius: 50%; }
+#scroll-top:hover { border-color: var(--grn); box-shadow: 0 0 10px rgba(59,130,246,.3); }
+
+/* ─── Glass treatment for the main surfaces ─────────────────── */
+.card, .ans-panel, .audit-box, .boot-box, .agent-card {
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  border-radius: var(--r);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 14px 38px -18px rgba(2,8,30,.7);
+}
+:root[data-theme="light"] .card,
+:root[data-theme="light"] .ans-panel,
+:root[data-theme="light"] .audit-box,
+:root[data-theme="light"] .boot-box,
+:root[data-theme="light"] .agent-card {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 14px 34px -20px rgba(30,64,175,.25);
+}
+
+/* Semi-transparent surfaces so the glass reads */
+.card { background: rgba(96,145,255,.055); }
+:root[data-theme="light"] .card { background: rgba(255,255,255,.62); }
+
+/* ─── Light-mode legibility for code areas ──────────────────── */
+:root[data-theme="light"] pre,
+:root[data-theme="light"] .boot-box pre,
+:root[data-theme="light"] code {
+  color: #dbe7ff;
+}
+
+/* ─── Floating controls (lang picker exists; add theme toggle) ─ */
+#theme-float {
+  position: fixed;
+  top: 1rem;
+  right: 4.6rem;
+  z-index: 9500;
+}
+#theme-float button {
+  width: 40px; height: 40px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--brd);
+  background: var(--sur);
+  color: var(--txt);
+  font-size: 1rem;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all .3s;
+}
+#theme-float button:hover {
+  border-color: var(--grn);
+  box-shadow: var(--glow-sm);
+  transform: rotate(18deg);
+}
+#theme-float .ico-sun { display: none; }
+#theme-float .ico-moon { display: block; }
+:root[data-theme="light"] #theme-float .ico-sun { display: block; }
+:root[data-theme="light"] #theme-float .ico-moon { display: none; }
+
+/* Round the language float to match */
+#lang-float button, #lang-menu { border-radius: 999px !important; }
+
+/* High-value badge — model-fit signal, not popularity */
+.ac-hv {
+  font-size: .62rem;
+  letter-spacing: .06em;
+  padding: .1rem .45rem;
+  border-radius: 999px;
+  color: var(--acc);
+  border: 1px solid var(--acd);
+  background: var(--acd);
+  white-space: nowrap;
+}

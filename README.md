@@ -14,6 +14,8 @@ Finta is an interactive setup wizard that generates a ready-to-use AI configurat
 
 No manual reading of hundreds of markdown files. No guessing which agent fits which stack. One wizard, one prompt, done.
 
+**New — Loop Forge** (`loopforge.html`): a second studio that goes beyond static persona files. It forges an *executable* agent-loop architecture — orchestrator contract, guardrails enforced in code, on-disk memory, two-mode verification and orchestration patterns — exported as a ZIP with a runnable Python loop runner. See [Loop Forge](#loop-forge--executable-agent-loops) below.
+
 ---
 
 ## The Catalog
@@ -84,14 +86,20 @@ The generated prompt is designed to be pasted once into your AI assistant. It in
 
 ```
 .
-├── index.html              # Landing page + wizard entry
-├── wizard.html             # Multi-step wizard UI
+├── index.html              # Landing page (Finta 2040 liquid-glass design)
+├── wizard.html             # Multi-step config wizard
+├── loopforge.html          # Loop Forge — executable agent-loop builder
 ├── js/
-│   ├── index.js            # Landing page logic, i18n routing
+│   ├── theme.js            # Shared light/dark theme bootstrap
+│   ├── landing.js          # Landing logic + inline i18n (8 languages)
+│   ├── loopforge.js        # Loop Forge engine — decision tree, guardrails, file generation, ZIP
 │   └── wizard.js           # Wizard engine — question flow, prompt generation, export
 ├── css/
-│   ├── index.css           # Landing page styles (amber CRT design system)
-│   └── wizard.css          # Wizard styles
+│   ├── finta2040.css       # Shared design system — blue liquid glass, light/dark tokens
+│   ├── landing.css         # Landing page styles
+│   ├── loopforge.css       # Loop Forge studio styles
+│   ├── wizard.css          # Wizard base styles
+│   └── wizard-theme2040.css# Wizard re-skin to the 2040 system (light/dark)
 ├── data/
 │   ├── questions.json      # Wizard question tree (all steps, options, targets)
 │   └── arbo.json           # Domain/stack/tool mappings + file tree templates
@@ -261,19 +269,78 @@ The app is pure HTML/CSS/JavaScript with no framework dependencies. Open `index.
 
 ---
 
-## Design System
+## Design System — Finta 2040
 
-The UI uses an **amber CRT terminal** aesthetic with a warm dark palette:
+The UI uses a **blue liquid-glass** system (`css/finta2040.css`): translucent surfaces with backdrop blur, an animated aurora backdrop, and full **light/dark mode** (toggle persisted in `localStorage`, defaults to the OS preference).
 
-| Token | Value | Role |
+| Token (dark) | Value | Role |
 |-------|-------|------|
-| `--bg` | `#0c0900` | Warm near-black background |
-| `--amb` | `#ffb300` | Amber primary |
-| `--amb2` | `#ffd166` | Amber light |
-| `--acc` | `#7c6af7` | Purple accent |
-| `--txt` | `#ffe0a0` | Main text (warm cream) |
+| `--bg1` | `#060d1f` | Deep navy background |
+| `--blue` / `--blue-hi` | `#3b82f6` / `#60a5fa` | Electric blue primary |
+| `--cyan` | `#22d3ee` | Cyan accent |
+| `--glass` | `rgba(96,145,255,.055)` | Liquid-glass surface |
+| `--txt` | `#e6eeff` | Main text (ice white) |
 
-Font: [JetBrains Mono](https://www.jetbrains.com/lp/mono/) — monospaced, developer-native.
+Light mode remaps every token (`:root[data-theme="light"]`). Fonts: [Space Grotesk](https://fonts.google.com/specimen/Space+Grotesk) (display) · [Inter](https://fonts.google.com/specimen/Inter) (text) · [JetBrains Mono](https://www.jetbrains.com/lp/mono/) (code). Fully responsive — the layout collapses to a single column with a glass burger menu under 880 px.
+
+---
+
+## Loop Forge — Executable Agent Loops
+
+`loopforge.html` implements the **loop-engineering** blueprint: an agent shouldn't just have a persona — it should run a verified loop and *know when the work is done*.
+
+Six steps:
+
+1. **Identity** — mission (verifiable objective), locked scope, forbidden actions.
+2. **Loop profile** — a 3-question decision tree picks one of **5 profiles**: turn-by-turn, goal-based, temporal, proactive, or simplified + human validation.
+3. **Guardrails** — max iterations (default 20), stagnation stop (3 flat rounds), doubt threshold (10 % → CLARIFY), fix retries (3 → BLOCKED), time/token budgets, rollback on regression.
+4. **Human-to-loop (HTL)** — 5 escalation triggers: ambiguity, irreversible action, sensitive data, subjective judgment, budget exhausted.
+5. **Verification** — per-criterion `verification_mode`: `deterministic` (command exit code) or `soft` (spec validated once with the user, marker in `memory.md`) — never a blind pass/fail.
+6. **Orchestration** — single, parallel fan-out, sequential, or mixed; sub-agents coordinate through a `memory/exchange.md` JSON-lines bus; a failing sub-agent re-enters a capped correction loop, then HTL.
+
+The output is a ZIP bundle:
+
+```
+my-agent/
+├── AGENT.md                  # orchestrator contract
+├── loop.config.json          # loop_type + guardrails + orchestration
+├── memory/                   # memory.md · memory_temp.md · exchange.md
+├── asset/                    # scale-objectif.json (scoring grid) + playbooks
+├── skills/                   # created on the fly by the agent, then reused
+└── script/
+    ├── loop_runner.py        # stdlib-only runtime — guardrails enforced in code
+    ├── validate-structure.py # bundle well-formed?
+    └── validate-coherence.py # config values agree?
+```
+
+`loop_runner.py` exit codes: **0** RESOLVED · **2** HTL (human takes over, incident buffer preserved) · **3** CLARIFY · **5** turn done, re-run to continue (`turn_by_turn`) · **6** awaiting `--confirm` (`human_validated`). A copy-paste **bootstrap prompt** is also generated — it now instructs the installing assistant to test-run every deterministic command before trusting the loop.
+
+**The profile changes runtime behavior** (all five verified by execution): `turn_by_turn` runs one iteration per invocation; `human_validated` dry-runs until `--confirm`; `temporal` polls `temporal.trigger_cmd` between iterations; `proactive` keeps watching after RESOLVED and autonomously re-enters on regression. HTL semantics are honest: hard brakes (iteration cap, stagnation, budgets) always stop — the toggles govern only the advisory triggers the agent raises itself. An **escalation ladder** (`escalation_ladder` in `loop.config.json`) retries a BLOCKED task with stronger model tiers — each with a fresh iteration budget and its own `agent_cmd` — before falling back to a human: run Haiku first, escalate on proof of failure, pay for Fable 5 only when needed. Sub-agents can carry their own `agent_cmd` too, and each turn now receives the tail of `memory_temp.md` as working memory instead of a bare 800-char error.
+
+Loop Forge complements the wizard: the wizard picks *who* your agents are (personas, skills, commands); Loop Forge defines *how they finish* (execution layer). Everything generated is plain text + simple JSON — portable across models.
+
+---
+
+## Finta Bench — Measured Efficiency
+
+`bench/` + `bench.html` answer the question every config tool dodges: **what is the config actually worth, measured?**
+
+`bench/run_bench.py` (stdlib-only) runs identical tasks against fresh copies of your repo in two arms — `bare` (config stripped) vs `configured` — with your own agent CLI. The judge is each task's deterministic `check` command, never the agent's self-report. It records pass rate, turns-to-pass (with failure feedback between turns), wall time and estimated tokens, then writes JSONL + an aggregated summary.
+
+```bash
+python3 bench/run_bench.py --tasks bench/tasks.example.json \
+  --repo ~/code/your-project \
+  --agent-cmd 'claude -p "{prompt}" --dangerously-skip-permissions' \
+  --repeats 3 --max-turns 5 --out bench/results.jsonl
+```
+
+Load the results into **`bench.html`** — a client-side dashboard with stat tiles (pass rate, Δ turns, Δ tokens, Δ time, cost per solved task at your model's price), per-task comparison charts and the full table.
+
+**First real measured runs** (in `bench/results-*.jsonl`, labels `haiku-4-5` and `sonnet-5`, n=1 per cell, run on the included `bench/fixture/`): both models passed 8/8 in both arms; on this small, self-documenting repo the config added **zero pass rate and cost overhead** (Haiku: median 21.8s/93 tok bare vs 28.6s/143 tok configured; Sonnet: 27.9s/65 tok vs 36.2s/240 tok). Two honest lessons the data teaches: (1) agentic models *discover* conventions from enforcement code — bare arms read `checks/check_conventions.py` and complied — so config value lives where discovery is expensive (large repos), where rules exist nowhere in code, or in unattended loops; (2) never quote config benefits without measuring on **your** repo — which is exactly what this harness is for. Honesty is enforced by design: medians not means, `n` always displayed, mock/pipeline-test data is flagged with a warning banner and can't be confused with measurements, and a footer reminder that a delta measured on your repo is a claim about *your* setup, not a universal constant. See `bench/README.md` for methodology and task-writing guidance.
+
+**Standard config hardening.** Three changes to the classic wizard output, driven by the same honesty audit: (1) every generated main config file now ends with a **Definition of Done** section — the real test/lint commands for the stack, "all must exit 0 before declaring completion", derived from the same source as the loop layer's criteria; (2) **lean mode** — a results-screen toggle (auto-suggested above 7 agents, with a context-budget warning at selection time) that ships compact agent stubs (frontmatter + role + guardrails, ~90% smaller) instead of full personas, because frontier models don't need the prose and every persona is re-read each session; (3) catalog cards now carry **model-fit badges** (⚡ high-value on official procedural skills, ◆ domain on Finta sport-science agents) so the selection signal isn't GitHub stars alone.
+
+**Wizard integration.** The config wizard ships the same structure with one toggle on the results screen ("Loop execution layer"), enabled by default for Advanced/Deep profiles. The loop config is *derived from your answers* — package manager → real test/lint commands as deterministic criteria, TDD level → success threshold (strict 90 / soft 85 / critical 80 / none 70), autonomy → loop profile and iteration cap (conservative → human-validated ×10, standard → goal-based ×20, autonomous → proactive ×30), "never do" list → forbidden scope, first spec → mission. The bundle lands at project root as `loop/<project>-loop/` (tool-agnostic, outside `.claude/`-style folders), is referenced from the main config file, and both generators share one template source: `js/loopforge-templates.js`.
 
 ---
 

@@ -1,0 +1,8 @@
+{"task": "fix-failing-test", "arm": "bare", "pass": true, "turns": 1, "wall_s": 18.07, "tokens_est": 48, "mock": false, "ts": "2026-07-04T22:27:27", "repeat": 1, "label": "sonnet-5"}
+{"task": "fix-failing-test", "arm": "configured", "pass": true, "turns": 1, "wall_s": 34.23, "tokens_est": 254, "mock": false, "ts": "2026-07-04T22:28:02", "repeat": 1, "label": "sonnet-5"}
+{"task": "implement-slugify", "arm": "bare", "pass": true, "turns": 1, "wall_s": 23.6, "tokens_est": 39, "mock": false, "ts": "2026-07-04T22:28:25", "repeat": 1, "label": "sonnet-5"}
+{"task": "implement-slugify", "arm": "configured", "pass": true, "turns": 1, "wall_s": 38.17, "tokens_est": 225, "mock": false, "ts": "2026-07-04T22:29:03", "repeat": 1, "label": "sonnet-5"}
+{"task": "lint-clean", "arm": "bare", "pass": true, "turns": 1, "wall_s": 32.11, "tokens_est": 82, "mock": false, "ts": "2026-07-04T22:29:35", "repeat": 1, "label": "sonnet-5"}
+{"task": "lint-clean", "arm": "configured", "pass": true, "turns": 1, "wall_s": 32.86, "tokens_est": 184, "mock": false, "ts": "2026-07-04T22:30:08", "repeat": 1, "label": "sonnet-5"}
+{"task": "add-variance-conventions", "arm": "bare", "pass": true, "turns": 2, "wall_s": 84.09, "tokens_est": 332, "mock": false, "ts": "2026-07-04T22:31:32", "repeat": 1, "label": "sonnet-5"}
+{"task": "add-variance-conventions", "arm": "configured", "pass": true, "turns": 2, "wall_s": 136.13, "tokens_est": 632, "mock": false, "ts": "2026-07-04T22:33:48", "repeat": 1, "label": "sonnet-5"}

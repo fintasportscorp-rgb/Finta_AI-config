@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loop Forge — Finta</title>
+<meta name="description" content="Forge an executable agent-loop architecture: loop profile, guardrails, human escalation, two-mode verification, orchestration patterns and a runnable Python loop runner.">
+<meta property="og:title" content="Loop Forge — Finta">
+<meta property="og:description" content="Generate agent loops that know when the work is done — guardrails, memory and human escalation included.">
+<meta property="og:image" content="https://config.fintalab.com/logo/setup.png">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/png" sizes="32x32" href="logo/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="logo/favicon-16x16.png">
+<script src="js/theme.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/finta2040.css">
+<link rel="stylesheet" href="css/loopforge.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+<body>
+
+<div class="aurora" aria-hidden="true"></div>
+<div class="gridlines" aria-hidden="true"></div>
+
+<!-- ═══ NAV ═══ -->
+<nav class="nav2040">
+  <a class="brand" href="./index.html"><span class="orb" aria-hidden="true"></span>Finta <span class="brand-sub mono">/ loop-forge</span></a>
+  <div class="links">
+    <a href="./index.html">Home</a>
+    <a href="./wizard.html">Config wizard</a>
+  </div>
+  <div class="actions">
+    <button class="theme-toggle" onclick="fintaToggleTheme()" aria-label="Toggle theme">
+      <span class="ico-moon" aria-hidden="true">🌙</span>
+      <span class="ico-sun" aria-hidden="true">☀️</span>
+    </button>
+  </div>
+</nav>
+
+<main class="forge wrap">
+  <header class="forge-head">
+    <span class="chip"><span class="dot"></span>Loop engineering studio</span>
+    <h1 class="display">Forge an agent that <span class="grad-text">finishes the job.</span></h1>
+    <p class="sub">Six steps to a complete execution architecture: verified loop, guardrails, memory, two-mode verification, orchestration — exported as a runnable bundle.</p>
+  </header>
+
+  <!-- Step rail -->
+  <ol class="steprail glass" id="steprail">
+    <li data-step="0" class="on"><b>01</b><span>Identity</span></li>
+    <li data-step="1"><b>02</b><span>Loop profile</span></li>
+    <li data-step="2"><b>03</b><span>Guardrails</span></li>
+    <li data-step="3"><b>04</b><span>Human-to-loop</span></li>
+    <li data-step="4"><b>05</b><span>Verification</span></li>
+    <li data-step="5"><b>06</b><span>Orchestration</span></li>
+    <li data-step="6" class="gen"><b>⟳</b><span>Generate</span></li>
+  </ol>
+
+  <!-- ── STEP 0 · IDENTITY ─────────────────────────────────── -->
+  <section class="forge-step glass" data-panel="0">
+    <h2>01 · Agent identity</h2>
+    <p class="step-intro">The bootstrap contract: who the agent is, what it may touch, and what it must never touch. Scope is locked at bootstrap — the agent cannot widen it mid-run.</p>
+    <div class="grid2">
+      <div class="field">
+        <label for="f-name">Agent name</label>
+        <input class="input mono" id="f-name" placeholder="mail-triage-agent" value="my-loop-agent" maxlength="64">
+        <div class="hint">Lowercase, hyphenated, &lt; 64 chars.</div>
+      </div>
+      <div class="field">
+        <label for="f-model">Target runtime</label>
+        <select class="input" id="f-model">
+          <option value="any">Any LLM (portable, recommended)</option>
+          <option value="claude">Claude Code</option>
+          <option value="cursor">Cursor</option>
+          <option value="other">Other CLI agent</option>
+        </select>
+        <div class="hint">The architecture stays model-agnostic either way.</div>
+      </div>
+    </div>
+    <div class="field">
+      <label for="f-goal">Mission — the verifiable objective</label>
+      <textarea class="input" id="f-goal" placeholder="Triage the support inbox into 5 labelled categories with ≥ 95% precision on the labelled test set.">Keep the test suite green: detect failing tests, diagnose one cause at a time, apply one atomic fix, and prove it with a regression run.</textarea>
+      <div class="hint">If success can’t be measured, the loop can’t know when to stop — the forge will flag it.</div>
+    </div>
+    <div class="grid2">
+      <div class="field">
+        <label for="f-scope">In scope (the agent may…)</label>
+        <textarea class="input" id="f-scope" placeholder="one item per line">read the repo
+run tests and linters
+edit files under src/ and tests/</textarea>
+      </div>
+      <div class="field">
+        <label for="f-forbid">Out of scope (the agent must never…)</label>
+        <textarea class="input" id="f-forbid" placeholder="one item per line">modify the project scope itself
+push to remote or deploy
+delete files outside its workspace</textarea>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── STEP 1 · LOOP PROFILE ─────────────────────────────── -->
+  <section class="forge-step glass" data-panel="1" hidden>
+    <h2>02 · Loop profile</h2>
+    <p class="step-intro">Three questions pick one of five loop profiles — and the profile <b>changes how the runner executes</b>: turn-by-turn runs one iteration per invocation, human-validated dry-runs until you <code class="mono">--confirm</code>, temporal waits on an event trigger, proactive keeps watching after success and re-enters on regression. Start simple; add autonomy only when the proof is reliable.</p>
+    <div class="qa" id="q-recurring">
+      <span class="qa-q">Is the task recurring?</span>
+      <div class="qa-opts">
+        <button class="opt-mini" data-v="no">No — one-shot</button>
+        <button class="opt-mini" data-v="yes">Yes — repeats</button>
+      </div>
+    </div>
+    <div class="qa" id="q-measurable" hidden>
+      <span class="qa-q">Is the result objectively measurable?</span>
+      <div class="qa-opts">
+        <button class="opt-mini" data-v="no">No — needs judgment</button>
+        <button class="opt-mini" data-v="yes">Yes — testable</button>
+      </div>
+    </div>
+    <div class="qa" id="q-temporal" hidden>
+      <span class="qa-q">Does it depend on time or an external system?</span>
+      <div class="qa-opts">
+        <button class="opt-mini" data-v="no">No</button>
+        <button class="opt-mini" data-v="yes">Yes — events / schedule</button>
+      </div>
+    </div>
+    <div class="qa" id="q-stable" hidden>
+      <span class="qa-q">Is the process stable and well defined?</span>
+      <div class="qa-opts">
+        <button class="opt-mini" data-v="no">No — still fuzzy</button>
+        <button class="opt-mini" data-v="yes">Yes — mastered</button>
+      </div>
+    </div>
+
+    <div class="profile-grid" id="profile-grid">
+      <button class="opt-card" data-profile="turn_by_turn">
+        <span class="ic">↻</span><span class="t">Turn-by-turn</span>
+        <span class="d">Learn and adjust each iteration. For one-shot tasks whose result needs judgment.</span>
+      </button>
+      <button class="opt-card" data-profile="goal_based">
+        <span class="ic">◎</span><span class="t">Goal-based</span>
+        <span class="d">Advance toward a measurable result and stop when it’s proven.</span>
+      </button>
+      <button class="opt-card" data-profile="temporal">
+        <span class="ic">⏱</span><span class="t">Temporal</span>
+        <span class="d">React, wait or schedule around time and external events (CI, cron, tickets).</span>
+      </button>
+      <button class="opt-card" data-profile="proactive">
+        <span class="ic">⚡</span><span class="t">Proactive</span>
+        <span class="d">Anticipate and act autonomously on a mastered, stable process.</span>
+      </button>
+      <button class="opt-card" data-profile="human_validated">
+        <span class="ic">🤝</span><span class="t">Simplified + human</span>
+        <span class="d">Reduce complexity, keep a human in control. The safe default when things are fuzzy.</span>
+      </button>
+    </div>
+    <p class="hint" id="profile-hint">Answer the questions above — or pick a profile directly.</p>
+  </section>
+
+  <!-- ── STEP 2 · GUARDRAILS ───────────────────────────────── -->
+  <section class="forge-step glass" data-panel="2" hidden>
+    <h2>03 · Guardrails</h2>
+    <p class="step-intro">Emergency brakes, enforced in the runner — not documented in prose. The loop must always be guaranteed to stop.</p>
+    <div class="grid2">
+      <div class="field">
+        <label>Max iterations <output class="mono" id="o-iter">20</output></label>
+        <input type="range" class="range" id="f-iter" min="1" max="50" value="20">
+        <div class="hint">Hard cap on automatic loop turns before HTL.</div>
+      </div>
+      <div class="field">
+        <label>Stagnation — flat rounds before stop <output class="mono" id="o-stag">3</output></label>
+        <input type="range" class="range" id="f-stag" min="2" max="10" value="3">
+        <div class="hint">N rounds without score progress → stop and escalate.</div>
+      </div>
+      <div class="field">
+        <label>Doubt threshold <output class="mono" id="o-doubt">10%</output></label>
+        <input type="range" class="range" id="f-doubt" min="0" max="50" value="10">
+        <div class="hint">Above this uncertainty, the agent must CLARIFY, not guess.</div>
+      </div>
+      <div class="field">
+        <label>Max fix retries per bug <output class="mono" id="o-retry">3</output></label>
+        <input type="range" class="range" id="f-retry" min="1" max="10" value="3">
+        <div class="hint">One diagnosis, one atomic fix per attempt; then BLOCKED.</div>
+      </div>
+      <div class="field">
+        <label for="f-time">Time budget (minutes, 0 = none)</label>
+        <input class="input mono" id="f-time" type="number" min="0" value="60">
+      </div>
+      <div class="field">
+        <label for="f-token">Token budget (0 = none)</label>
+        <input class="input mono" id="f-token" type="number" min="0" value="500000">
+      </div>
+    </div>
+    <label class="check-pill on" id="p-rollback">
+      <input type="checkbox" id="f-rollback" checked><span class="box">✓</span>
+      <span><span class="t">Rollback on regression</span><br><span class="d">If a verification that passed starts failing, restore the last healthy checkpoint before continuing.</span></span>
+    </label>
+  </section>
+
+  <!-- ── STEP 3 · HTL ──────────────────────────────────────── -->
+  <section class="forge-step glass" data-panel="3" hidden>
+    <h2>04 · Human-to-loop triggers</h2>
+    <p class="step-intro">Hard brakes — iteration cap, stagnation, budgets — <b>always stop the loop</b>; stopping is guaranteed and not configurable. These toggles govern the <b>advisory triggers the agent raises itself</b> (<code class="mono">[HTL:…]</code> markers): enabled → stop and escalate; disabled → logged warning, loop continues.</p>
+    <div class="htl-grid" id="htl-grid">
+      <label class="check-pill on"><input type="checkbox" data-htl="ambiguity" checked><span class="box">✓</span>
+        <span><span class="t">Ambiguity</span><br><span class="d">Context or objective is unclear — ask a targeted question instead of guessing.</span></span></label>
+      <label class="check-pill on"><input type="checkbox" data-htl="irreversible_action" checked><span class="box">✓</span>
+        <span><span class="t">Irreversible action</span><br><span class="d">Risky or impossible to undo — deploys, deletions, external sends.</span></span></label>
+      <label class="check-pill on"><input type="checkbox" data-htl="sensitive_data" checked><span class="box">✓</span>
+        <span><span class="t">Sensitive data</span><br><span class="d">Access to or processing of critical data requires a human OK.</span></span></label>
+      <label class="check-pill on"><input type="checkbox" data-htl="subjective_judgment" checked><span class="box">✓</span>
+        <span><span class="t">Subjective judgment</span><br><span class="d">Quality calls a machine shouldn’t make alone — tone, design, tradeoffs.</span></span></label>
+      <label class="check-pill on" style="opacity:.75;cursor:not-allowed"><input type="checkbox" data-htl="budget_exhausted" checked disabled><span class="box">✓</span>
+        <span><span class="t">Budget exhausted — always on</span><br><span class="d">Hard brake: time, iteration or token ceiling reached → stop and report. Not disableable — a loop must be guaranteed to stop.</span></span></label>
+    </div>
+  </section>
+
+  <!-- ── STEP 4 · VERIFICATION ─────────────────────────────── -->
+  <section class="forge-step glass" data-panel="4" hidden>
+    <h2>05 · Verification criteria</h2>
+    <p class="step-intro">“Goal verified?” is never one boolean. <b>Deterministic</b> criteria run a command and read the exit code. <b>Soft</b> criteria compare against a spec you validate once — after that the agent applies it autonomously.</p>
+    <div id="crit-list"></div>
+    <button class="btn btn--ghost btn--sm" id="crit-add">+ Add criterion</button>
+    <div class="field" style="margin-top:1.6rem">
+      <label>Success threshold — weighted score to STOP <output class="mono" id="o-thresh">80%</output></label>
+      <input type="range" class="range" id="f-thresh" min="50" max="100" value="80">
+      <div class="hint">Score ≥ threshold → RESOLVED. Below → new iteration. At the iteration cap → HTL.</div>
+    </div>
+  </section>
+
+  <!-- ── STEP 5 · ORCHESTRATION ────────────────────────────── -->
+  <section class="forge-step glass" data-panel="5" hidden>
+    <h2>06 · Orchestration</h2>
+    <p class="step-intro">Strong coupling → one agent. Independence → fan-out. Dependence → sequential. Mixed → both. If decomposition benefit ≤ coordination cost, stay single.</p>
+    <div class="profile-grid pattern-grid">
+      <button class="opt-card sel" data-pattern="single">
+        <span class="ic">●</span><span class="t">Single agent</span>
+        <span class="d">Tasks are tightly coupled, or splitting costs more than it saves.</span>
+      </button>
+      <button class="opt-card" data-pattern="fanout">
+        <span class="ic">⋔</span><span class="t">Parallel fan-out</span>
+        <span class="d">Independent tasks run simultaneously, results converge for compilation.</span>
+      </button>
+      <button class="opt-card" data-pattern="sequential">
+        <span class="ic">→</span><span class="t">Sequential</span>
+        <span class="d">A strict chain: audit → implement → test → validate.</span>
+      </button>
+      <button class="opt-card" data-pattern="mixed">
+        <span class="ic">⧉</span><span class="t">Mixed</span>
+        <span class="d">Parallel block for the independent + sequential block for the dependent.</span>
+      </button>
+    </div>
+    <div id="subagents-zone" hidden>
+      <h3 class="zone-t">Sub-agents</h3>
+      <p class="hint" style="margin-bottom:.9rem">They coordinate through <code class="mono">memory/exchange.md</code> — a JSON-lines bus every agent reads and writes. A failing sub-agent logs to <code class="mono">memory_temp.md</code> and re-enters the loop (capped), then HTL.</p>
+      <div id="sub-list"></div>
+      <button class="btn btn--ghost btn--sm" id="sub-add">+ Add sub-agent</button>
+    </div>
+  </section>
+
+  <!-- ── STEP 6 · GENERATE ─────────────────────────────────── -->
+  <section class="forge-step glass" data-panel="6" hidden>
+    <h2>⟳ · Your loop architecture</h2>
+    <p class="step-intro" id="gen-summary"></p>
+    <div class="gen-layout">
+      <aside class="gen-tree">
+        <h3 class="zone-t">Bundle</h3>
+        <ul class="filetree mono" id="filetree"></ul>
+        <div class="gen-actions">
+          <button class="btn btn--primary" id="dl-zip">⬇ Download ZIP</button>
+          <button class="btn btn--ghost" id="cp-boot">Copy bootstrap prompt</button>
+        </div>
+      </aside>
+      <div class="gen-preview">
+        <div class="gen-tabs mono" id="gen-tabs"></div>
+        <div class="preview-wrap">
+          <button class="copy-file btn--sm mono" id="cp-file">copy</button>
+          <pre class="codeblock" id="gen-code"></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Nav buttons -->
+  <div class="forge-nav">
+    <button class="btn btn--ghost" id="nav-prev" disabled>← Back</button>
+    <button class="btn btn--primary" id="nav-next">Next →</button>
+  </div>
+</main>
+
+<footer class="footer2040">
+  <div class="wrap">
+    <div class="fine">© <span id="yr"></span> Finta Sports Corp · Loop Forge generates portable, human-editable architectures — text and simple JSON, interpretable by any LLM.</div>
+  </div>
+</footer>
+
+<div class="toast mono" id="toast" hidden></div>
+
+<script src="js/loopforge-templates.js"></script>
+<script src="js/loopforge.js"></script>
+</body>
+</html>

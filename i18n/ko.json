@@ -165,7 +165,17 @@
     "orch_type_hitl": "휴먼 인 더 루프",
     "orch_type_hitl_desc": "정의된 체크포인트에서 인간 검증이 필요합니다",
     "orch_type_custom": "커스텀 그래프",
-    "orch_type_custom_desc": "자유로운 연결 — 자신만의 토폴로지 설계"
+    "orch_type_custom_desc": "자유로운 연결 — 자신만의 토폴로지 설계",
+    "loop_layer_title": "루프 실행 레이어 (loop/)",
+    "loop_layer_desc": "실행 가능한 에이전트 루프 번들을 추가합니다 — AGENT.md 계약, Python 러너가 강제하는 가드레일, 디스크 메모리, 2모드 검증 — 답변을 바탕으로 사전 구성됩니다.",
+    "loop_layer_customize": "Loop Forge에서 조정",
+    "lean_title": "컴팩트 에이전트 스텁(린 모드)",
+    "lean_desc": "전체 페르소나 대신 역할과 가드레일만 포함합니다. 프런티어 모델은 긴 설명이 필요 없고, 페르소나는 세션마다 다시 읽힙니다. 7개 초과 시 권장.",
+    "agent_budget_warn": "⚠ {n}개 에이전트 선택됨 — 전체 페르소나는 세션마다 컨텍스트를 소모합니다. 줄이는 것을 고려하세요.",
+    "hv_domain": "도메인",
+    "hv_domain_tip": "모델이 기본으로 갖추지 않은 도메인 전문성 — 어떤 모델에서도 가치 있음.",
+    "hv_skill": "고가치",
+    "hv_skill_tip": "어떤 모델도 스스로 도출할 수 없는 절차적 지식 — 어떤 모델에서도 고가치."
   },
   "levels": {
     "fast": {

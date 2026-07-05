@@ -1,0 +1,280 @@
+/* ════════════════════════════════════════════════════════════════
+   FINTA 2040 — LOOP FORGE STUDIO STYLES
+   ════════════════════════════════════════════════════════════════ */
+
+.brand-sub { font-size: .72rem; color: var(--txt-3); font-weight: 400; }
+
+.forge { padding-top: 8.5rem; padding-bottom: 4rem; }
+.forge-head { max-width: 720px; margin-bottom: 2.6rem; }
+.forge-head .chip { margin-bottom: 1.2rem; }
+.forge-head h1 { font-size: clamp(2rem, 4.4vw, 3.2rem); margin-bottom: 1rem; }
+.forge-head .sub { font-size: 1.02rem; }
+
+/* ─── Step rail ─────────────────────────────────────────────── */
+.steprail {
+  display: flex;
+  gap: .3rem;
+  list-style: none;
+  padding: .55rem;
+  border-radius: 999px;
+  margin-bottom: 1.6rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.steprail::-webkit-scrollbar { display: none; }
+.steprail li {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  padding: .6rem .9rem;
+  border-radius: 999px;
+  font-size: .8rem;
+  color: var(--txt-3);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all .3s var(--ease);
+}
+.steprail li b { font-family: var(--f-mono); font-weight: 600; font-size: .72rem; }
+.steprail li:hover { color: var(--txt); background: var(--glass); }
+.steprail li.on {
+  color: #fff;
+  background: linear-gradient(135deg, var(--blue-hi), var(--blue-lo));
+  box-shadow: var(--glow-sm);
+}
+.steprail li.done { color: var(--ok); }
+.steprail li.gen.on { background: linear-gradient(135deg, var(--cyan), var(--blue-lo)); }
+
+/* ─── Step panels ───────────────────────────────────────────── */
+.forge-step {
+  padding: 2.2rem 2.1rem;
+  border-radius: var(--r-lg);
+  animation: panelIn .45s var(--ease);
+}
+@keyframes panelIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+.forge-step h2 {
+  font-family: var(--f-display);
+  font-size: 1.35rem;
+  letter-spacing: -.01em;
+  margin-bottom: .5rem;
+}
+.step-intro { color: var(--txt-2); font-size: .94rem; max-width: 46rem; margin-bottom: 1.8rem; }
+
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1.2rem; }
+.field { margin-bottom: .4rem; }
+.field output { float: right; color: var(--blue-hi); font-weight: 600; }
+select.input { cursor: pointer; }
+select.input option { background: var(--bg2); color: var(--txt); }
+
+/* ─── Decision tree Q&A ─────────────────────────────────────── */
+.qa {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .9rem;
+  padding: .85rem 0;
+  border-bottom: 1px dashed var(--glass-brd);
+  animation: panelIn .4s var(--ease);
+}
+.qa-q { font-weight: 600; font-size: .93rem; }
+.qa-opts { display: flex; gap: .5rem; }
+.opt-mini {
+  padding: .42rem 1rem;
+  border-radius: 999px;
+  font-size: .82rem;
+  color: var(--txt-2);
+  border: 1px solid var(--glass-brd);
+  background: var(--glass);
+  transition: all .25s var(--ease);
+}
+.opt-mini:hover { border-color: var(--glass-brd-hi); color: var(--txt); }
+.opt-mini.sel {
+  color: #fff;
+  background: linear-gradient(135deg, var(--blue-hi), var(--blue-lo));
+  border-color: transparent;
+}
+
+/* ─── Profile / pattern cards ───────────────────────────────── */
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: .85rem;
+  margin: 1.6rem 0 .8rem;
+}
+.pattern-grid { grid-template-columns: repeat(4, 1fr); }
+.profile-grid .opt-card .t { font-size: .92rem; }
+.profile-grid .opt-card .d { font-size: .76rem; }
+.opt-card.rec { border-color: rgba(34,211,238,.5); }
+.opt-card.rec::before {
+  content: 'RECOMMENDED';
+  position: absolute;
+  top: -.55rem; left: 1rem;
+  font-family: var(--f-mono);
+  font-size: .56rem;
+  letter-spacing: .12em;
+  padding: .12rem .5rem;
+  border-radius: 999px;
+  color: var(--bg1);
+  background: var(--cyan);
+}
+
+/* ─── HTL grid ──────────────────────────────────────────────── */
+.htl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+
+/* ─── Criteria rows ─────────────────────────────────────────── */
+.crit-row {
+  display: grid;
+  grid-template-columns: 1.5fr .8fr 1.2fr auto;
+  gap: .7rem;
+  align-items: start;
+  padding: .95rem;
+  margin-bottom: .7rem;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--glass-brd);
+  background: var(--glass);
+  animation: panelIn .35s var(--ease);
+}
+.crit-row .del {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  color: var(--err);
+  border: 1px solid transparent;
+  transition: all .25s;
+}
+.crit-row .del:hover { border-color: var(--err); background: rgba(251,113,133,.1); }
+.crit-row .mode-soft  { border-color: rgba(251,191,36,.4); }
+.crit-row .mode-note { grid-column: 1 / -1; font-size: .74rem; color: var(--txt-3); }
+
+/* ─── Sub-agents ────────────────────────────────────────────── */
+.zone-t {
+  font-family: var(--f-display);
+  font-size: 1.02rem;
+  margin: 1.7rem 0 .6rem;
+}
+.sub-row {
+  display: grid;
+  grid-template-columns: .9fr 1.3fr .7fr 1.2fr auto;
+  gap: .7rem;
+  margin-bottom: .7rem;
+  animation: panelIn .35s var(--ease);
+}
+.sub-row .del {
+  width: 34px; height: 34px;
+  align-self: center;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  color: var(--err);
+}
+.sub-row .del:hover { background: rgba(251,113,133,.1); }
+code.mono {
+  background: var(--glass-strong);
+  border: 1px solid var(--glass-brd);
+  border-radius: 5px;
+  padding: .08rem .4rem;
+  font-size: .8em;
+}
+
+/* ─── Generate panel ────────────────────────────────────────── */
+.gen-layout {
+  display: grid;
+  grid-template-columns: 290px 1fr;
+  gap: 1.6rem;
+}
+.filetree {
+  list-style: none;
+  font-size: .78rem;
+  line-height: 2;
+  color: var(--txt-2);
+  margin-bottom: 1.4rem;
+}
+.filetree li { cursor: pointer; padding: 0 .5rem; border-radius: 6px; transition: all .2s; white-space: pre; }
+.filetree li:hover { background: var(--glass-strong); color: var(--txt); }
+.filetree li.dir { color: var(--txt-3); cursor: default; }
+.filetree li.on { background: var(--glass-strong); color: var(--blue-hi); }
+.gen-actions { display: flex; flex-direction: column; gap: .6rem; }
+.gen-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin-bottom: .8rem;
+}
+.gen-tabs button {
+  padding: .35rem .8rem;
+  border-radius: 999px;
+  font-size: .7rem;
+  color: var(--txt-3);
+  border: 1px solid var(--glass-brd);
+  transition: all .25s;
+}
+.gen-tabs button.on {
+  color: #fff;
+  background: linear-gradient(135deg, var(--blue-hi), var(--blue-lo));
+  border-color: transparent;
+}
+.preview-wrap { position: relative; }
+.preview-wrap .codeblock {
+  max-height: 560px;
+  overflow: auto;
+  font-size: .76rem;
+}
+.copy-file {
+  position: absolute;
+  top: .65rem; right: .8rem;
+  z-index: 2;
+  padding: .3rem .8rem;
+  border-radius: 999px;
+  font-size: .68rem;
+  color: var(--ice);
+  background: var(--glass-strong);
+  border: 1px solid var(--glass-brd);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.copy-file:hover { border-color: var(--glass-brd-hi); }
+
+/* ─── Forge nav ─────────────────────────────────────────────── */
+.forge-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.4rem;
+}
+.forge-nav .btn[disabled] { opacity: .35; pointer-events: none; }
+
+/* ─── Toast ─────────────────────────────────────────────────── */
+.toast {
+  position: fixed;
+  bottom: 26px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 2000;
+  padding: .7rem 1.4rem;
+  border-radius: 999px;
+  font-size: .78rem;
+  color: var(--txt);
+  background: var(--glass-strong);
+  border: 1px solid var(--glass-brd-hi);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: var(--shadow-lift);
+  animation: panelIn .3s var(--ease);
+}
+
+/* ─── Responsive ────────────────────────────────────────────── */
+@media (max-width: 1020px) {
+  .profile-grid { grid-template-columns: repeat(3, 1fr); }
+  .pattern-grid { grid-template-columns: repeat(2, 1fr); }
+  .gen-layout { grid-template-columns: 1fr; }
+}
+@media (max-width: 680px) {
+  .grid2 { grid-template-columns: 1fr; }
+  .profile-grid { grid-template-columns: 1fr 1fr; }
+  .htl-grid { grid-template-columns: 1fr; }
+  .crit-row { grid-template-columns: 1fr; }
+  .sub-row { grid-template-columns: 1fr; }
+  .forge-step { padding: 1.5rem 1.2rem; }
+  .steprail li span { display: none; }
+}

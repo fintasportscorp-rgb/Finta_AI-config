@@ -165,7 +165,17 @@
     "orch_type_hitl": "人在回路",
     "orch_type_hitl_desc": "在定义的检查点需要人工验证",
     "orch_type_custom": "自定义图",
-    "orch_type_custom_desc": "自由连接 — 设计您自己的拓扑"
+    "orch_type_custom_desc": "自由连接 — 设计您自己的拓扑",
+    "loop_layer_title": "循环执行层 (loop/)",
+    "loop_layer_desc": "添加可执行的智能体循环包 — AGENT.md 契约、由 Python 运行器强制执行的护栏、磁盘记忆和双模式校验 — 已根据你的回答预配置。",
+    "loop_layer_customize": "在 Loop Forge 中微调",
+    "lean_title": "精简智能体存根（精简模式）",
+    "lean_desc": "只保留角色与护栏而非完整人设——前沿模型不需要长篇描述，且每个人设每次会话都会重读。超过 7 个智能体时推荐。",
+    "agent_budget_warn": "⚠ 已选择 {n} 个智能体——每个完整人设每次会话都消耗上下文。建议精简。",
+    "hv_domain": "领域",
+    "hv_domain_tip": "模型默认不具备的领域专长——在任何模型上都值得。",
+    "hv_skill": "高价值",
+    "hv_skill_tip": "任何模型都无法自行推导的程序性知识——对任何模型都高价值。"
   },
   "levels": {
     "fast": {

@@ -1,0 +1,8 @@
+{"task": "fix-failing-test", "arm": "bare", "pass": true, "turns": 1, "wall_s": 20.29, "tokens_est": 113, "mock": false, "ts": "2026-07-04T22:23:33", "repeat": 1, "label": "haiku-4-5"}
+{"task": "fix-failing-test", "arm": "configured", "pass": true, "turns": 1, "wall_s": 27.21, "tokens_est": 91, "mock": false, "ts": "2026-07-04T22:24:00", "repeat": 1, "label": "haiku-4-5"}
+{"task": "implement-slugify", "arm": "bare", "pass": true, "turns": 1, "wall_s": 16.37, "tokens_est": 72, "mock": false, "ts": "2026-07-04T22:24:16", "repeat": 1, "label": "haiku-4-5"}
+{"task": "implement-slugify", "arm": "configured", "pass": true, "turns": 1, "wall_s": 25.03, "tokens_est": 114, "mock": false, "ts": "2026-07-04T22:24:41", "repeat": 1, "label": "haiku-4-5"}
+{"task": "lint-clean", "arm": "bare", "pass": true, "turns": 1, "wall_s": 20.07, "tokens_est": 63, "mock": false, "ts": "2026-07-04T22:25:01", "repeat": 1, "label": "haiku-4-5"}
+{"task": "lint-clean", "arm": "configured", "pass": true, "turns": 1, "wall_s": 16.93, "tokens_est": 77, "mock": false, "ts": "2026-07-04T22:25:18", "repeat": 1, "label": "haiku-4-5"}
+{"task": "add-variance-conventions", "arm": "bare", "pass": true, "turns": 1, "wall_s": 29.54, "tokens_est": 172, "mock": false, "ts": "2026-07-04T22:25:48", "repeat": 1, "label": "haiku-4-5"}
+{"task": "add-variance-conventions", "arm": "configured", "pass": true, "turns": 1, "wall_s": 34.61, "tokens_est": 142, "mock": false, "ts": "2026-07-04T22:26:22", "repeat": 1, "label": "haiku-4-5"}
