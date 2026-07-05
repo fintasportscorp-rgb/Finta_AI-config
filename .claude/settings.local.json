@@ -195,7 +195,12 @@
       "Bash(npm list *)",
       "Bash(pip show *)",
       "Bash(grep -E '\\\\.\\(html|css|js\\)$')",
-      "Bash(grep -E '\\\\.\\(html|js|json|css\\)$')"
+      "Bash(grep -E '\\\\.\\(html|js|json|css\\)$')",
+      "Bash(export GIT_CONFIG_NOSYSTEM=1)",
+      "Bash(git -C /home/runner/workspace diff --stat bench.html css/finta2040.css index.html loopforge.html)",
+      "Read(//home/runner/.config/nixpkgs/**)",
+      "Bash(nix --version)",
+      "Bash(env)"
     ],
     "additionalDirectories": [
       "c:\\Users\\Propriétaire\\Desktop\\CLAUDE",
